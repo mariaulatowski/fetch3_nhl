@@ -13,10 +13,9 @@ input_fname = "UMBS_flux_2011.csv"
 
 start_time = "2011-05-01 10:00:00" #begining of simulation
 end_time = "2011-05-01 13:30:00" #end
-
 #Full Simulation
-#start_time = "2007-01-01 00:00:00" #begining of simulation
-#end_time = "2007-06-09 00:00:00" #end of simulation
+# start_time = "2007-01-01 00:00:00" #begining of simulation
+# end_time = "2007-06-09 00:00:00" #end of simulation
 
 dt = 1800  #seconds - input data resolution
 tmin = 0  #tmin [s]
@@ -30,7 +29,7 @@ print_run_progress = True  # Turn on/off printing for progress of time steps cal
 print_freq = 50  # Interval of timesteps to print if print_run_progress = True (e.g. 1 will print every time step)
 
 ###############################################################################
-#TRANSPIRATION OPTIONS - NHL OR PM
+#TRANSPIRATION OPTIONS - PENMAN-MONTEITH OR FETCH2 NHL
 ###############################################################################
 transpiration_scheme = 1 # 0: PM transpiration; 1: NHL transpiration
 
@@ -39,7 +38,6 @@ transpiration_scheme = 1 # 0: PM transpiration; 1: NHL transpiration
 ###############################################################################
 #The finite difference discretization constants
 dt0 = 20  #model temporal resolution [s]
-
 dz = 0.1  #model spatial resolution [m]
 
 stop_tol = 0.0001  #stop tolerance of equation converging
@@ -103,7 +101,7 @@ alpha_1=0.8                        #soil hydraulic parameter [1/m]
 theta_S1=0.55                      #saturated volumetric soil moisture content [-]
 theta_R1=0.068                     #residual volumetric soil moisture content [-]
 n_1=1.5                            #soil hydraulic parameter  [-]
-m_1=1-(1/n_1)            #soil hydraulic parameter  [-]
+m_1=1-(1/n_1)                      #soil hydraulic parameter  [-]
 Ksat_1=1.94*10**(-7)               #saturated hydraulic conductivity  [m/s]
 
 #SAND
@@ -145,7 +143,6 @@ Abasal=8.62*10**(-4)          #[m2basal/m2-ground] xylem cross-sectional area an
 #######################################################################
 #LEAF AREA DENSITY FORMULATION (LAD) [1/m]
 #######################################################################
-lad_scheme = 1  #0: default scheme, based on Lalic et al 2014; 1: scheme from NHL module
 LAI=1.5                #[-] Leaf area index
 
 #parameters if using penman-monteith transpiration scheme, based on Lalic et al 2014

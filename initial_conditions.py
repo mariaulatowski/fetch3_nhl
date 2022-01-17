@@ -1,6 +1,10 @@
 import model_config as cfg
-from met_data import q_rain
 from model_setup import nz, dz, z, nz_s, nz_r, nz_clay, z_soil
+
+if cfg.transpiration_scheme == 0:
+    from met_data import q_rain
+elif cfg.transpiration_scheme ==1:
+    from nhl_transpiration.met_data_nhl import q_rain
 
 import numpy as np
 #######################################################################

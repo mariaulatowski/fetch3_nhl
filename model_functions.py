@@ -5,7 +5,6 @@ from scipy import linalg
 from numpy.linalg import multi_dot
 
 from model_setup import z_soil, nz_s, nz_r, z_upper, z, nz, nz_sand, nz_clay
-from met_data import q_rain, tmax, start_time, end_time, working_dir
 
 import model_config as cfg
 
@@ -14,15 +13,17 @@ if cfg.transpiration_scheme == 0:
     from met_data import VPD_2d, NET_2d, delta_2d, SW_in
     from transpiration import jarvis_fleaf, calc_transpiration, f_Ta_2d, f_d_2d, f_s_2d
     from canopy import LAD
+    from met_data import q_rain, tmax, start_time, end_time, working_dir
 
 #Imports for NHL transpiration
 elif cfg.transpiration_scheme == 1:
     import nhl_transpiration.nhl_config as ncfg
     from nhl_transpiration.NHL_functions import calc_stem_wp_response, calc_transpiration_nhl
     from nhl_transpiration.main import NHL_modelres, LAD
+    from nhl_transpiration.met_data_nhl import q_rain, tmax, start_time, end_time, working_dir
 
 
-##############Temporal discritization according to MODEL resolution
+##############Temporal discretization according to MODEL resolution
 t_num = np.arange(0,tmax+cfg.dt0,cfg.dt0)         #[s]
 nt = len(t_num)  #number of time steps
 ########################################
@@ -491,8 +492,6 @@ def format_model_output(H,K,S_stomata,theta, S_kx, S_kr,C,Kr_sink, Capac, S_sink
     #end of simulation adding +1 time step to match dimensions
     step_time = pd.Series(pd.date_range(start_time, end_time + pd.to_timedelta(dt, unit = 's'), freq=str(dt)+'s'))
     ############################################################################
-
-    #df_time = pd.DataFrame(data=step_time.index.values,index=step_time)
 
     #########################################################
 
