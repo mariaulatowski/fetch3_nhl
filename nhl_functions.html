@@ -160,33 +160,46 @@
                 
   <span class="target" id="module-nhl_transpiration.NHL_functions"></span><section id="nhl-transpiration">
 <h1>NHL transpiration<a class="headerlink" href="#nhl-transpiration" title="Permalink to this headline">#</a></h1>
+<p>This module calculates non-hydrodynamically limited transpiration.
+This code was ported from FETCH2’s MATLAB code (see Mirfenderesgi et al 2016)</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="nhl_transpiration.NHL_functions.calc_Kg">
 <span class="sig-prename descclassname"><span class="pre">nhl_transpiration.NHL_functions.</span></span><span class="sig-name descname"><span class="pre">calc_Kg</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Tair</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nhl_transpiration.NHL_functions.calc_Kg" title="Permalink to this definition">#</a></dt>
-<dd><p>Calculate the temperature-dependent conductance coefficient
-From Ewers et al 2007
+<dd><p>Calculates the temperature-dependent conductance coefficient.
+Formulation from Ewers et al 2007
 Equation A.2 from Mirfenderesgi et al 2016</p>
-<p>Inputs:
-Tair : air temperature [deg C]</p>
-<p>Outputs:
-Kg: temperature-dependent conductance coefficient [kPa m3 kg-1]</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>Tair</strong> (<em>array_like</em>) – Air temperature [deg C]</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>Kg</strong> – Temperature-dependent conductance coefficient [kPa m3 kg-1]</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>array_like</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="nhl_transpiration.NHL_functions.calc_LAI_vertical">
 <span class="sig-prename descclassname"><span class="pre">nhl_transpiration.NHL_functions.</span></span><span class="sig-name descname"><span class="pre">calc_LAI_vertical</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">LADnorm</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z_h_LADnorm</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tot_LAI_crown</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dz</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">h</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nhl_transpiration.NHL_functions.calc_LAI_vertical" title="Permalink to this definition">#</a></dt>
-<dd><p>Creates vertical leaf area distribution</p>
+<dd><p>Creates vertical leaf area distribution.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>LAD</strong> (<em>[</em><em>type</em><em>]</em>) – Vertical gradient of normalized LAD</p></li>
-<li><p><strong>z_h_LAD</strong> (<em>[</em><em>unitless: m/m</em><em>]</em>) – z/h for LAD</p></li>
-<li><p><strong>dz</strong> (<em>[</em><em>m</em><em>]</em>) – Vertical discretization interval</p></li>
-<li><p><strong>h</strong> (<em>[</em><em>m</em><em>]</em>) – Canopy height</p></li>
+<li><p><strong>LADnorm</strong> (<em>array</em>) – Vertical gradient of normalized LAD [unitless]</p></li>
+<li><p><strong>z_h_LADnorm</strong> (<em>array</em>) – z/h for LAD [unitless: m/m]</p></li>
+<li><p><strong>tot_LAI_crown</strong> (<em>float</em>) – total leaf area per crown area [m2_leaf m-2_crown]</p></li>
+<li><p><strong>dz</strong> (<em>float</em>) – Vertical discretization interval [m]</p></li>
+<li><p><strong>h</strong> (<em>float</em>) – Canopy height [m]</p></li>
 </ul>
 </dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>LAD on new vertical grid [m2leaf m-2crown m-1stem]</p>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>LAD</strong> – Leaf area density on new vertical grid [m2leaf m-2crown m-1stem]</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>array</p>
 </dd>
 </dl>
 </dd></dl>
@@ -194,24 +207,73 @@ Kg: temperature-dependent conductance coefficient [kPa m3 kg-1]</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="nhl_transpiration.NHL_functions.calc_NHL">
 <span class="sig-prename descclassname"><span class="pre">nhl_transpiration.NHL_functions.</span></span><span class="sig-name descname"><span class="pre">calc_NHL</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dz</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">h</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Cd</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">U_top</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ustar</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">PAR</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Ca</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Vcmax25</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha_gs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha_p</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">total_LAI_sp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plot_area</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">total_crown_area_sp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mean_crown_area_sp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">LADnorm</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z_h_LADnorm</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">RH</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Tair</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Press</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Cf</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.85</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nhl_transpiration.NHL_functions.calc_NHL" title="Permalink to this definition">#</a></dt>
-<dd><p>Calculate NHL transpiration</p>
+<dd><p>Calculate NHL transpiration
+#TODO make docstring</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>z</strong> (<em>m</em>) – [Height vector]</p></li>
-<li><p><strong>total_LAI_sp</strong> (<em>[</em><em>m2_leaf m-2_ground</em><em>]</em>) – [total LAI for each species]</p></li>
-<li><p><strong>plot_area</strong> (<em>[</em><em>m2</em><em>]</em>) – [Total plot area]</p></li>
-<li><p><strong>total_crown_area_sp</strong> (<em>[</em><em>m2</em><em>]</em>) – </p></li>
-<li><p><strong>mean_crown_area_sp</strong> (<em>[</em><em>m2</em><em>]</em>) – </p></li>
-<li><p><strong>LAD</strong> (<em>[</em><em>m2_leaf m-1</em><em>]</em>) – </p></li>
-<li><p><strong>VPD</strong> (<em>[</em><em>kPa</em><em>]</em>) – </p></li>
-<li><p><strong>Tair</strong> (<em>[</em><em>deg C</em><em>]</em>) – </p></li>
-<li><p><strong>geff</strong> (<em>mol m-2_leaf s-1</em>) – effective leaf conductance</p></li>
-<li><p><strong>Press</strong> (<em>[</em><em>kPa</em><em>]</em>) – air pressure</p></li>
+<li><p><strong>dz</strong> (<em>float</em>) – Vertical discretization interval [m]</p></li>
+<li><p><strong>h</strong> (<em>float</em>) – Canopy height [m]</p></li>
+<li><p><strong>Cd</strong> (<em>float</em>) – drag coefficient [unitless]</p></li>
+<li><p><strong>U_top</strong> (<em>float</em>) – Measured wind speed at top of canopy [m s-1]</p></li>
+<li><p><strong>ustar</strong> (<em>float</em>) – friction velocity [m s-1]</p></li>
+<li><p><strong>PAR</strong> (<em>float</em>) – photosynthetically active radiation at canopy top [umol m-2 s-1]</p></li>
+<li><p><strong>Ca</strong> (<em>float</em>) – CO2 concentration [umol/mol]</p></li>
+<li><p><strong>Vcmax25</strong> (<em>float</em>) – Maximum carboxylation capacity of Rubisco at 25 deg C</p></li>
+<li><p><strong>alpha_gs</strong> (<em>float</em>) – fitting parameter of stomatal conductance model</p></li>
+<li><p><strong>total_LAI_sp</strong> (<em>_type_</em>) – _description_</p></li>
+<li><p><strong>plot_area</strong> (<em>_type_</em>) – _description_</p></li>
+<li><p><strong>total_crown_area_sp</strong> (<em>_type_</em>) – _description_</p></li>
+<li><p><strong>mean_crown_area_sp</strong> (<em>_type_</em>) – _description_</p></li>
+<li><p><strong>LADnorm</strong> (<em>_type_</em>) – _description_</p></li>
+<li><p><strong>z_h_LADnorm</strong> (<em>_type_</em>) – _description_</p></li>
+<li><p><strong>RH</strong> (<em>_type_</em>) – _description_</p></li>
+<li><p><strong>Tair</strong> (<em>_type_</em>) – _description_</p></li>
+<li><p><strong>Press</strong> (<em>_type_</em>) – _description_</p></li>
+<li><p><strong>Cf</strong> (<em>float</em><em>, </em><em>optional</em>) – _description_, by default 0.85</p></li>
+<li><p><strong>x</strong> (<em>int</em><em>, </em><em>optional</em>) – _description_, by default 1</p></li>
 </ul>
 </dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>NHL transpiration</p>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>_description_</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>_type_</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="nhl_transpiration.NHL_functions.calc_NHL_timesteps">
+<span class="sig-prename descclassname"><span class="pre">nhl_transpiration.NHL_functions.</span></span><span class="sig-name descname"><span class="pre">calc_NHL_timesteps</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dz</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">h</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Cd</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">met_data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Vcmax25</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha_gs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha_p</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">total_LAI_spn</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plot_area</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">total_crown_area_spn</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mean_crown_area_spn</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">LAD_norm</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z_h_LADnorm</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lat</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">long</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time_offset</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-</span> <span class="pre">5</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nhl_transpiration.NHL_functions.calc_NHL_timesteps" title="Permalink to this definition">#</a></dt>
+<dd><p>Calls NHL for each timestep in the met data
+#TODO docstring</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dz</strong> (<em>_type_</em>) – _description_</p></li>
+<li><p><strong>h</strong> (<em>_type_</em>) – _description_</p></li>
+<li><p><strong>Cd</strong> (<em>_type_</em>) – _description_</p></li>
+<li><p><strong>met_data</strong> (<em>_type_</em>) – _description_</p></li>
+<li><p><strong>Vcmax25</strong> (<em>_type_</em>) – _description_</p></li>
+<li><p><strong>alpha_gs</strong> (<em>_type_</em>) – _description_</p></li>
+<li><p><strong>alpha_p</strong> (<em>_type_</em>) – _description_</p></li>
+<li><p><strong>total_LAI_spn</strong> (<em>_type_</em>) – _description_</p></li>
+<li><p><strong>plot_area</strong> (<em>_type_</em>) – _description_</p></li>
+<li><p><strong>total_crown_area_spn</strong> (<em>_type_</em>) – _description_</p></li>
+<li><p><strong>mean_crown_area_spn</strong> (<em>_type_</em>) – _description_</p></li>
+<li><p><strong>LAD_norm</strong> (<em>_type_</em>) – _description_</p></li>
+<li><p><strong>z_h_LADnorm</strong> (<em>_type_</em>) – _description_</p></li>
+<li><p><strong>lat</strong> (<em>_type_</em>) – _description_</p></li>
+<li><p><strong>long</strong> (<em>_type_</em>) – _description_</p></li>
+<li><p><strong>time_offset</strong> (<em>int</em><em>, </em><em>optional</em>) – _description_, by default -5</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>_description_</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>_type_</p>
 </dd>
 </dl>
 </dd></dl>
@@ -225,7 +287,7 @@ Kg: temperature-dependent conductance coefficient [kPa m3 kg-1]</p>
 <dd class="field-odd"><p><strong>Tair</strong> (<em>array_like</em>) – Air temperature [degrees C]</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>The saturation vapor pressure [kPa] corresponding to each element in Tair</p>
+<dd class="field-even"><p><strong>es</strong> – The saturation vapor pressure [kPa] corresponding to each element in Tair</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p>array_like</p>
@@ -236,23 +298,46 @@ Kg: temperature-dependent conductance coefficient [kPa m3 kg-1]</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="nhl_transpiration.NHL_functions.calc_gb">
 <span class="sig-prename descclassname"><span class="pre">nhl_transpiration.NHL_functions.</span></span><span class="sig-name descname"><span class="pre">calc_gb</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">uz</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0015</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nhl_transpiration.NHL_functions.calc_gb" title="Permalink to this definition">#</a></dt>
-<dd><p>Calculates the leaf boundary layer conductance and resistance, assuming laminar boundary layer</p>
-<p>uz: wind speed at canopy height z [m s-1]
-d: characteristic leaf length [m]</p>
-<p>gb: leaf boundary layer conductance
-rb: leaf boundary layer resistance</p>
+<dd><p>Calculates the leaf boundary layer conductance and resistance, assuming laminar boundary layer.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>uz</strong> (<em>array-like</em>) – wind speed at canopy height z [m s-1]</p></li>
+<li><p><strong>d</strong> (<em>float</em>) – characteristic leaf length [m]. By default 0.0015.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>gb</strong> (<em>array-like</em>) – leaf boundary layer conductance</p></li>
+<li><p><strong>rb</strong> (<em>array_like</em>) – leaf boundary layer resistance</p></li>
+</ul>
+</p>
+</dd>
+</dl>
 <p class="rubric">References</p>
-<p>Monteith J, Unsworth M. Principles of environmental physics: plants, animals, and the atmosphere. Academic Press; 2013 Jul 26.</p>
+<p>Monteith J, Unsworth M. Principles of environmental physics: plants, animals, and the atmosphere.
+Academic Press; 2013 Jul 26.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="nhl_transpiration.NHL_functions.calc_geff">
 <span class="sig-prename descclassname"><span class="pre">nhl_transpiration.NHL_functions.</span></span><span class="sig-name descname"><span class="pre">calc_geff</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gb</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nhl_transpiration.NHL_functions.calc_geff" title="Permalink to this definition">#</a></dt>
-<dd><p>Calculates the effective leaf conductance
+<dd><p>Calculates the effective leaf conductance.
 Eqn A.3 of Mirfenderesgi</p>
-<p>gb : boundary layer conductance [mol m-2 s-1]
-gs : stomatal conductance [mol m-2 s-1]</p>
-<p>geff : effective leaf conductance [mol m-2 s-1]</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>gb</strong> (<em>array_like</em>) – boundary layer conductance [mol m-2 s-1]</p></li>
+<li><p><strong>gs</strong> (<em>array_like</em>) – stomatal conductance [mol m-2 s-1]</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>geff</strong> – effective leaf conductance [mol m-2 s-1]</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>array_like</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
@@ -262,63 +347,88 @@ gs : stomatal conductance [mol m-2 s-1]</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>g0</strong> (<em>[</em><em>mol m-2 s-1</em><em>]</em>) – [cuticular conductance, residual stomatal conductance at the light compensation point (empirically fitted parameter)]</p></li>
-<li><p><strong>m</strong> (<em>[</em><em>unitless</em><em>]</em>) – [empirically fitted parameter]</p></li>
-<li><p><strong>A</strong> (<em>[</em><em>umol CO2 m-2 s-1</em><em>]</em>) – [net CO2 assimilation rate]</p></li>
-<li><p><strong>c_s</strong> (<em>[</em><em>umol mol-1</em><em>]</em>) – [atmospheric CO2 concentration]</p></li>
-<li><p><strong>gamma_star</strong> (<em>[</em><em>umol mol-1</em><em>]</em>) – [CO2 compensation point]</p></li>
-<li><p><strong>VPD</strong> (<em>[</em><em>kPa</em><em>]</em>) – [VPD]</p></li>
-<li><p><strong>D0</strong> (<em>[</em><em>kPa</em><em>]</em>) – [reference vapor pressure, assumed to be 3.0 kPa]</p></li>
+<li><p><strong>g0</strong> (<em>float</em>) – cuticular conductance [mol m-2 s-1], residual stomatal conductance at the
+light compensation point (empirically fitted parameter)</p></li>
+<li><p><strong>m</strong> (<em>float</em>) – empirically fitted parameter [unitless]</p></li>
+<li><p><strong>A</strong> (<em>float</em>) – net CO2 assimilation rate [umol CO2 m-2 s-1]</p></li>
+<li><p><strong>c_s</strong> (<em>float</em>) – atmospheric CO2 concentration [umol mol-1]</p></li>
+<li><p><strong>gamma_star</strong> (<em>float</em>) – CO2 compensation point [umol mol-1]</p></li>
+<li><p><strong>VPD</strong> (<em>float</em>) – VPD [kPa]</p></li>
+<li><p><strong>D0</strong> (<em>float</em>) – reference vapor pressure [kPa], by default assumed to be 3.0 kPa</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>[stomatal conductance]</p>
+<dd class="field-even"><p><strong>gs</strong> – stomatal conductance [mol H2O m-2 s-1]</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>gs [mol H2O m-2 s-1]</p>
+<dd class="field-odd"><p>float</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="nhl_transpiration.NHL_functions.calc_mixing_length">
-<span class="sig-prename descclassname"><span class="pre">nhl_transpiration.NHL_functions.</span></span><span class="sig-name descname"><span class="pre">calc_mixing_length</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">z</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">h</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nhl_transpiration.NHL_functions.calc_mixing_length" title="Permalink to this definition">#</a></dt>
-<dd><p>Calculates the mixing length for each height in z
+<span class="sig-prename descclassname"><span class="pre">nhl_transpiration.NHL_functions.</span></span><span class="sig-name descname"><span class="pre">calc_mixing_length</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">z</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">h</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha_ml</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nhl_transpiration.NHL_functions.calc_mixing_length" title="Permalink to this definition">#</a></dt>
+<dd><p>Calculates the mixing length for each height in z.
 Based on Poggi et al 2004
-Zero-plane displacement height is taken as (2/3)*h, appropriate for dense canopies (Katul et al 2004)</p>
-<p>z : vector of heights [m]
-h : canopy height [m]
-alpha : unitless parameter</p>
-<p>mixing_length : mixing length [m] at each height in z</p>
+Zero-plane displacement height is taken as (2/3)*h, appropriate for dense canopies (Katul et al 2004).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>z</strong> (<em>array</em>) – vector of heights [m]</p></li>
+<li><p><strong>h</strong> (<em>float</em>) – canopy height [m]</p></li>
+<li><p><strong>alpha_ml</strong> (<em>float</em>) – unitless parameter</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>mixing_length</strong> – mixing length [m] at each height in z</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>array</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="nhl_transpiration.NHL_functions.calc_rad_attenuation">
-<span class="sig-prename descclassname"><span class="pre">nhl_transpiration.NHL_functions.</span></span><span class="sig-name descname"><span class="pre">calc_rad_attenuation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">PAR</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">LAD</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dz</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Cf</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.85</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nhl_transpiration.NHL_functions.calc_rad_attenuation" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">nhl_transpiration.NHL_functions.</span></span><span class="sig-name descname"><span class="pre">calc_rad_attenuation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">PAR</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">LAD</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dz</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Cf</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.85</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nhl_transpiration.NHL_functions.calc_rad_attenuation" title="Permalink to this definition">#</a></dt>
 <dd><p>Calculates the vertical attenuation of radiation through the canopy</p>
-<p>PAR : photosynthetically active radiation at canopy top [umol m-2 s-1]
-LAI : Normalized leaf area index at each height in z
-Cf : Clumping fraction [unitless], assumed to be 0.85 (Forseth &amp; Norman 1993) unless otherwise specified
-x : Ratio of horizontal to vertical projections of leaves (leaf angle distribution), assumed spherical (x=1)
-<a href="#id1"><span class="problematic" id="id2">**</span></a>kwargs for calc_zenith_angle</p>
-<p>P0 : attenuation fraction of PAR penetrating the canopy at each level z [unitless]
-Qp : absorbed photosynthetically active radiation at each level within the canopy</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>PAR</strong> (<em>float</em>) – photosynthetically active radiation at canopy top [umol m-2 s-1]</p></li>
+<li><p><strong>LAD</strong> (<em>array</em>) – Leaf area density [m2leaf m-2crown m-1stem] at each height in z</p></li>
+<li><p><strong>dz</strong> (<em>float</em>) – Vertical discretization interval [m]</p></li>
+<li><p><strong>Cf</strong> (<em>float</em>) – Clumping fraction [unitless]. By default assumed to be 0.85 (Forseth &amp; Norman 1993)</p></li>
+<li><p><strong>x</strong> (<em>float</em>) – Ratio of horizontal to vertical projections of leaves (leaf angle distribution).
+By default assumed to be spherical (x=1).</p></li>
+<li><p><strong>calc_zenith_angle</strong> (<em>**kwargs to be passed to</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>P0</strong> (<em>array</em>) – attenuation fraction of PAR penetrating the canopy at each level z [unitless]</p></li>
+<li><p><strong>Qp</strong> (<em>array</em>) – absorbed photosynthetically active radiation at each level within the canopy [umol m-2 s-1]</p></li>
+</ul>
+</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="nhl_transpiration.NHL_functions.calc_respiration">
 <span class="sig-prename descclassname"><span class="pre">nhl_transpiration.NHL_functions.</span></span><span class="sig-name descname"><span class="pre">calc_respiration</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Tair</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nhl_transpiration.NHL_functions.calc_respiration" title="Permalink to this definition">#</a></dt>
-<dd><p>Calculates respiration
-Based on Q10 model</p>
+<dd><p>Calculates respiration.
+Based on Q10 model.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>Tair</strong> (<em>[</em><em>deg C</em><em>]</em>) – Air temperature</p>
+<dd class="field-odd"><p><strong>Tair</strong> (<em>float</em>) – Air temperature [deg C]</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Respiration</p>
+<dd class="field-even"><p><strong>Re</strong> – Respiration [umol CO2 m-2 s-1]</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>[umol CO2 m-2 s-1]</p>
+<dd class="field-odd"><p>float</p>
 </dd>
 </dl>
 </dd></dl>
@@ -332,17 +442,17 @@ From eqn 2 of Mirfenderesgi et al 2016</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>stem_wp</strong> (<em>[</em><em>type</em><em>]</em>) – Stem water potential (function of z and time) [Pa]</p></li>
-<li><p><strong>wp_s50</strong> (<em>[</em><em>type</em><em>]</em>) – Empirical shape parameter describing the inflection point
+<li><p><strong>stem_wp</strong> (<em>float</em>) – Stem water potential (function of z and time) [Pa]</p></li>
+<li><p><strong>wp_s50</strong> (<em>float</em>) – Empirical shape parameter describing the inflection point
 of the leaf stem water potential response curve [Pa]</p></li>
-<li><p><strong>c3</strong> (<em>[</em><em>type</em><em>]</em>) – Shape parameter for stomatal response</p></li>
+<li><p><strong>c3</strong> (<em>float</em>) – Shape parameter for stomatal response</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>[description]</p>
+<dd class="field-even"><p><strong>wp_response</strong> – restriction for NHL transpiration</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>[type]</p>
+<dd class="field-odd"><p>float</p>
 </dd>
 </dl>
 </dd></dl>
@@ -350,23 +460,29 @@ of the leaf stem water potential response curve [Pa]</p></li>
 <dl class="py function">
 <dt class="sig sig-object py" id="nhl_transpiration.NHL_functions.calc_transpiration_leaf">
 <span class="sig-prename descclassname"><span class="pre">nhl_transpiration.NHL_functions.</span></span><span class="sig-name descname"><span class="pre">calc_transpiration_leaf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">VPD</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Tair</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">geff</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Press</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nhl_transpiration.NHL_functions.calc_transpiration_leaf" title="Permalink to this definition">#</a></dt>
-<dd><p>Calculates the water vapor source from the leaf</p>
+<dd><p>Calculates the water vapor source from the leaf.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>VPD</strong> (<em>kPa</em>) – vapor pressure deficit</p></li>
-<li><p><strong>Tair</strong> (<em>deg C</em>) – air :</p></li>
-<li><p><strong>geff</strong> (<em>mol m-2_leaf s-1</em>) – effective leaf conductance</p></li>
-<li><p><strong>Press</strong> (<em>kPa</em>) – air pressure</p></li>
+<li><p><strong>VPD</strong> (<em>float</em>) – vapor pressure deficit [kPa]</p></li>
+<li><p><strong>Tair</strong> (<em>float</em>) – air temperature [deg C]</p></li>
+<li><p><strong>geff</strong> (<em>float</em>) – effective leaf conductance [mol m-2_leaf s-1]</p></li>
+<li><p><strong>Press</strong> (<em>float</em>) – air pressure [kPa]</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>water vapor source per unit leaf area</p>
+<dd class="field-even"><p><strong>transpiration_leaf</strong> – water vapor source per unit leaf area [kg s-1 m-2_leaf]</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>[kg s-1 m-2_leaf]</p>
+<dd class="field-odd"><p>float</p>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="nhl_transpiration.NHL_functions.calc_transpiration_nhl">
+<span class="sig-prename descclassname"><span class="pre">nhl_transpiration.NHL_functions.</span></span><span class="sig-name descname"><span class="pre">calc_transpiration_nhl</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nhl_transpiration</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stem_wp_fn</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nhl_transpiration.NHL_functions.calc_transpiration_nhl" title="Permalink to this definition">#</a></dt>
+<dd><p>Calculates transpiration for FETCH3</p>
 </dd></dl>
 
 <dl class="py function">
@@ -381,7 +497,7 @@ of the leaf stem water potential response curve [Pa]</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Vapor pressure deficit [kPa]</p>
+<dd class="field-even"><p><strong>VPD</strong> – Vapor pressure deficit [kPa]</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p>array_like</p>
@@ -392,44 +508,65 @@ of the leaf stem water potential response curve [Pa]</p></li>
 <dl class="py function">
 <dt class="sig sig-object py" id="nhl_transpiration.NHL_functions.calc_zenith_angle">
 <span class="sig-prename descclassname"><span class="pre">nhl_transpiration.NHL_functions.</span></span><span class="sig-name descname"><span class="pre">calc_zenith_angle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">doy</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lat</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">long</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time_offset</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time_of_day</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zenith_method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'CN'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nhl_transpiration.NHL_functions.calc_zenith_angle" title="Permalink to this definition">#</a></dt>
-<dd><p>Calculates the solar zenith angle, based on Campbell &amp; Norman, 1998.
-Also has options for 2 alternate methods: use a constant zenith angle of 0 (i.e.
+<dd><p>Calculates the solar zenith angle, based on Campbell &amp; Norman, 1998.</p>
+<p>Also has options for 2 alternate methods: use a constant zenith angle of 0 (i.e.
 pretend the sun is always directly overhead), or replicate the results of the
 FETCH2 NHL code (which is missing an adjustment for longitude).</p>
-<p>doy : Day of year (Ordinal day, e.g. 1 = Jan 1)
-lat : Latitude
-long : Longitude (Needs to be negative for deg W, positive for deg E)
-time_offset : Time offset [in hours] for local standard time zone, e.g, for</p>
-<blockquote>
-<div><p>Pacific Standard Time, time_offset = -8</p>
-</div></blockquote>
-<p>time_of_day : Time of day (hours) in local standard time
-zenith_method : method to use for the calculations. Options are:</p>
-<blockquote>
-<div><ul class="simple">
-<li><p>“CN” - Campbell &amp; Norman</p></li>
-<li><p>“constant” - constant zenith angle of 0</p></li>
-<li><p>“fetch2” - replicate the results of the FETCH2 NHL code</p></li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>doy</strong> (<em>int</em>) – Day of year (Ordinal day, e.g. 1 = Jan 1)</p></li>
+<li><p><strong>lat</strong> (<em>float</em>) – Latitude</p></li>
+<li><p><strong>long</strong> (<em>float</em>) – Longitude (Needs to be negative for deg W, positive for deg E)</p></li>
+<li><p><strong>time_offset</strong> (<em>int</em>) – Time offset [in hours] for local standard time zone, e.g, for
+Pacific Standard Time, time_offset = -8</p></li>
+<li><p><strong>time_of_day</strong> (<em>float</em>) – Time of day (hours) in local standard time</p></li>
+<li><p><strong>zenith_method</strong> (<em>str</em>) – <dl class="simple">
+<dt>Method to use for the calculations. Options are:</dt><dd><ul>
+<li><p>”CN” - Campbell &amp; Norman 1998</p></li>
+<li><p>”constant” - constant zenith angle of 0</p></li>
+<li><p>”fetch2” - replicate the results of the FETCH2 NHL code</p></li>
 </ul>
-</div></blockquote>
-<p>Note: Be sure that time of day and time offset are in local standard time, not daylight savings</p>
-<p>zenith_angle_deg : zenith angle of the sun [degrees]</p>
+</dd>
+</dl>
+</p></li>
+<li><p><strong>Note</strong> (<em>Be sure that time of day and time offset are in local standard time</em><em>, </em><em>not daylight savings</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>zenith_angle_deg</strong></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>zenith angle of the sun [degrees]</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="nhl_transpiration.NHL_functions.solve_Uz">
 <span class="sig-prename descclassname"><span class="pre">nhl_transpiration.NHL_functions.</span></span><span class="sig-name descname"><span class="pre">solve_Uz</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">z</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dz</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Cd</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">a_s</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">U_top</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nhl_transpiration.NHL_functions.solve_Uz" title="Permalink to this definition">#</a></dt>
 <dd><p>Solves the momentum equation to calculate the vertical wind profile.
-Applies no-slip boundary condition: wind speed  =  0 at surface (z = 0).
+Applies no-slip boundary condition: wind speed=0 at surface (z = 0).
 Model for turbulent diffusivity of momentum is from Poggi 2004, eqn 6</p>
-<p>z : vector of heights [m]
-mixing_length : mixing length [d] at each height in z
-Cd : drag coefficient [unitless], assumed to be 0.2 (Katul et al 2004)
-a_s: leaf surface area [m2]
-U_top : Measured wind speed at top of canopy [m s-1]
-<a href="#id3"><span class="problematic" id="id4">**</span></a>kwargs to be passed to calc_mixing_length</p>
-<p>Km : turbulent diffusivity of momentum at each height in z [m s-1]
-U : wind speed at each height in z [m s-1]</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>z</strong> (<em>array</em>) – vector of heights [m]</p></li>
+<li><p><strong>dz</strong> (<em>float</em>) – Vertical discretization interval [m]</p></li>
+<li><p><strong>Cd</strong> (<em>float</em>) – drag coefficient [unitless]</p></li>
+<li><p><strong>a_s</strong> (<em>float</em>) – leaf surface area [m2]</p></li>
+<li><p><strong>U_top</strong> (<em>float</em>) – Measured wind speed at top of canopy [m s-1]</p></li>
+<li><p><strong>calc_mixing_length</strong> (<em>**kwargs to be passed to</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>Km</strong> (<em>array</em>) – turbulent diffusivity of momentum at each height in z [m s-1]</p></li>
+<li><p><strong>U</strong> (<em>array</em>) – wind speed at each height in z [m s-1]</p></li>
+</ul>
+</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
@@ -440,25 +577,25 @@ Uses Leuning model for stomatal conductance</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>Tair</strong> (<em>[</em><em>deg C</em><em>]</em>) – [Air temperature]</p></li>
-<li><p><strong>VPD</strong> (<em>[</em><em>Kpa</em><em>]</em>) – Vapor pressure deficit</p></li>
-<li><p><strong>Qp</strong> (<em>[</em><em>type</em><em>]</em>) – [description]</p></li>
-<li><p><strong>Ca</strong> (<em>[</em><em>type</em><em>]</em>) – CO2 concentration</p></li>
-<li><p><strong>U</strong> (<em>Wind speed of</em>) – [description]</p></li>
-<li><p><strong>Vcmax25</strong> (<em>[</em><em>type</em><em>]</em>) – Farquhar model parameter</p></li>
-<li><p><strong>alpha_p</strong> (<em>[</em><em>type</em><em>]</em>) – Farquhar model parameter</p></li>
-<li><p><strong>d</strong> (<em>[</em><em>m</em><em>]</em>) – Leaf length scale for aerodynamic resistance</p></li>
-<li><p><strong>D0</strong> (<em>[</em><em>kPa</em><em>]</em>) – [reference vapor pressure, assumed to be 3.0 kPa]</p></li>
+<li><p><strong>Tair</strong> (<em>float</em>) – Air temperature [deg C]</p></li>
+<li><p><strong>Qp</strong> (<em>float</em>) – absorbed photosynthetically active radiation at each level within the canopy [umol m-2 s-1]</p></li>
+<li><p><strong>Ca</strong> (<em>float</em>) – CO2 concentration [umol/mol]</p></li>
+<li><p><strong>Vcmax25</strong> (<em>float</em>) – Farquhar model parameter</p></li>
+<li><p><strong>alpha_p</strong> (<em>float</em>) – Farquhar model parameter</p></li>
+<li><p><strong>VPD</strong> (<em>float</em>) – Vapor pressure deficit [kPa]</p></li>
 <li><p><strong>calc_gb</strong> (<em>**kwargs for</em>) – </p></li>
-<li><p><strong>Outputs</strong> – </p></li>
-<li><p><strong>-------</strong> – </p></li>
-<li><p><strong>A</strong> (<em>photosynthesis</em><em> [</em><em>umol m-2 s-1</em><em>]</em>) – </p></li>
-<li><p><strong>gs</strong> (<em>stomatal conductance</em><em> [</em><em>mol m-2 s-1</em><em>]</em>) – </p></li>
-<li><p><strong>Ci</strong> (<em>intracellular CO2 concentration</em><em> [</em><em>umol mol-1</em><em>]</em>) – </p></li>
-<li><p><strong>Cs</strong> (<em>CO2 concentration at leaf surface</em><em> [</em><em>umol mol-1</em><em>]</em>) – </p></li>
-<li><p><strong>gb</strong> (<em>boundary layer conductance</em><em> [</em><em>mol m-2 s-1</em><em>]</em>) – </p></li>
-<li><p><strong>geff</strong> (<em>effective leaf conductance</em><em> [</em><em>mol m-2 s-1</em><em>]</em>) – </p></li>
 </ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>A</strong> (<em>float</em>) – photosynthesis [umol m-2 s-1]</p></li>
+<li><p><strong>gs</strong> (<em>float</em>) – stomatal conductance [mol m-2 s-1]</p></li>
+<li><p><strong>Ci</strong> (<em>float</em>) – intracellular CO2 concentration [umol mol-1]</p></li>
+<li><p><strong>Cs</strong> (<em>float</em>) – CO2 concentration at leaf surface [umol mol-1]</p></li>
+<li><p><strong>gb</strong> (<em>float</em>) – boundary layer conductance [mol m-2 s-1]</p></li>
+<li><p><strong>geff</strong> (<em>float</em>) – effective leaf conductance [mol m-2 s-1]</p></li>
+</ul>
+</p>
 </dd>
 </dl>
 </dd></dl>
@@ -466,7 +603,19 @@ Uses Leuning model for stomatal conductance</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="nhl_transpiration.NHL_functions.thomas_tridiagonal">
 <span class="sig-prename descclassname"><span class="pre">nhl_transpiration.NHL_functions.</span></span><span class="sig-name descname"><span class="pre">thomas_tridiagonal</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">aa</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bb</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dd</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nhl_transpiration.NHL_functions.thomas_tridiagonal" title="Permalink to this definition">#</a></dt>
-<dd><p>Thomas algorithm for solving tridiagonal matrix</p>
+<dd><p>Thomas algorithm for solving tridiagonal matrix
+#TODO update docstring</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="nhl_transpiration.NHL_functions.write_outputs">
+<span class="sig-prename descclassname"><span class="pre">nhl_transpiration.NHL_functions.</span></span><span class="sig-name descname"><span class="pre">write_outputs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">output_vars</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dir</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nhl_transpiration.NHL_functions.write_outputs" title="Permalink to this definition">#</a></dt>
+<dd><p>Writes NHL outputs to csv files</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>output_vars</strong> (<em>_type_</em>) – _description_</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
