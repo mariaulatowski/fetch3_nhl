@@ -1,0 +1,6 @@
+nhl\_transpiration.NHL\_functions.calc\_rad\_attenuation
+========================================================
+
+.. currentmodule:: nhl_transpiration.NHL_functions
+
+.. autofunction:: calc_rad_attenuation

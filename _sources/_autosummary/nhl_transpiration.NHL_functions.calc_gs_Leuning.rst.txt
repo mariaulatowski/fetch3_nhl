@@ -1,0 +1,6 @@
+nhl\_transpiration.NHL\_functions.calc\_gs\_Leuning
+===================================================
+
+.. currentmodule:: nhl_transpiration.NHL_functions
+
+.. autofunction:: calc_gs_Leuning

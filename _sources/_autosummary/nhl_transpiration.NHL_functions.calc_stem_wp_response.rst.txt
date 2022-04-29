@@ -1,0 +1,6 @@
+nhl\_transpiration.NHL\_functions.calc\_stem\_wp\_response
+==========================================================
+
+.. currentmodule:: nhl_transpiration.NHL_functions
+
+.. autofunction:: calc_stem_wp_response

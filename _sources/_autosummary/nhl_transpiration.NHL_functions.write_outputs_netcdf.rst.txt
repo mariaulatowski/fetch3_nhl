@@ -1,0 +1,6 @@
+nhl\_transpiration.NHL\_functions.write\_outputs\_netcdf
+========================================================
+
+.. currentmodule:: nhl_transpiration.NHL_functions
+
+.. autofunction:: write_outputs_netcdf

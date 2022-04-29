@@ -1,0 +1,6 @@
+nhl\_transpiration.nhl\_config.ConfigParams
+===========================================
+
+.. currentmodule:: nhl_transpiration.nhl_config
+
+.. autoclass:: ConfigParams

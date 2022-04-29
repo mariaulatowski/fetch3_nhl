@@ -1,0 +1,6 @@
+nhl\_transpiration.NHL\_functions.calc\_gb
+==========================================
+
+.. currentmodule:: nhl_transpiration.NHL_functions
+
+.. autofunction:: calc_gb
