@@ -33,7 +33,7 @@
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Model setup" href="model_setup.html" />
-    <link rel="prev" title="Welcome to FETCH3’s documentation!" href="index.html" />
+    <link rel="prev" title="Getting Started" href="getting_started.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
     
@@ -68,7 +68,13 @@
       
       <div class="navbar-center-item">
         <ul id="navbar-main-elements" class="navbar-nav">
-    <li class="toctree-l1 current active nav-item">
+    <li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="getting_started.html">
+  Getting Started
+ </a>
+</li>
+
+<li class="toctree-l1 current active nav-item">
  <a class="current reference internal nav-link" href="#">
   Model configuration
  </a>
@@ -148,30 +154,6 @@
 
 <nav id="bd-toc-nav">
     <ul class="visible nav section-nav flex-column">
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#running-the-model">
-   Running the model
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#setting-input-and-output-directories">
-     Setting input and output directories
-    </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#default-input-and-output-directories">
-       Default input and output directories:
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#running-the-model-from-the-command-line">
-       Running the model from the command line:
-      </a>
-     </li>
-    </ul>
-   </li>
-  </ul>
- </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#modifying-the-config-file">
    Modifying the config file
@@ -304,34 +286,6 @@
 <p>Reads in model configuration from .yml file</p>
 <p>Model setup options and model parameters are read from a .yml file, which can be
 modified by the user.</p>
-<section id="running-the-model">
-<h2>Running the model<a class="headerlink" href="#running-the-model" title="Permalink to this headline">#</a></h2>
-<section id="setting-input-and-output-directories">
-<h3>Setting input and output directories<a class="headerlink" href="#setting-input-and-output-directories" title="Permalink to this headline">#</a></h3>
-<section id="default-input-and-output-directories">
-<h4>Default input and output directories:<a class="headerlink" href="#default-input-and-output-directories" title="Permalink to this headline">#</a></h4>
-<ul class="simple">
-<li><p>Input meteorological data: <code class="docutils literal notranslate"><span class="pre">./data/</span></code></p></li>
-<li><p>Input configuration file: <code class="docutils literal notranslate"><span class="pre">./model_config.yml</span></code></p></li>
-<li><p>Model output and logs: <code class="docutils literal notranslate"><span class="pre">./output/</span></code>
-If using the default output directory, a directory <code class="docutils literal notranslate"><span class="pre">./output/</span></code> will be created
-if it doesn’t already exist.</p></li>
-</ul>
-</section>
-<section id="running-the-model-from-the-command-line">
-<h4>Running the model from the command line:<a class="headerlink" href="#running-the-model-from-the-command-line" title="Permalink to this headline">#</a></h4>
-<p>Run the model by running <code class="docutils literal notranslate"><span class="pre">main.py</span></code></p>
-<p>To specify an input config file, data directory, or output directory in a location other than the
-default, different directories can be specified as command line arguments, for example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">main</span><span class="o">.</span><span class="n">py</span> <span class="o">--</span><span class="n">config_path</span> <span class="o">/</span><span class="n">Users</span><span class="o">/</span><span class="n">username</span><span class="o">/</span><span class="n">fetch3</span><span class="o">/</span><span class="n">user_model_config</span><span class="o">.</span><span class="n">yml</span>
-<span class="o">--</span><span class="n">data_path</span> <span class="o">/</span><span class="n">Users</span><span class="o">/</span><span class="n">username</span><span class="o">/</span><span class="n">fetch3</span><span class="o">/</span><span class="n">user_data</span><span class="o">/</span> <span class="o">--</span><span class="n">output_path</span> <span class="o">/</span><span class="n">Users</span><span class="o">/</span><span class="n">username</span><span class="o">/</span><span class="n">fetch3</span><span class="o">/</span><span class="n">output</span><span class="o">/</span>
-</pre></div>
-</div>
-<p>If the arguments <code class="docutils literal notranslate"><span class="pre">--config_path</span></code>, <code class="docutils literal notranslate"><span class="pre">--data_path</span></code>, and <code class="docutils literal notranslate"><span class="pre">--output_path</span></code> are omitted when running the
-model from the command line, the defaults will be used.</p>
-</section>
-</section>
-</section>
 <section id="modifying-the-config-file">
 <h2>Modifying the config file<a class="headerlink" href="#modifying-the-config-file" title="Permalink to this headline">#</a></h2>
 <section id="yml-file-contents">
@@ -369,9 +323,10 @@ turned off or set to print more infrequently.</p>
 </section>
 <section id="transpiration-options">
 <h4>Transpiration options<a class="headerlink" href="#transpiration-options" title="Permalink to this headline">#</a></h4>
-<p>Specify whether to use the PM transpiration scheme or the NHL transpiration scheme</p>
 <ul class="simple">
-<li><p><strong>transpiration_scheme</strong> (int): 0: PM transpiration; 1: NHL transpiration</p></li>
+<li><p><strong>transpiration_scheme</strong> (int): Whether to use the PM transpiration scheme or the NHL transpiration scheme
+* 0: PM transpiration
+* 1: NHL transpiration</p></li>
 </ul>
 </section>
 <section id="numerical-solution-time-and-space-constants-dz-and-dt0">
@@ -580,11 +535,11 @@ therefore 1W/m2 = kg/s3</p>
               
               <!-- Previous / next buttons -->
 <div class='prev-next-area'>
-    <a class='left-prev' id="prev-link" href="index.html" title="previous page">
+    <a class='left-prev' id="prev-link" href="getting_started.html" title="previous page">
         <i class="fas fa-angle-left"></i>
         <div class="prev-next-info">
             <p class="prev-next-subtitle">previous</p>
-            <p class="prev-next-title">Welcome to FETCH3’s documentation!</p>
+            <p class="prev-next-title">Getting Started</p>
         </div>
     </a>
     <a class='right-next' id="next-link" href="model_setup.html" title="next page">

@@ -32,7 +32,7 @@
     <script src="_static/doctools.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Model configuration" href="model_config.html" />
+    <link rel="next" title="Getting Started" href="getting_started.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
     
@@ -68,6 +68,12 @@
       <div class="navbar-center-item">
         <ul id="navbar-main-elements" class="navbar-nav">
     <li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="getting_started.html">
+  Getting Started
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
  <a class="reference internal nav-link" href="model_config.html">
   Model configuration
  </a>
@@ -151,6 +157,23 @@
   <a class="reference internal nav-link" href="#">
    Welcome to FETCH3’s documentation!
   </a>
+  <ul class="visible nav section-nav flex-column">
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#overview">
+     Overview
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#references">
+     References
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#contents">
+     Contents
+    </a>
+   </li>
+  </ul>
  </li>
  <li class="toc-h1 nav-item toc-entry">
   <a class="reference internal nav-link" href="#indices-and-tables">
@@ -180,43 +203,58 @@
                 
   <section id="welcome-to-fetch3-s-documentation">
 <h1>Welcome to FETCH3’s documentation!<a class="headerlink" href="#welcome-to-fetch3-s-documentation" title="Permalink to this headline">#</a></h1>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">#</a></h2>
+<p>FETCH3 is a tree hydrodynamic model for water fluxes across the soil-plant-atmosphere continuum. FETCH3 simulates water
+transport through the soil, roots, and xylem as flow through porous media. The model resolves water potentials along the
+vertical dimension, and stomatal response is linked to xylem water potential.</p>
+<p>There are 2 different transpiration schemes available:</p>
+<ul class="simple">
+<li><p><strong>Penman-Monteith transpiration(PM)</strong> - Simple transpiration scheme used in <em>Silva et al, 2022</em>. Transpiration is
+calculated using the Penman-Monteith equation and disctributed through the canopy based on the leaf area density.
+Stomatal conductance is adjusted using Jarvis functions for incoming shortwave radiation, air temperature, vapor
+pressure deficit, and xylem water potential.</p></li>
+<li><p><strong>Non-hydraulically limited transpiration (NHL)</strong> - Replicates the more complex canopy transpiration scheme that was
+used in FETCH2 (<em>Mirfenderesgi et al, 2016</em>). Non-hydraulically limited transpiration is calculated considering
+stomatal conductance as a function of atmospheric demand and photosynthetic capacity, but without any limitations
+imposed by soil moisture. The non-hydraulically limited transpiration is then reduced using a function of xylem water
+potential. This scheme considers the different aerodynamic characteristics at different layers in the canopy, and
+radiation attenuation through the canopy.</p></li>
+</ul>
+<p>To start using the model, see the <a class="reference internal" href="getting_started.html#getting-started"><span class="std std-ref">Getting Started</span></a> page!</p>
+</section>
+<section id="references">
+<h2>References<a class="headerlink" href="#references" title="Permalink to this headline">#</a></h2>
+<p><strong>FETCH3:</strong></p>
+<p>Silva, M., Matheny, A. M., Pauwels, V. R. N., Triadis, D., Missik, J. E.,
+Bohrer, G., and Daly, E.: Tree hydrodynamic modelling of the soil–plant–atmosphere
+continuum using FETCH3, Geosci. Model Dev., 15, 2619–2634, <a class="reference external" href="https://doi.org/10.5194/gmd-15-2619-2022">https://doi.org/10.5194/gmd-15-2619-2022</a>, 2022.</p>
+<p><strong>FETCH2:</strong></p>
+<p>Mirfenderesgi, G., Bohrer, G., Matheny, A. M., Fatichi, S., Frasson, R. P. de M.,
+&amp; Schäfer, K. V. R. (2016). Tree level hydrodynamic approach for resolving aboveground
+water storage and stomatal conductance and modeling the effects of tree hydraulic strategy.
+Journal of Geophysical Research: Biogeosciences, 121(7), 1792–1813. <a class="reference external" href="https://doi.org/10.1002/2016JG003467">https://doi.org/10.1002/2016JG003467</a></p>
+<p>Mirfenderesgi, G., Matheny, A. M., &amp; Bohrer, G. (2019). Hydrodynamic Trait Coordination and Cost-Benefit
+Trade-offs in Trees. Ecohydrology, 12(1), e2041. <a class="reference external" href="https://doi.org/10.1002/eco.2041">https://doi.org/10.1002/eco.2041</a></p>
+<p><strong>FETCH:</strong></p>
+<p>Bohrer, G., Mourad, H., Laursen, T. A., Drewry, D., Avissar, R., Poggi, D., et al. (2005).
+Finite element tree crown hydrodynamics model (FETCH) using porous media flow within branching
+elements: A new representation of tree hydrodynamics. Water Resources Research, 41(11).
+<a class="reference external" href="https://doi.org/10.1029/2005WR004181">https://doi.org/10.1029/2005WR004181</a></p>
+</section>
+<section id="contents">
+<h2>Contents<a class="headerlink" href="#contents" title="Permalink to this headline">#</a></h2>
 <div class="toctree-wrapper compound">
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="getting_started.html#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="getting_started.html#prepare-input-files-for-the-model">Prepare input files for the model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="getting_started.html#prepare-configuration-file-for-the-model">Prepare configuration file for the model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="getting_started.html#running-the-model">Running the model</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="model_config.html">Model configuration</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="model_config.html#running-the-model">Running the model</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="model_config.html#setting-input-and-output-directories">Setting input and output directories</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="model_config.html#default-input-and-output-directories">Default input and output directories:</a></li>
-<li class="toctree-l4"><a class="reference internal" href="model_config.html#running-the-model-from-the-command-line">Running the model from the command line:</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="model_config.html#modifying-the-config-file">Modifying the config file</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="model_config.html#yml-file-contents">.yml file contents</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="model_config.html#model-options">Model options</a></li>
-<li class="toctree-l4"><a class="reference internal" href="model_config.html#site-information">Site information</a></li>
-<li class="toctree-l4"><a class="reference internal" href="model_config.html#run-options-printing">Run options - printing</a></li>
-<li class="toctree-l4"><a class="reference internal" href="model_config.html#transpiration-options">Transpiration options</a></li>
-<li class="toctree-l4"><a class="reference internal" href="model_config.html#numerical-solution-time-and-space-constants-dz-and-dt0">Numerical solution time and space constants (dz and dt0)</a></li>
-<li class="toctree-l4"><a class="reference internal" href="model_config.html#model-parameters">Model parameters</a><ul>
-<li class="toctree-l5"><a class="reference internal" href="model_config.html#soil-boundary-conditions">Soil boundary conditions</a></li>
-<li class="toctree-l5"><a class="reference internal" href="model_config.html#soil-spatial-discretization">Soil spatial discretization</a></li>
-<li class="toctree-l5"><a class="reference internal" href="model_config.html#configuration-of-soil-duplex">Configuration of soil duplex</a></li>
-<li class="toctree-l5"><a class="reference internal" href="model_config.html#soil-initial-conditions">Soil initial conditions</a></li>
-<li class="toctree-l5"><a class="reference internal" href="model_config.html#soil-parameters-using-van-genuchten-relationships">Soil parameters - using Van Genuchten relationships</a></li>
-<li class="toctree-l5"><a class="reference internal" href="model_config.html#tree-parameters">Tree parameters:</a></li>
-<li class="toctree-l5"><a class="reference internal" href="model_config.html#physical-constants">PHYSICAL CONSTANTS</a></li>
-<li class="toctree-l5"><a class="reference internal" href="model_config.html#root-parameters">Root parameters</a></li>
-<li class="toctree-l5"><a class="reference internal" href="model_config.html#xylem-parameters">Xylem parameters</a></li>
-<li class="toctree-l5"><a class="reference internal" href="model_config.html#id1">Tree parameters</a></li>
-<li class="toctree-l5"><a class="reference internal" href="model_config.html#nhl-transpiration-scheme-parameters">NHL transpiration scheme parameters</a></li>
-<li class="toctree-l5"><a class="reference internal" href="model_config.html#penman-monteith-transpiration-parameters">Penman-Monteith transpiration parameters</a></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
+<li class="toctree-l2"><a class="reference internal" href="model_config.html#modifying-the-config-file">Modifying the config file</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="model_setup.html">Model setup</a></li>
@@ -224,6 +262,7 @@
 <li class="toctree-l1"><a class="reference internal" href="nhl_functions.html">NHL transpiration</a></li>
 </ul>
 </div>
+</section>
 </section>
 <section id="indices-and-tables">
 <h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">#</a></h1>
@@ -240,10 +279,10 @@
               
               <!-- Previous / next buttons -->
 <div class='prev-next-area'>
-    <a class='right-next' id="next-link" href="model_config.html" title="next page">
+    <a class='right-next' id="next-link" href="getting_started.html" title="next page">
     <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Model configuration</p>
+        <p class="prev-next-title">Getting Started</p>
     </div>
     <i class="fas fa-angle-right"></i>
     </a>
