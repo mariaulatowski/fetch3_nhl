@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>&lt;no title&gt; &#8212; FETCH3  documentation</title>
+    <title>Scaling &#8212; FETCH3  documentation</title>
     
   <!-- Loaded before other Sphinx assets -->
   <link href="_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
@@ -30,10 +30,11 @@
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
     <script src="_static/doctools.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="NHL transpiration" href="nhl_functions.html" />
-    <link rel="prev" title="&lt;no title&gt;" href="met_data.html" />
+    <link rel="next" title="&lt;no title&gt;" href="met_data.html" />
+    <link rel="prev" title="&lt;no title&gt;" href="initial_conditions.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
     
@@ -80,8 +81,8 @@
  </a>
 </li>
 
-<li class="toctree-l1 nav-item">
- <a class="reference internal nav-link" href="scaling.html">
+<li class="toctree-l1 current active nav-item">
+ <a class="current reference internal nav-link" href="#">
   Scaling
  </a>
 </li>
@@ -142,14 +143,9 @@
               
               <div class="toc-item">
                 
-<div class="tocsection onthispage mt-5 pt-1 pb-3">
-    <i class="fas fa-list"></i> On this page
-</div>
 
 <nav id="bd-toc-nav">
-    <ul class="simple visible nav section-nav flex-column">
-</ul>
-
+    
 </nav>
               </div>
               
@@ -169,24 +165,86 @@
               
               <div>
                 
-  
+  <section id="module-scaling">
+<span id="scaling"></span><h1>Scaling<a class="headerlink" href="#module-scaling" title="Permalink to this headline">#</a></h1>
+<p>Provides scaling functions to convert common parameters to model parameters</p>
+<p>Config parameters that will be provided by the user:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\mathrm{LAI_p^{(sp)} \ [m^2_{leaf (sp)} / m^2_{ground}]}\)</span>: species-specific plot-level LAI</p></li>
+<li><p><span class="math notranslate nohighlight">\(SD [trees \ hectare^{-1}]\)</span>: stand density [# trees per hectare]</p></li>
+<li><p>DBH (stem diameter at breast height #TODO units [m or cm])</p></li>
+<li><p>Active xylem fraction (or depth?) #TODO[m or cm]</p></li>
+<li><p>Crown Area (Ac_sp)</p></li>
+</ul>
+<p>Need to calculate:</p>
+<ul class="simple">
+<li><p>species-specific crown-level LAI (LAIc_sp) [m2 leaf (sp) / m2 ground]</p></li>
+<li><p>Stem area / xylem area</p></li>
+</ul>
+<dl class="py function">
+<dt class="sig sig-object py" id="scaling.calc_LAIc_sp">
+<span class="sig-prename descclassname"><span class="pre">scaling.</span></span><span class="sig-name descname"><span class="pre">calc_LAIc_sp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">LAIp_sp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mean_crown_area_sp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stand_density_sp</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#scaling.calc_LAIc_sp" title="Permalink to this definition">#</a></dt>
+<dd><p>Calculates the crown-level species-specific LAI (LAIc_sp [m2 leaf (sp) / m2 ground projection of crown]), using
+the plot-level species-specific LAI (LAIp_sp [m2 leaf (sp) / m2 ground in plot]), mean crown area of the species [m2],
+and the stand density of the species in the plot [# of trees of sp / hectare].</p>
+<div class="math notranslate nohighlight">
+\[LAI_c^{(sp)} = \frac{LAI_p^{(sp)}}{A_c \times 10^{-4} \times SD^{(sp)}}\]</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>LAIp_sp</strong> (<em>float</em>) – Plot-level species-specific LAI [m2 leaf (sp) / m2 ground in plot]</p></li>
+<li><p><strong>mean_crown_area_sp</strong> (<em>float</em>) – Mean crown area of the species [m2]</p></li>
+<li><p><strong>stand_density_sp</strong> (<em>float</em>) – Stand density of the species in the plot [# of trees of sp / hectare]</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>LAIc_sp</strong> – Crown-level species-specific LAI [m2 leaf (sp) / m2 ground projection of crown]</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="scaling.calc_xylem_cross_sectional_area">
+<span class="sig-prename descclassname"><span class="pre">scaling.</span></span><span class="sig-name descname"><span class="pre">calc_xylem_cross_sectional_area</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">DBH</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">active_xylem_depth</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#scaling.calc_xylem_cross_sectional_area" title="Permalink to this definition">#</a></dt>
+<dd><p>Calculate xylem cross-sectional area from DBH and active xylem depth</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>DBH</strong> (<em>float</em>) – Diameter at breast height [cm]</p></li>
+<li><p><strong>active_xylem_depth</strong> (<em>float</em>) – Active xylem depth [cm]</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>xylem_cross_sectional_area</strong> – Cross-sectional area of active xylem [cm2]</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
 
               </div>
               
               
               <!-- Previous / next buttons -->
 <div class='prev-next-area'>
-    <a class='left-prev' id="prev-link" href="met_data.html" title="previous page">
+    <a class='left-prev' id="prev-link" href="initial_conditions.html" title="previous page">
         <i class="fas fa-angle-left"></i>
         <div class="prev-next-info">
             <p class="prev-next-subtitle">previous</p>
             <p class="prev-next-title">&lt;no title&gt;</p>
         </div>
     </a>
-    <a class='right-next' id="next-link" href="nhl_functions.html" title="next page">
+    <a class='right-next' id="next-link" href="met_data.html" title="next page">
     <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">NHL transpiration</p>
+        <p class="prev-next-title">&lt;no title&gt;</p>
     </div>
     <i class="fas fa-angle-right"></i>
     </a>
