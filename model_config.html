@@ -268,11 +268,6 @@
         </a>
        </li>
        <li class="toc-h5 nav-item toc-entry">
-        <a class="reference internal nav-link" href="#leaf-area-density-formulation-lad-1-m">
-         Leaf area density formulation (LAD) [1/m]
-        </a>
-       </li>
-       <li class="toc-h5 nav-item toc-entry">
         <a class="reference internal nav-link" href="#penman-monteith-transpiration-parameters">
          Penman-Monteith transpiration parameters
         </a>
@@ -328,7 +323,7 @@ if it doesn’t already exist.</p></li>
 <p>Run the model by running <code class="docutils literal notranslate"><span class="pre">main.py</span></code></p>
 <p>To specify an input config file, data directory, or output directory in a location other than the
 default, different directories can be specified as command line arguments, for example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python3</span> <span class="n">main</span><span class="o">.</span><span class="n">py</span> <span class="o">--</span><span class="n">config_path</span> <span class="o">/</span><span class="n">Users</span><span class="o">/</span><span class="n">username</span><span class="o">/</span><span class="n">fetch3</span><span class="o">/</span><span class="n">user_model_config</span><span class="o">.</span><span class="n">yml</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">main</span><span class="o">.</span><span class="n">py</span> <span class="o">--</span><span class="n">config_path</span> <span class="o">/</span><span class="n">Users</span><span class="o">/</span><span class="n">username</span><span class="o">/</span><span class="n">fetch3</span><span class="o">/</span><span class="n">user_model_config</span><span class="o">.</span><span class="n">yml</span>
 <span class="o">--</span><span class="n">data_path</span> <span class="o">/</span><span class="n">Users</span><span class="o">/</span><span class="n">username</span><span class="o">/</span><span class="n">fetch3</span><span class="o">/</span><span class="n">user_data</span><span class="o">/</span> <span class="o">--</span><span class="n">output_path</span> <span class="o">/</span><span class="n">Users</span><span class="o">/</span><span class="n">username</span><span class="o">/</span><span class="n">fetch3</span><span class="o">/</span><span class="n">output</span><span class="o">/</span>
 </pre></div>
 </div>
@@ -534,9 +529,8 @@ from 4,2 m [sand layer] cte value of -0.402 m</p>
 <li><p><strong>LAD_norm</strong> (str):  File with normalized LAD data</p></li>
 </ul>
 </section>
-<section id="leaf-area-density-formulation-lad-1-m">
-<h5>Leaf area density formulation (LAD) [1/m]<a class="headerlink" href="#leaf-area-density-formulation-lad-1-m" title="Permalink to this headline">#</a></h5>
-<p>#TODO options for using Marcela’s LAD scheme or the NHL scheme</p>
+<section id="penman-monteith-transpiration-parameters">
+<h5>Penman-Monteith transpiration parameters<a class="headerlink" href="#penman-monteith-transpiration-parameters" title="Permalink to this headline">#</a></h5>
 <ul class="simple">
 <li><p><strong>lad_scheme</strong> (int) : 0: default scheme, based on Lalic et al 2014; 1: scheme from NHL module</p></li>
 </ul>
@@ -546,10 +540,6 @@ if using NHL transpiration scheme, LAD is calculated in NHL module</p>
 <li><p><strong>L_m</strong> (float): maximum value of LAD a canopy layer</p></li>
 <li><p><strong>z_m</strong> (float): height in which L_m is found [m]</p></li>
 </ul>
-</section>
-<section id="penman-monteith-transpiration-parameters">
-<h5>Penman-Monteith transpiration parameters<a class="headerlink" href="#penman-monteith-transpiration-parameters" title="Permalink to this headline">#</a></h5>
-<p>If using the PM transpiration scheme.</p>
 <p>Penman-Monteith equation parameters
 Note: W m^-2 is the same as J s^-1 m^-2
 1J= 1 kg m2/s2
