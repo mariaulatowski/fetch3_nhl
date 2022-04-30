@@ -1,6 +1,0 @@
-nhl\_transpiration.nhl\_config.read\_configs
-============================================
-
-.. currentmodule:: nhl_transpiration.nhl_config
-
-.. autofunction:: read_configs

@@ -1,6 +1,0 @@
-nhl\_transpiration.NHL\_functions.calc\_transpiration\_leaf
-===========================================================
-
-.. currentmodule:: nhl_transpiration.NHL_functions
-
-.. autofunction:: calc_transpiration_leaf

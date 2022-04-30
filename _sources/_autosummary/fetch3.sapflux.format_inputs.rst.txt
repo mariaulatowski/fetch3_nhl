@@ -1,0 +1,6 @@
+fetch3.sapflux.format\_inputs
+=============================
+
+.. currentmodule:: fetch3.sapflux
+
+.. autofunction:: format_inputs

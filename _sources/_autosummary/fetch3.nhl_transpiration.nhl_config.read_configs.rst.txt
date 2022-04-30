@@ -1,0 +1,6 @@
+fetch3.nhl\_transpiration.nhl\_config.read\_configs
+===================================================
+
+.. currentmodule:: fetch3.nhl_transpiration.nhl_config
+
+.. autofunction:: read_configs

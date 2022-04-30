@@ -1,0 +1,30 @@
+fetch3.tests
+============
+
+.. automodule:: fetch3.tests
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+
+.. autosummary::
+   :toctree:
+   :template: custom-module-template.rst
+   :recursive:
+
+   fetch3.tests.test_loaded_data
+

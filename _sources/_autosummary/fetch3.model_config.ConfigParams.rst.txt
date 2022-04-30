@@ -1,0 +1,6 @@
+fetch3.model\_config.ConfigParams
+=================================
+
+.. currentmodule:: fetch3.model_config
+
+.. autoclass:: ConfigParams

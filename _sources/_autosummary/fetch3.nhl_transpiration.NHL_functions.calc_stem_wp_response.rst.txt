@@ -1,0 +1,6 @@
+fetch3.nhl\_transpiration.NHL\_functions.calc\_stem\_wp\_response
+=================================================================
+
+.. currentmodule:: fetch3.nhl_transpiration.NHL_functions
+
+.. autofunction:: calc_stem_wp_response

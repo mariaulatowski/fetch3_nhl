@@ -1,0 +1,42 @@
+﻿fetch3
+======
+
+.. automodule:: fetch3
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+
+.. autosummary::
+   :toctree:
+   :template: custom-module-template.rst
+   :recursive:
+
+   fetch3.canopy
+   fetch3.initial_conditions
+   fetch3.main
+   fetch3.met_data
+   fetch3.model_config
+   fetch3.model_functions
+   fetch3.model_setup
+   fetch3.nhl_transpiration
+   fetch3.plotting_functions
+   fetch3.sapflux
+   fetch3.scaling
+   fetch3.tests
+   fetch3.transpiration
+

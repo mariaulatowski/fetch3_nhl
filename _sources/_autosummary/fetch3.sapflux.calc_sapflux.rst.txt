@@ -1,0 +1,6 @@
+fetch3.sapflux.calc\_sapflux
+============================
+
+.. currentmodule:: fetch3.sapflux
+
+.. autofunction:: calc_sapflux

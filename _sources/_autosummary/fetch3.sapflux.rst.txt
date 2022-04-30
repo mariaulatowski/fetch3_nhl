@@ -1,0 +1,33 @@
+fetch3.sapflux
+==============
+
+.. automodule:: fetch3.sapflux
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+      :nosignatures:
+   
+      calc_sap_storage
+      calc_sapflux
+      format_inputs
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+

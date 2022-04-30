@@ -1,0 +1,6 @@
+fetch3.sapflux.calc\_sap\_storage
+=================================
+
+.. currentmodule:: fetch3.sapflux
+
+.. autofunction:: calc_sap_storage

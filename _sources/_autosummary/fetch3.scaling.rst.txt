@@ -1,0 +1,32 @@
+fetch3.scaling
+==============
+
+.. automodule:: fetch3.scaling
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+      :nosignatures:
+   
+      calc_LAIc_sp
+      calc_xylem_cross_sectional_area
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+

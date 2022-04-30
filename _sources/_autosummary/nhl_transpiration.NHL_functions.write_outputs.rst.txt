@@ -1,6 +1,0 @@
-nhl\_transpiration.NHL\_functions.write\_outputs
-================================================
-
-.. currentmodule:: nhl_transpiration.NHL_functions
-
-.. autofunction:: write_outputs

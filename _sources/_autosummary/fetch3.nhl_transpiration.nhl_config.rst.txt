@@ -1,0 +1,40 @@
+fetch3.nhl\_transpiration.nhl\_config
+=====================================
+
+.. automodule:: fetch3.nhl_transpiration.nhl_config
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+      :nosignatures:
+   
+      read_configs
+   
+   
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+      :nosignatures:
+   
+      ConfigParams
+   
+   
+
+   
+   
+   
+
+
+

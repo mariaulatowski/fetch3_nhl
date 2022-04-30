@@ -1,6 +1,0 @@
-nhl\_transpiration.NHL\_functions.solve\_C\_closure
-===================================================
-
-.. currentmodule:: nhl_transpiration.NHL_functions
-
-.. autofunction:: solve_C_closure

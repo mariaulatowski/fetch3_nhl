@@ -1,0 +1,31 @@
+fetch3.canopy
+=============
+
+.. automodule:: fetch3.canopy
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+      :nosignatures:
+   
+      calc_LAD
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+

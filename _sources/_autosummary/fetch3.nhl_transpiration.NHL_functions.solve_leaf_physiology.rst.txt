@@ -1,0 +1,6 @@
+fetch3.nhl\_transpiration.NHL\_functions.solve\_leaf\_physiology
+================================================================
+
+.. currentmodule:: fetch3.nhl_transpiration.NHL_functions
+
+.. autofunction:: solve_leaf_physiology

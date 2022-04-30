@@ -1,0 +1,6 @@
+fetch3.tests.test\_loaded\_data.test\_output\_data\_should\_be\_the\_same\_as\_previously\_stored\_data
+=======================================================================================================
+
+.. currentmodule:: fetch3.tests.test_loaded_data
+
+.. autofunction:: test_output_data_should_be_the_same_as_previously_stored_data

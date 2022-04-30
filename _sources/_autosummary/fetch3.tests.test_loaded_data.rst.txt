@@ -1,0 +1,31 @@
+fetch3.tests.test\_loaded\_data
+===============================
+
+.. automodule:: fetch3.tests.test_loaded_data
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+      :nosignatures:
+   
+      test_output_data_should_be_the_same_as_previously_stored_data
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+

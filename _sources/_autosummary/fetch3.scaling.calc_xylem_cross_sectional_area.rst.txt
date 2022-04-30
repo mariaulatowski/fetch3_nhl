@@ -1,0 +1,6 @@
+fetch3.scaling.calc\_xylem\_cross\_sectional\_area
+==================================================
+
+.. currentmodule:: fetch3.scaling
+
+.. autofunction:: calc_xylem_cross_sectional_area

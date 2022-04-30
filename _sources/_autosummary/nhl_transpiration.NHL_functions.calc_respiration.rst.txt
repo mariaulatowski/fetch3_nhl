@@ -1,6 +1,0 @@
-nhl\_transpiration.NHL\_functions.calc\_respiration
-===================================================
-
-.. currentmodule:: nhl_transpiration.NHL_functions
-
-.. autofunction:: calc_respiration

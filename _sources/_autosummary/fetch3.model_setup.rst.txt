@@ -1,0 +1,33 @@
+fetch3.model\_setup
+===================
+
+.. automodule:: fetch3.model_setup
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+      :nosignatures:
+   
+      interpolate_2d
+      neg2zero
+      spatial_discretization
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+

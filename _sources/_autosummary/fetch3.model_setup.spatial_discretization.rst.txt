@@ -1,0 +1,6 @@
+fetch3.model\_setup.spatial\_discretization
+===========================================
+
+.. currentmodule:: fetch3.model_setup
+
+.. autofunction:: spatial_discretization

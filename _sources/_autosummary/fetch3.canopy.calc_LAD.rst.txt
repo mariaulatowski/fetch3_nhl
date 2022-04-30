@@ -1,0 +1,6 @@
+fetch3.canopy.calc\_LAD
+=======================
+
+.. currentmodule:: fetch3.canopy
+
+.. autofunction:: calc_LAD

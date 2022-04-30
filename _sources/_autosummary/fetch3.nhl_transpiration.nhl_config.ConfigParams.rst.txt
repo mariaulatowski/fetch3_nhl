@@ -1,0 +1,6 @@
+fetch3.nhl\_transpiration.nhl\_config.ConfigParams
+==================================================
+
+.. currentmodule:: fetch3.nhl_transpiration.nhl_config
+
+.. autoclass:: ConfigParams

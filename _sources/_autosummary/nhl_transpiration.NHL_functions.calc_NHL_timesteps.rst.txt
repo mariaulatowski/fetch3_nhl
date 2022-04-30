@@ -1,6 +1,0 @@
-nhl\_transpiration.NHL\_functions.calc\_NHL\_timesteps
-======================================================
-
-.. currentmodule:: nhl_transpiration.NHL_functions
-
-.. autofunction:: calc_NHL_timesteps

@@ -1,0 +1,6 @@
+fetch3.scaling.calc\_LAIc\_sp
+=============================
+
+.. currentmodule:: fetch3.scaling
+
+.. autofunction:: calc_LAIc_sp

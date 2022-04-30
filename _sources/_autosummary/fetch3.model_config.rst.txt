@@ -1,0 +1,32 @@
+fetch3.model\_config
+====================
+
+.. automodule:: fetch3.model_config
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+      :nosignatures:
+   
+      ConfigParams
+   
+   
+
+   
+   
+   
+
+
+
