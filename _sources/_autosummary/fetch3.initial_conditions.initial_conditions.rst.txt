@@ -1,0 +1,6 @@
+fetch3.initial\_conditions.initial\_conditions
+==============================================
+
+.. currentmodule:: fetch3.initial_conditions
+
+.. autofunction:: initial_conditions

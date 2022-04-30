@@ -1,0 +1,35 @@
+fetch3.met\_data
+================
+
+.. automodule:: fetch3.met_data
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+      :nosignatures:
+   
+      calc_NETRAD
+      calc_delta
+      calc_esat
+      calc_infiltration_rate
+      interp_to_model_res
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+

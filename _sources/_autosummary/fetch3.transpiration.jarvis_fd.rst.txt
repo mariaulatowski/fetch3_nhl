@@ -1,0 +1,6 @@
+fetch3.transpiration.jarvis\_fd
+===============================
+
+.. currentmodule:: fetch3.transpiration
+
+.. autofunction:: jarvis_fd

@@ -1,0 +1,6 @@
+fetch3.model\_functions.Picard
+==============================
+
+.. currentmodule:: fetch3.model_functions
+
+.. autofunction:: Picard

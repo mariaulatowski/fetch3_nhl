@@ -1,0 +1,6 @@
+fetch3.met\_data.interp\_to\_model\_res
+=======================================
+
+.. currentmodule:: fetch3.met_data
+
+.. autofunction:: interp_to_model_res

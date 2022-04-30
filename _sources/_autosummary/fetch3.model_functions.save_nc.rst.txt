@@ -1,0 +1,6 @@
+fetch3.model\_functions.save\_nc
+================================
+
+.. currentmodule:: fetch3.model_functions
+
+.. autofunction:: save_nc

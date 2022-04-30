@@ -1,0 +1,31 @@
+fetch3.initial\_conditions
+==========================
+
+.. automodule:: fetch3.initial_conditions
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+      :nosignatures:
+   
+      initial_conditions
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+

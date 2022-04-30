@@ -1,0 +1,6 @@
+fetch3.met\_data.calc\_infiltration\_rate
+=========================================
+
+.. currentmodule:: fetch3.met_data
+
+.. autofunction:: calc_infiltration_rate

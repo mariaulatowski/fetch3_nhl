@@ -1,0 +1,31 @@
+fetch3.main
+===========
+
+.. automodule:: fetch3.main
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+      :nosignatures:
+   
+      main
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+

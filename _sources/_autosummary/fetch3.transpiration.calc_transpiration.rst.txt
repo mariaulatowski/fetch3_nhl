@@ -1,0 +1,6 @@
+fetch3.transpiration.calc\_transpiration
+========================================
+
+.. currentmodule:: fetch3.transpiration
+
+.. autofunction:: calc_transpiration

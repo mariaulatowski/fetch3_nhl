@@ -1,0 +1,6 @@
+fetch3.main.main
+================
+
+.. currentmodule:: fetch3.main
+
+.. autofunction:: main

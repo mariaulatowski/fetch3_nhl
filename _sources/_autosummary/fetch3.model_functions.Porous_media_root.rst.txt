@@ -1,0 +1,6 @@
+fetch3.model\_functions.Porous\_media\_root
+===========================================
+
+.. currentmodule:: fetch3.model_functions
+
+.. autofunction:: Porous_media_root

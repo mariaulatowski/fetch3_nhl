@@ -312,13 +312,15 @@ modified by the user.</p>
 <section id="run-options-printing">
 <h4>Run options - printing<a class="headerlink" href="#run-options-printing" title="Permalink to this headline">#</a></h4>
 <p>Options to turn printing off or specify print frequency. Printing the run
-progress will slow down the model run. The model will run faster if printing is
-turned off or set to print more infrequently.</p>
+progress every timestep will slow down the model run (and make your log file very
+long). The model will run faster if printing is turned off or set to print more
+infrequently.</p>
 <ul class="simple">
 <li><p><strong>print_run_progress</strong> (bool): Turns on/off printing for progress of the model run.
-<code class="docutils literal notranslate"><span class="pre">print_run_progress:</span> <span class="pre">False</span></code> will turn off printing.</p></li>
+<code class="docutils literal notranslate"><span class="pre">print_run_progress:</span> <span class="pre">False</span></code> will turn off printing the progress of the timesteps
+calculated.</p></li>
 <li><p><strong>print_freq</strong> (int): Interval of timesteps to print if <code class="docutils literal notranslate"><span class="pre">print_run_progress</span> <span class="pre">=</span> <span class="pre">True</span></code>
-(e.g. <code class="docutils literal notranslate"><span class="pre">print_freq:</span> <span class="pre">100</span></code> will print every 100 time steps)</p></li>
+(e.g. <code class="docutils literal notranslate"><span class="pre">print_freq:</span> <span class="pre">100</span></code> will print every 100 timesteps)</p></li>
 </ul>
 </section>
 <section id="transpiration-options">
