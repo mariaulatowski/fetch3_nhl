@@ -85,7 +85,7 @@
 </li>
 
 <li class="toctree-l1 nav-item">
- <a class="reference internal nav-link" href="fetch3.html">
+ <a class="reference internal nav-link" href="ftch/fetch3.html">
   FETCH3 code reference
  </a>
 </li>
@@ -168,13 +168,13 @@
               
               <div>
                 
-  <span class="target" id="module-nhl_transpiration.NHL_functions"></span><section id="nhl-transpiration">
+  <span class="target" id="module-fetch3.nhl_transpiration.NHL_functions"></span><section id="nhl-transpiration">
 <h1>NHL transpiration<a class="headerlink" href="#nhl-transpiration" title="Permalink to this headline">#</a></h1>
 <p>This module calculates non-hydrodynamically limited transpiration.
 This code was ported from FETCH2’s MATLAB code (see Mirfenderesgi et al 2016)</p>
 <dl class="py function">
-<dt class="sig sig-object py" id="nhl_transpiration.NHL_functions.calc_Kg">
-<span class="sig-name descname"><span class="pre">calc_Kg</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Tair</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nhl_transpiration.NHL_functions.calc_Kg" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="fetch3.nhl_transpiration.NHL_functions.calc_Kg">
+<span class="sig-name descname"><span class="pre">calc_Kg</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Tair</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#fetch3.nhl_transpiration.NHL_functions.calc_Kg" title="Permalink to this definition">#</a></dt>
 <dd><p>Calculates the temperature-dependent conductance coefficient.
 Formulation from Ewers et al 2007
 Equation A.2 from Mirfenderesgi et al 2016</p>
@@ -192,8 +192,8 @@ Equation A.2 from Mirfenderesgi et al 2016</p>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="nhl_transpiration.NHL_functions.calc_LAI_vertical">
-<span class="sig-name descname"><span class="pre">calc_LAI_vertical</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">LADnorm</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z_h_LADnorm</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tot_LAI_crown</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dz</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">h</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nhl_transpiration.NHL_functions.calc_LAI_vertical" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="fetch3.nhl_transpiration.NHL_functions.calc_LAI_vertical">
+<span class="sig-name descname"><span class="pre">calc_LAI_vertical</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">LADnorm</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z_h_LADnorm</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tot_LAI_crown</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dz</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">h</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#fetch3.nhl_transpiration.NHL_functions.calc_LAI_vertical" title="Permalink to this definition">#</a></dt>
 <dd><p>Creates vertical leaf area distribution.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -215,8 +215,8 @@ Equation A.2 from Mirfenderesgi et al 2016</p>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="nhl_transpiration.NHL_functions.calc_NHL">
-<span class="sig-name descname"><span class="pre">calc_NHL</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dz</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">h</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Cd</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">U_top</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ustar</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">PAR</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Ca</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Vcmax25</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha_gs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha_p</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">total_LAI_sp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plot_area</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">total_crown_area_sp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mean_crown_area_sp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">LADnorm</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z_h_LADnorm</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">RH</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Tair</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Press</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Cf</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.85</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nhl_transpiration.NHL_functions.calc_NHL" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="fetch3.nhl_transpiration.NHL_functions.calc_NHL">
+<span class="sig-name descname"><span class="pre">calc_NHL</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dz</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">h</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Cd</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">U_top</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ustar</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">PAR</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Ca</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Vcmax25</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha_gs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha_p</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">total_LAI_sp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plot_area</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">total_crown_area_sp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mean_crown_area_sp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">LADnorm</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z_h_LADnorm</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">RH</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Tair</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Press</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Cf</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.85</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#fetch3.nhl_transpiration.NHL_functions.calc_NHL" title="Permalink to this definition">#</a></dt>
 <dd><p>Calculate NHL transpiration
 #TODO make docstring</p>
 <dl class="field-list simple">
@@ -254,8 +254,8 @@ Equation A.2 from Mirfenderesgi et al 2016</p>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="nhl_transpiration.NHL_functions.calc_NHL_timesteps">
-<span class="sig-name descname"><span class="pre">calc_NHL_timesteps</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dz</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">h</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Cd</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">met_data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Vcmax25</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha_gs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha_p</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">total_LAI_spn</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plot_area</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">total_crown_area_spn</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mean_crown_area_spn</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">LAD_norm</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z_h_LADnorm</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lat</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">long</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time_offset</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-</span> <span class="pre">5</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nhl_transpiration.NHL_functions.calc_NHL_timesteps" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="fetch3.nhl_transpiration.NHL_functions.calc_NHL_timesteps">
+<span class="sig-name descname"><span class="pre">calc_NHL_timesteps</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dz</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">h</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Cd</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">met_data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Vcmax25</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha_gs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha_p</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">total_LAI_spn</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plot_area</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">total_crown_area_spn</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mean_crown_area_spn</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">LAD_norm</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z_h_LADnorm</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lat</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">long</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time_offset</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-</span> <span class="pre">5</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#fetch3.nhl_transpiration.NHL_functions.calc_NHL_timesteps" title="Permalink to this definition">#</a></dt>
 <dd><p>Calls NHL for each timestep in the met data
 #TODO docstring</p>
 <dl class="field-list simple">
@@ -289,8 +289,8 @@ Equation A.2 from Mirfenderesgi et al 2016</p>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="nhl_transpiration.NHL_functions.calc_esat">
-<span class="sig-name descname"><span class="pre">calc_esat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Tair</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nhl_transpiration.NHL_functions.calc_esat" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="fetch3.nhl_transpiration.NHL_functions.calc_esat">
+<span class="sig-name descname"><span class="pre">calc_esat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Tair</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#fetch3.nhl_transpiration.NHL_functions.calc_esat" title="Permalink to this definition">#</a></dt>
 <dd><p>Calculates the saturation vapor pressure using the Clausius-Clapeyron equation.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -306,8 +306,8 @@ Equation A.2 from Mirfenderesgi et al 2016</p>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="nhl_transpiration.NHL_functions.calc_gb">
-<span class="sig-name descname"><span class="pre">calc_gb</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">uz</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0015</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nhl_transpiration.NHL_functions.calc_gb" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="fetch3.nhl_transpiration.NHL_functions.calc_gb">
+<span class="sig-name descname"><span class="pre">calc_gb</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">uz</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0015</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#fetch3.nhl_transpiration.NHL_functions.calc_gb" title="Permalink to this definition">#</a></dt>
 <dd><p>Calculates the leaf boundary layer conductance and resistance, assuming laminar boundary layer.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -330,8 +330,8 @@ Academic Press; 2013 Jul 26.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="nhl_transpiration.NHL_functions.calc_geff">
-<span class="sig-name descname"><span class="pre">calc_geff</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gb</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nhl_transpiration.NHL_functions.calc_geff" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="fetch3.nhl_transpiration.NHL_functions.calc_geff">
+<span class="sig-name descname"><span class="pre">calc_geff</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gb</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#fetch3.nhl_transpiration.NHL_functions.calc_geff" title="Permalink to this definition">#</a></dt>
 <dd><p>Calculates the effective leaf conductance.
 Eqn A.3 of Mirfenderesgi</p>
 <dl class="field-list simple">
@@ -351,8 +351,8 @@ Eqn A.3 of Mirfenderesgi</p>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="nhl_transpiration.NHL_functions.calc_gs_Leuning">
-<span class="sig-name descname"><span class="pre">calc_gs_Leuning</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">g0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">c_s</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma_star</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">VPD</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">D0</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nhl_transpiration.NHL_functions.calc_gs_Leuning" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="fetch3.nhl_transpiration.NHL_functions.calc_gs_Leuning">
+<span class="sig-name descname"><span class="pre">calc_gs_Leuning</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">g0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">c_s</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma_star</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">VPD</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">D0</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#fetch3.nhl_transpiration.NHL_functions.calc_gs_Leuning" title="Permalink to this definition">#</a></dt>
 <dd><p>Calculates gs according to Leuning 1995</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -377,8 +377,8 @@ light compensation point (empirically fitted parameter)</p></li>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="nhl_transpiration.NHL_functions.calc_mixing_length">
-<span class="sig-name descname"><span class="pre">calc_mixing_length</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">z</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">h</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha_ml</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nhl_transpiration.NHL_functions.calc_mixing_length" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="fetch3.nhl_transpiration.NHL_functions.calc_mixing_length">
+<span class="sig-name descname"><span class="pre">calc_mixing_length</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">z</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">h</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha_ml</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#fetch3.nhl_transpiration.NHL_functions.calc_mixing_length" title="Permalink to this definition">#</a></dt>
 <dd><p>Calculates the mixing length for each height in z.
 Based on Poggi et al 2004
 Zero-plane displacement height is taken as (2/3)*h, appropriate for dense canopies (Katul et al 2004).</p>
@@ -400,14 +400,14 @@ Zero-plane displacement height is taken as (2/3)*h, appropriate for dense canopi
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="nhl_transpiration.NHL_functions.calc_nighttime_trans">
-<span class="sig-name descname"><span class="pre">calc_nighttime_trans</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">trans</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nhl_transpiration.NHL_functions.calc_nighttime_trans" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="fetch3.nhl_transpiration.NHL_functions.calc_nighttime_trans">
+<span class="sig-name descname"><span class="pre">calc_nighttime_trans</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">trans</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#fetch3.nhl_transpiration.NHL_functions.calc_nighttime_trans" title="Permalink to this definition">#</a></dt>
 <dd><p>Modifies transpiration timeseries to set nighttime transpiration to be almost zero</p>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="nhl_transpiration.NHL_functions.calc_rad_attenuation">
-<span class="sig-name descname"><span class="pre">calc_rad_attenuation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">PAR</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">LAD</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dz</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Cf</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.85</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nhl_transpiration.NHL_functions.calc_rad_attenuation" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="fetch3.nhl_transpiration.NHL_functions.calc_rad_attenuation">
+<span class="sig-name descname"><span class="pre">calc_rad_attenuation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">PAR</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">LAD</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dz</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Cf</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.85</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#fetch3.nhl_transpiration.NHL_functions.calc_rad_attenuation" title="Permalink to this definition">#</a></dt>
 <dd><p>Calculates the vertical attenuation of radiation through the canopy</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -432,8 +432,8 @@ By default assumed to be spherical (x=1).</p></li>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="nhl_transpiration.NHL_functions.calc_respiration">
-<span class="sig-name descname"><span class="pre">calc_respiration</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Tair</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nhl_transpiration.NHL_functions.calc_respiration" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="fetch3.nhl_transpiration.NHL_functions.calc_respiration">
+<span class="sig-name descname"><span class="pre">calc_respiration</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Tair</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#fetch3.nhl_transpiration.NHL_functions.calc_respiration" title="Permalink to this definition">#</a></dt>
 <dd><p>Calculates respiration.
 Based on Q10 model.</p>
 <dl class="field-list simple">
@@ -450,8 +450,8 @@ Based on Q10 model.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="nhl_transpiration.NHL_functions.calc_stem_wp_response">
-<span class="sig-name descname"><span class="pre">calc_stem_wp_response</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stem_wp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wp_s50</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">c3</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nhl_transpiration.NHL_functions.calc_stem_wp_response" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="fetch3.nhl_transpiration.NHL_functions.calc_stem_wp_response">
+<span class="sig-name descname"><span class="pre">calc_stem_wp_response</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stem_wp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wp_s50</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">c3</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#fetch3.nhl_transpiration.NHL_functions.calc_stem_wp_response" title="Permalink to this definition">#</a></dt>
 <dd><p>Calculates the restriction for NHL transpiration
 due to the hydrodynamic effects of xylem water potential.
 From eqn 2 of Mirfenderesgi et al 2016</p>
@@ -474,8 +474,8 @@ of the leaf stem water potential response curve [Pa]</p></li>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="nhl_transpiration.NHL_functions.calc_transpiration_leaf">
-<span class="sig-name descname"><span class="pre">calc_transpiration_leaf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">VPD</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Tair</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">geff</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Press</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nhl_transpiration.NHL_functions.calc_transpiration_leaf" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="fetch3.nhl_transpiration.NHL_functions.calc_transpiration_leaf">
+<span class="sig-name descname"><span class="pre">calc_transpiration_leaf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">VPD</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Tair</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">geff</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Press</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#fetch3.nhl_transpiration.NHL_functions.calc_transpiration_leaf" title="Permalink to this definition">#</a></dt>
 <dd><p>Calculates the water vapor source from the leaf.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -496,14 +496,14 @@ of the leaf stem water potential response curve [Pa]</p></li>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="nhl_transpiration.NHL_functions.calc_transpiration_nhl">
-<span class="sig-name descname"><span class="pre">calc_transpiration_nhl</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nhl_transpiration</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stem_wp_fn</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nhl_transpiration.NHL_functions.calc_transpiration_nhl" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="fetch3.nhl_transpiration.NHL_functions.calc_transpiration_nhl">
+<span class="sig-name descname"><span class="pre">calc_transpiration_nhl</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nhl_transpiration</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stem_wp_fn</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#fetch3.nhl_transpiration.NHL_functions.calc_transpiration_nhl" title="Permalink to this definition">#</a></dt>
 <dd><p>Calculates transpiration for FETCH3</p>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="nhl_transpiration.NHL_functions.calc_vpd_kPa">
-<span class="sig-name descname"><span class="pre">calc_vpd_kPa</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">RH</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Tair</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nhl_transpiration.NHL_functions.calc_vpd_kPa" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="fetch3.nhl_transpiration.NHL_functions.calc_vpd_kPa">
+<span class="sig-name descname"><span class="pre">calc_vpd_kPa</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">RH</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Tair</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#fetch3.nhl_transpiration.NHL_functions.calc_vpd_kPa" title="Permalink to this definition">#</a></dt>
 <dd><p>Calculates vapor pressure deficit from air temperature and relative humidity.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -522,8 +522,8 @@ of the leaf stem water potential response curve [Pa]</p></li>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="nhl_transpiration.NHL_functions.calc_zenith_angle">
-<span class="sig-name descname"><span class="pre">calc_zenith_angle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">doy</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lat</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">long</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time_offset</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time_of_day</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zenith_method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'CN'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nhl_transpiration.NHL_functions.calc_zenith_angle" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="fetch3.nhl_transpiration.NHL_functions.calc_zenith_angle">
+<span class="sig-name descname"><span class="pre">calc_zenith_angle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">doy</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lat</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">long</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time_offset</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time_of_day</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zenith_method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'CN'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#fetch3.nhl_transpiration.NHL_functions.calc_zenith_angle" title="Permalink to this definition">#</a></dt>
 <dd><p>Calculates the solar zenith angle, based on Campbell &amp; Norman, 1998.</p>
 <p>Also has options for 2 alternate methods: use a constant zenith angle of 0 (i.e.
 pretend the sun is always directly overhead), or replicate the results of the
@@ -559,8 +559,8 @@ Pacific Standard Time, time_offset = -8</p></li>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="nhl_transpiration.NHL_functions.solve_Uz">
-<span class="sig-name descname"><span class="pre">solve_Uz</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">z</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dz</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Cd</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">a_s</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">U_top</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nhl_transpiration.NHL_functions.solve_Uz" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="fetch3.nhl_transpiration.NHL_functions.solve_Uz">
+<span class="sig-name descname"><span class="pre">solve_Uz</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">z</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dz</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Cd</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">a_s</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">U_top</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#fetch3.nhl_transpiration.NHL_functions.solve_Uz" title="Permalink to this definition">#</a></dt>
 <dd><p>Solves the momentum equation to calculate the vertical wind profile.
 Applies no-slip boundary condition: wind speed=0 at surface (z = 0).
 Model for turbulent diffusivity of momentum is from Poggi 2004, eqn 6</p>
@@ -586,8 +586,8 @@ Model for turbulent diffusivity of momentum is from Poggi 2004, eqn 6</p>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="nhl_transpiration.NHL_functions.solve_leaf_physiology">
-<span class="sig-name descname"><span class="pre">solve_leaf_physiology</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Tair</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Qp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Ca</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Vcmax25</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha_p</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">VPD</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nhl_transpiration.NHL_functions.solve_leaf_physiology" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="fetch3.nhl_transpiration.NHL_functions.solve_leaf_physiology">
+<span class="sig-name descname"><span class="pre">solve_leaf_physiology</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Tair</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Qp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Ca</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Vcmax25</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha_p</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">VPD</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#fetch3.nhl_transpiration.NHL_functions.solve_leaf_physiology" title="Permalink to this definition">#</a></dt>
 <dd><p>Calculates photosynthesis and stomatal conductance
 Uses Leuning model for stomatal conductance</p>
 <dl class="field-list simple">
@@ -617,15 +617,15 @@ Uses Leuning model for stomatal conductance</p>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="nhl_transpiration.NHL_functions.thomas_tridiagonal">
-<span class="sig-name descname"><span class="pre">thomas_tridiagonal</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">aa</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bb</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dd</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nhl_transpiration.NHL_functions.thomas_tridiagonal" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="fetch3.nhl_transpiration.NHL_functions.thomas_tridiagonal">
+<span class="sig-name descname"><span class="pre">thomas_tridiagonal</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">aa</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bb</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dd</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#fetch3.nhl_transpiration.NHL_functions.thomas_tridiagonal" title="Permalink to this definition">#</a></dt>
 <dd><p>Thomas algorithm for solving tridiagonal matrix
 #TODO update docstring</p>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="nhl_transpiration.NHL_functions.write_outputs">
-<span class="sig-name descname"><span class="pre">write_outputs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">output_vars</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dir</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nhl_transpiration.NHL_functions.write_outputs" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="fetch3.nhl_transpiration.NHL_functions.write_outputs">
+<span class="sig-name descname"><span class="pre">write_outputs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">output_vars</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dir</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#fetch3.nhl_transpiration.NHL_functions.write_outputs" title="Permalink to this definition">#</a></dt>
 <dd><p>Writes NHL outputs to csv files</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -635,8 +635,8 @@ Uses Leuning model for stomatal conductance</p>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="nhl_transpiration.NHL_functions.write_outputs_netcdf">
-<span class="sig-name descname"><span class="pre">write_outputs_netcdf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ds</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nhl_transpiration.NHL_functions.write_outputs_netcdf" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="fetch3.nhl_transpiration.NHL_functions.write_outputs_netcdf">
+<span class="sig-name descname"><span class="pre">write_outputs_netcdf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ds</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#fetch3.nhl_transpiration.NHL_functions.write_outputs_netcdf" title="Permalink to this definition">#</a></dt>
 <dd><p>Writes model output to netcdf file</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
