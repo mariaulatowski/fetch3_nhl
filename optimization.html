@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>Met data &#8212; FETCH3  documentation</title>
+    <title>Optimization &#8212; FETCH3  documentation</title>
     
   <!-- Loaded before other Sphinx assets -->
   <link href="_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
@@ -32,6 +32,7 @@
     <script src="_static/doctools.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Scaling" href="scaling.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
     
@@ -73,12 +74,6 @@
 </li>
 
 <li class="toctree-l1 nav-item">
- <a class="reference internal nav-link" href="model_config.html">
-  Model configuration
- </a>
-</li>
-
-<li class="toctree-l1 nav-item">
  <a class="reference internal nav-link" href="model_outputs.html">
   Model outputs
  </a>
@@ -93,6 +88,12 @@
 <li class="toctree-l1 nav-item">
  <a class="reference internal nav-link" href="scaling.html">
   Scaling
+ </a>
+</li>
+
+<li class="toctree-l1 current active nav-item">
+ <a class="current reference internal nav-link" href="#">
+  Optimization
  </a>
 </li>
 
@@ -146,9 +147,36 @@
               
               <div class="toc-item">
                 
+<div class="tocsection onthispage mt-5 pt-1 pb-3">
+    <i class="fas fa-list"></i> On this page
+</div>
 
 <nav id="bd-toc-nav">
-    
+    <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#getting-started">
+   Getting Started
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#prepare-optimizaion-configuration-file">
+     Prepare optimizaion configuration file
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#running-an-optimization">
+     Running an optimization
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#optimization-code-reference">
+   Optimization code reference
+  </a>
+ </li>
+</ul>
+
 </nav>
               </div>
               
@@ -168,25 +196,36 @@
               
               <div>
                 
-  <span class="target" id="module-fetch3.met_data"></span><section id="met-data">
-<h1>Met data<a class="headerlink" href="#met-data" title="Permalink to this headline">#</a></h1>
-<dl class="py function">
-<dt class="sig sig-object py" id="fetch3.met_data.calc_NETRAD">
-<span class="sig-name descname"><span class="pre">calc_NETRAD</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">SW_in</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#fetch3.met_data.calc_NETRAD" title="Permalink to this definition">#</a></dt>
-<dd><p>Calculate net radiation as 60% of total incoming solar radiation</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>SW_in</strong> (<em>[</em><em>W m-2</em><em>]</em>) – Total incoming solar radiation</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Net radiation</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>[W m-2]</p>
-</dd>
-</dl>
-</dd></dl>
-
+  <section id="optimization">
+<h1>Optimization<a class="headerlink" href="#optimization" title="Permalink to this headline">#</a></h1>
+<section id="getting-started">
+<h2>Getting Started<a class="headerlink" href="#getting-started" title="Permalink to this headline">#</a></h2>
+<p>Install requirements:</p>
+<ul class="simple">
+<li><p>Install FETCH3 requirements</p></li>
+<li><p>Install Ax: <a class="reference external" href="https://ax.dev/docs/installation.html">Instructions for installing Ax</a></p></li>
+</ul>
+<section id="prepare-optimizaion-configuration-file">
+<h3>Prepare optimizaion configuration file<a class="headerlink" href="#prepare-optimizaion-configuration-file" title="Permalink to this headline">#</a></h3>
+<p>See <code class="docutils literal notranslate"><span class="pre">opt_model-config.yml</span></code> for an example.</p>
+</section>
+<section id="running-an-optimization">
+<h3>Running an optimization<a class="headerlink" href="#running-an-optimization" title="Permalink to this headline">#</a></h3>
+<p>To run an optimization, <code class="docutils literal notranslate"><span class="pre">cd</span></code> into the <code class="docutils literal notranslate"><span class="pre">optimize</span></code> directory, then run:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">run_optimization</span><span class="o">.</span><span class="n">py</span> <span class="o">--</span><span class="n">config_path</span> <span class="o">/</span><span class="n">Users</span><span class="o">/</span><span class="n">jmissik</span><span class="o">/</span><span class="n">Desktop</span><span class="o">/</span><span class="n">fetch_opt</span><span class="o">/</span><span class="n">umbs_optimization_config</span><span class="o">.</span><span class="n">yml</span>
+</pre></div>
+</div>
+<p>See <code class="docutils literal notranslate"><span class="pre">optimization_results.ipynb</span></code> for an example of how to explore the optimization results.</p>
+</section>
+</section>
+<section id="optimization-code-reference">
+<h2>Optimization code reference<a class="headerlink" href="#optimization-code-reference" title="Permalink to this headline">#</a></h2>
+<div class="admonition-todo admonition" id="id1">
+<p class="admonition-title">Todo</p>
+<p>This page is a work in progress. More detailed instructions and an updated
+code reference will be added soon.</p>
+</div>
+</section>
 </section>
 
 
@@ -195,6 +234,13 @@
               
               <!-- Previous / next buttons -->
 <div class='prev-next-area'>
+    <a class='left-prev' id="prev-link" href="scaling.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">Scaling</p>
+        </div>
+    </a>
 </div>
               
           </main>
