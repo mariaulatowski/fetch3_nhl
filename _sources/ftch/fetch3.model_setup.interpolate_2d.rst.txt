@@ -1,6 +1,0 @@
-fetch3.model\_setup.interpolate\_2d
-===================================
-
-.. currentmodule:: fetch3.model_setup
-
-.. autofunction:: interpolate_2d

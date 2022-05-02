@@ -26,5 +26,7 @@ fetch3.tests
    :template: custom-module-template.rst
    :recursive:
 
+   fetch3.tests.conftest
    fetch3.tests.test_loaded_data
+   fetch3.tests.test_model_runs
 

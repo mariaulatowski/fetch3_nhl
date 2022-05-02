@@ -1,7 +1,7 @@
-fetch3.canopy
-=============
+fetch3.utils
+============
 
-.. automodule:: fetch3.canopy
+.. automodule:: fetch3.utils
 
    
    
@@ -15,7 +15,8 @@ fetch3.canopy
       :toctree:
       :nosignatures:
    
-      calc_LAD
+      interpolate_2d
+      neg2zero
    
    
 

@@ -1,6 +1,0 @@
-fetch3.transpiration.jarvis\_fleaf
-==================================
-
-.. currentmodule:: fetch3.transpiration
-
-.. autofunction:: jarvis_fleaf

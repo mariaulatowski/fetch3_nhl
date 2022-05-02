@@ -1,7 +1,7 @@
-fetch3.main
-===========
+fetch3.tests.conftest
+=====================
 
-.. automodule:: fetch3.main
+.. automodule:: fetch3.tests.conftest
 
    
    
@@ -15,7 +15,7 @@ fetch3.main
       :toctree:
       :nosignatures:
    
-      main
+      pytest_addoption
    
    
 

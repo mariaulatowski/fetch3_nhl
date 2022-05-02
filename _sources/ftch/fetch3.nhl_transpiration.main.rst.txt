@@ -9,6 +9,14 @@ fetch3.nhl\_transpiration.main
 
    
    
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+      :nosignatures:
+   
+      main
+   
    
 
    

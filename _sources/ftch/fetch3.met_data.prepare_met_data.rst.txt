@@ -1,0 +1,6 @@
+fetch3.met\_data.prepare\_met\_data
+===================================
+
+.. currentmodule:: fetch3.met_data
+
+.. autofunction:: prepare_met_data

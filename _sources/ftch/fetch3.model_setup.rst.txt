@@ -15,13 +15,21 @@ fetch3.model\_setup
       :toctree:
       :nosignatures:
    
-      interpolate_2d
-      neg2zero
       spatial_discretization
+      temporal_discretization
    
    
 
    
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+      :nosignatures:
+   
+      Zind
    
    
 

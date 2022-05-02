@@ -1,6 +1,0 @@
-fetch3.model\_setup.neg2zero
-============================
-
-.. currentmodule:: fetch3.model_setup
-
-.. autofunction:: neg2zero

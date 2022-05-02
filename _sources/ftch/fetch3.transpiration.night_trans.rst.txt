@@ -1,6 +1,0 @@
-fetch3.transpiration.night\_trans
-=================================
-
-.. currentmodule:: fetch3.transpiration
-
-.. autofunction:: night_trans

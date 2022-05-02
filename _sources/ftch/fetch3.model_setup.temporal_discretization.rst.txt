@@ -1,0 +1,6 @@
+fetch3.model\_setup.temporal\_discretization
+============================================
+
+.. currentmodule:: fetch3.model_setup
+
+.. autofunction:: temporal_discretization

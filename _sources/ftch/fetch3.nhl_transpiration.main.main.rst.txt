@@ -1,0 +1,6 @@
+fetch3.nhl\_transpiration.main.main
+===================================
+
+.. currentmodule:: fetch3.nhl_transpiration.main
+
+.. autofunction:: main

@@ -1,0 +1,6 @@
+fetch3.utils.neg2zero
+=====================
+
+.. currentmodule:: fetch3.utils
+
+.. autofunction:: neg2zero

@@ -19,11 +19,22 @@ fetch3.met\_data
       calc_delta
       calc_esat
       calc_infiltration_rate
+      calc_model_time_grid
       interp_to_model_res
+      prepare_met_data
    
    
 
    
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+      :nosignatures:
+   
+      Met
    
    
 

@@ -1,0 +1,6 @@
+fetch3.model\_config.setup\_config
+==================================
+
+.. currentmodule:: fetch3.model_config
+
+.. autofunction:: setup_config

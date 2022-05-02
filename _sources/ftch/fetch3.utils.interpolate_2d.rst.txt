@@ -1,0 +1,6 @@
+fetch3.utils.interpolate\_2d
+============================
+
+.. currentmodule:: fetch3.utils
+
+.. autofunction:: interpolate_2d

@@ -1,0 +1,6 @@
+fetch3.tests.conftest.pytest\_addoption
+=======================================
+
+.. currentmodule:: fetch3.tests.conftest
+
+.. autofunction:: pytest_addoption

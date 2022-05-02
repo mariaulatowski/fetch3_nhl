@@ -1,0 +1,6 @@
+fetch3.model\_setup.Zind
+========================
+
+.. currentmodule:: fetch3.model_setup
+
+.. autoclass:: Zind

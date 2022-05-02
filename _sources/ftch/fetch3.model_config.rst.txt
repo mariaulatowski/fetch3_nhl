@@ -9,6 +9,14 @@ fetch3.model\_config
 
    
    
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+      :nosignatures:
+   
+      setup_config
+   
    
 
    

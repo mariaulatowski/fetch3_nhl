@@ -1,0 +1,6 @@
+fetch3.met\_data.calc\_model\_time\_grid
+========================================
+
+.. currentmodule:: fetch3.met_data
+
+.. autofunction:: calc_model_time_grid
