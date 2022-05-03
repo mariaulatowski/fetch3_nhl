@@ -176,11 +176,6 @@
    </li>
   </ul>
  </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#optimization-code-reference">
-   Optimization code reference
-  </a>
- </li>
 </ul>
 
 </nav>
@@ -211,9 +206,43 @@
 <li><p>Install FETCH3 requirements</p></li>
 <li><p>Install Ax: <a class="reference external" href="https://ax.dev/docs/installation.html">Instructions for installing Ax</a></p></li>
 </ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Make sure to install Ax inside your fetch-dev environment</p>
+</div>
 <section id="prepare-optimizaion-configuration-file">
 <h3>Prepare optimizaion configuration file<a class="headerlink" href="#prepare-optimizaion-configuration-file" title="Permalink to this headline">#</a></h3>
-<p>See <code class="docutils literal notranslate"><span class="pre">optimization_config_template.yml</span></code> for an example.</p>
+<p>See <code class="docutils literal notranslate"><span class="pre">optimization_config_template.yml</span></code> for an example of the optimization configuration file.</p>
+<p>The optimization configuration file is similar to the FETCH3 configuration file.</p>
+<p>To prepare this file:</p>
+<ol class="arabic">
+<li><dl class="simple">
+<dt>Update the <code class="docutils literal notranslate"><span class="pre">optimization_options</span></code> section:</dt><dd><ul class="simple">
+<li><p><strong>obsfile</strong>: path to the data file containing sapflux observations</p></li>
+<li><p><strong>obsvar</strong>: column header for the variable of interest in the observations file</p></li>
+<li><p><strong>model_path</strong>: path to the fetch3 repository</p></li>
+<li><p><strong>data_path</strong>: path to the input data directory for the model</p></li>
+<li><p><strong>working_dir</strong>: directory where the optimization output will be written</p></li>
+<li><p><strong>output_fname</strong>: <em>Don’t change.</em> Name of model output file</p></li>
+<li><p><strong>experiment_name</strong>: Name to label this optimization experiment with</p></li>
+<li><p><strong>objective_name</strong>: <em>Don’t change for now - future version will have more options</em>. Objective function to use for optimization.</p></li>
+<li><p><strong>ntrials</strong>: number of trials to run in the optimization</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p>Prepare the <code class="docutils literal notranslate"><span class="pre">model_options</span></code> section. This is identical to the model options section in the FETCH3 config file.</p></li>
+<li><p>Prepare the <code class="docutils literal notranslate"><span class="pre">parameters</span></code> section. The parameters listed in this section are identical to those in the FETCH3 config file,
+but here you must specify additional information. For each parameter, you must specify:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><strong>type</strong>: fixed or range. Fixed parameters will not be optimized. Range parameters will be optimized.</p></li>
+<li><p><strong>value or bounds</strong>: For fixed parameters, you must specify the value of the parameter. For range parameters, you
+must specify bounds for the optimization.</p></li>
+</ul>
+</div></blockquote>
+</li>
+</ol>
 </section>
 <section id="running-an-optimization">
 <h3>Running an optimization<a class="headerlink" href="#running-an-optimization" title="Permalink to this headline">#</a></h3>
@@ -221,16 +250,12 @@
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">run_optimization</span><span class="o">.</span><span class="n">py</span> <span class="o">--</span><span class="n">config_path</span> <span class="o">/</span><span class="n">Users</span><span class="o">/</span><span class="n">jmissik</span><span class="o">/</span><span class="n">Desktop</span><span class="o">/</span><span class="n">fetch_opt</span><span class="o">/</span><span class="n">umbs_optimization_config</span><span class="o">.</span><span class="n">yml</span>
 </pre></div>
 </div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Replace the paths and filenames in this example with the actual paths and files you are using.</p>
+</div>
 <p>See <code class="docutils literal notranslate"><span class="pre">optimization_results.ipynb</span></code> for an example of how to explore the optimization results.</p>
 </section>
-</section>
-<section id="optimization-code-reference">
-<h2>Optimization code reference<a class="headerlink" href="#optimization-code-reference" title="Permalink to this headline">#</a></h2>
-<div class="admonition-todo admonition" id="id1">
-<p class="admonition-title">Todo</p>
-<p>This page is a work in progress. More detailed instructions and an updated
-code reference will be added soon.</p>
-</div>
 </section>
 </section>
 
