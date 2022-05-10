@@ -1,6 +1,0 @@
-fetch3.model\_functions.save\_csv
-=================================
-
-.. currentmodule:: fetch3.model_functions
-
-.. autofunction:: save_csv

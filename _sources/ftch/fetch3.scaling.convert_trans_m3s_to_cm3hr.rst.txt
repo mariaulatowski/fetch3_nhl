@@ -1,0 +1,6 @@
+fetch3.scaling.convert\_trans\_m3s\_to\_cm3hr
+=============================================
+
+.. currentmodule:: fetch3.scaling
+
+.. autofunction:: convert_trans_m3s_to_cm3hr

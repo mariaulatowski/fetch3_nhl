@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>Optimization &#8212; FETCH3  documentation</title>
+    <title>Change log &#8212; FETCH3  documentation</title>
     
   <!-- Loaded before other Sphinx assets -->
   <link href="_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
@@ -32,8 +32,6 @@
     <script src="_static/doctools.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Scaling" href="scaling.html" />
-    <link rel="prev" title="Model outputs" href="model_outputs.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
     
@@ -86,8 +84,8 @@
  </a>
 </li>
 
-<li class="toctree-l1 current active nav-item">
- <a class="current reference internal nav-link" href="#">
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="optimization.html">
   Optimization
  </a>
 </li>
@@ -167,21 +165,9 @@
 <nav id="bd-toc-nav">
     <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#getting-started">
-   Getting Started
+  <a class="reference internal nav-link" href="#id1">
+   5-7-22:
   </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#prepare-optimizaion-configuration-file">
-     Prepare optimizaion configuration file
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#running-an-optimization">
-     Running an optimization
-    </a>
-   </li>
-  </ul>
  </li>
 </ul>
 
@@ -204,80 +190,13 @@
               
               <div>
                 
-  <section id="optimization">
-<h1>Optimization<a class="headerlink" href="#optimization" title="Permalink to this headline">#</a></h1>
-<section id="getting-started">
-<h2>Getting Started<a class="headerlink" href="#getting-started" title="Permalink to this headline">#</a></h2>
-<p>Install requirements:</p>
+  <section id="change-log">
+<h1>Change log<a class="headerlink" href="#change-log" title="Permalink to this headline">#</a></h1>
+<section id="id1">
+<h2>5-7-22:<a class="headerlink" href="#id1" title="Permalink to this headline">#</a></h2>
 <ul class="simple">
-<li><p>Install FETCH3 requirements</p></li>
-<li><p>Install Ax: <a class="reference external" href="https://ax.dev/docs/installation.html">Instructions for installing Ax</a></p></li>
+<li><p>Performance improvements: Replaced scipy.lingalg.pinv2 with torch.linalg.lstqr for ~75% performance improvement</p></li>
 </ul>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>Make sure to install Ax inside your fetch-dev environment</p>
-</div>
-<div class="admonition-todo admonition" id="id1">
-<p class="admonition-title">Todo</p>
-<p>Future version will move all optimization requirements to the fetch3 environment file
-for easier installation</p>
-</div>
-<section id="prepare-optimizaion-configuration-file">
-<h3>Prepare optimizaion configuration file<a class="headerlink" href="#prepare-optimizaion-configuration-file" title="Permalink to this headline">#</a></h3>
-<p>See <code class="docutils literal notranslate"><span class="pre">optimization_config_template.yml</span></code> for an example of the optimization configuration file.</p>
-<p>The optimization configuration file is similar to the FETCH3 configuration file.</p>
-<p>To prepare this file:</p>
-<ol class="arabic">
-<li><p>Update the <code class="docutils literal notranslate"><span class="pre">optimization_options</span></code> section:</p>
-<blockquote>
-<div><ul class="simple">
-<li><p><strong>obsfile</strong>: path to the data file containing sapflux observations</p></li>
-<li><p><strong>obsvar</strong>: column header for the variable of interest in the observations file</p></li>
-<li><p><strong>model_dir</strong>: path to the fetch3 repository</p></li>
-<li><p><strong>data_path</strong>: path to the input data directory for the model</p></li>
-<li><p><strong>output_dir</strong>: directory where the optimization output will be written</p></li>
-<li><p><strong>output_fname</strong>: <em>Don’t change.</em> Name of model output file</p></li>
-<li><p><strong>experiment_name</strong>: Name to label this optimization experiment with</p></li>
-<li><p><strong>objective_name</strong>: <em>Don’t change for now - future version will have more options</em>. Objective function to use for optimization.</p></li>
-<li><p><strong>ntrials</strong>: number of trials to run in the optimization</p></li>
-</ul>
-</div></blockquote>
-</li>
-<li><p>Prepare the <code class="docutils literal notranslate"><span class="pre">model_options</span></code> section. This is identical to the model options section in the FETCH3 config file.</p></li>
-<li><p>Prepare the <code class="docutils literal notranslate"><span class="pre">parameters</span></code> section. The parameters listed in this section are identical to those in the FETCH3 config file,
-but here you must specify additional information. For each parameter, you must specify:</p>
-<blockquote>
-<div><ul class="simple">
-<li><p><strong>type</strong>: fixed or range. Fixed parameters will not be optimized. Range parameters will be optimized.</p></li>
-<li><p><strong>value or bounds</strong>: For fixed parameters, you must specify the value of the parameter. For range parameters, you
-must specify bounds for the optimization.</p></li>
-</ul>
-</div></blockquote>
-</li>
-</ol>
-<div class="admonition-todo admonition" id="id2">
-<p class="admonition-title">Todo</p>
-<p>Will be updated soon:</p>
-<ul class="simple">
-<li><p>cleaner options for specifying files and directories</p></li>
-<li><p>additional options for objective functions</p></li>
-</ul>
-</div>
-</section>
-<section id="running-an-optimization">
-<h3>Running an optimization<a class="headerlink" href="#running-an-optimization" title="Permalink to this headline">#</a></h3>
-<p>To run an optimization, <code class="docutils literal notranslate"><span class="pre">cd</span></code> into the fetch3_nhl directory, then run:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">optimization_run</span><span class="o">.</span><span class="n">py</span>  <span class="o">--</span><span class="n">config_path</span> <span class="n">your_config_path</span>
-</pre></div>
-</div>
-<p>Outputs will be saved in a folder inside the <code class="docutils literal notranslate"><span class="pre">working_dir</span></code> you specified, labeled with the experiment name and timestamp
-of the optimization run.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>Replace the paths and filenames in this example with the actual paths and files you are using.</p>
-</div>
-<p>See <code class="docutils literal notranslate"><span class="pre">optimization_results.ipynb</span></code> for an example of how to explore the optimization results.</p>
-</section>
 </section>
 </section>
 
@@ -287,20 +206,6 @@ of the optimization run.</p>
               
               <!-- Previous / next buttons -->
 <div class='prev-next-area'>
-    <a class='left-prev' id="prev-link" href="model_outputs.html" title="previous page">
-        <i class="fas fa-angle-left"></i>
-        <div class="prev-next-info">
-            <p class="prev-next-subtitle">previous</p>
-            <p class="prev-next-title">Model outputs</p>
-        </div>
-    </a>
-    <a class='right-next' id="next-link" href="scaling.html" title="next page">
-    <div class="prev-next-info">
-        <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Scaling</p>
-    </div>
-    <i class="fas fa-angle-right"></i>
-    </a>
 </div>
               
           </main>

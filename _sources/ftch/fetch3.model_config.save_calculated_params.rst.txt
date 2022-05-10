@@ -1,0 +1,6 @@
+fetch3.model\_config.save\_calculated\_params
+=============================================
+
+.. currentmodule:: fetch3.model_config
+
+.. autofunction:: save_calculated_params

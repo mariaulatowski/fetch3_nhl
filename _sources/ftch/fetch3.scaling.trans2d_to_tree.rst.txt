@@ -1,0 +1,6 @@
+fetch3.scaling.trans2d\_to\_tree
+================================
+
+.. currentmodule:: fetch3.scaling
+
+.. autofunction:: trans2d_to_tree

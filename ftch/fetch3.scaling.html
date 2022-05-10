@@ -33,7 +33,7 @@
     <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="fetch3.scaling.calc_LAIc_sp" href="fetch3.scaling.calc_LAIc_sp.html" />
+    <link rel="next" title="fetch3.scaling.calc_Aind_x" href="fetch3.scaling.calc_Aind_x.html" />
     <link rel="prev" title="fetch3.sapflux.format_inputs" href="fetch3.sapflux.format_inputs.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
@@ -147,11 +147,28 @@
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1 has-children">
-  <a class="reference internal" href="fetch3.initial_conditions.html">
-   fetch3.initial_conditions
+  <a class="reference internal" href="fetch3.helpers.html">
+   fetch3.helpers
   </a>
   <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
   <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="fetch3.helpers.load_model_outputs.html">
+     fetch3.helpers.load_model_outputs
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="fetch3.initial_conditions.html">
+   fetch3.initial_conditions
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+  <label for="toctree-checkbox-2">
    <i class="fas fa-chevron-down">
    </i>
   </label>
@@ -167,8 +184,8 @@
   <a class="reference internal" href="fetch3.met_data.html">
    fetch3.met_data
   </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
-  <label for="toctree-checkbox-2">
+  <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
+  <label for="toctree-checkbox-3">
    <i class="fas fa-chevron-down">
    </i>
   </label>
@@ -219,12 +236,17 @@
   <a class="reference internal" href="fetch3.model_config.html">
    fetch3.model_config
   </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
-  <label for="toctree-checkbox-3">
+  <input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
+  <label for="toctree-checkbox-4">
    <i class="fas fa-chevron-down">
    </i>
   </label>
   <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="fetch3.model_config.save_calculated_params.html">
+     fetch3.model_config.save_calculated_params
+    </a>
+   </li>
    <li class="toctree-l2">
     <a class="reference internal" href="fetch3.model_config.setup_config.html">
      fetch3.model_config.setup_config
@@ -233,53 +255,6 @@
    <li class="toctree-l2">
     <a class="reference internal" href="fetch3.model_config.ConfigParams.html">
      fetch3.model_config.ConfigParams
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="fetch3.model_functions.html">
-   fetch3.model_functions
-  </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
-  <label for="toctree-checkbox-4">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="fetch3.model_functions.Picard.html">
-     fetch3.model_functions.Picard
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="fetch3.model_functions.Porous_media_root.html">
-     fetch3.model_functions.Porous_media_root
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="fetch3.model_functions.Porous_media_xylem.html">
-     fetch3.model_functions.Porous_media_xylem
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="fetch3.model_functions.format_model_output.html">
-     fetch3.model_functions.format_model_output
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="fetch3.model_functions.save_csv.html">
-     fetch3.model_functions.save_csv
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="fetch3.model_functions.save_nc.html">
-     fetch3.model_functions.save_nc
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="fetch3.model_functions.vanGenuchten.html">
-     fetch3.model_functions.vanGenuchten
     </a>
    </li>
   </ul>
@@ -489,6 +464,11 @@
    </li>
   </ul>
  </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="fetch3.optimize.html">
+   fetch3.optimize
+  </a>
+ </li>
  <li class="toctree-l1 has-children">
   <a class="reference internal" href="fetch3.sapflux.html">
    fetch3.sapflux
@@ -527,6 +507,11 @@
   </label>
   <ul>
    <li class="toctree-l2">
+    <a class="reference internal" href="fetch3.scaling.calc_Aind_x.html">
+     fetch3.scaling.calc_Aind_x
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="fetch3.scaling.calc_LAIc_sp.html">
      fetch3.scaling.calc_LAIc_sp
     </a>
@@ -534,6 +519,26 @@
    <li class="toctree-l2">
     <a class="reference internal" href="fetch3.scaling.calc_xylem_cross_sectional_area.html">
      fetch3.scaling.calc_xylem_cross_sectional_area
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="fetch3.scaling.convert_trans2d_to_cm3hr.html">
+     fetch3.scaling.convert_trans2d_to_cm3hr
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="fetch3.scaling.convert_trans_m3s_to_cm3hr.html">
+     fetch3.scaling.convert_trans_m3s_to_cm3hr
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="fetch3.scaling.integrate_trans2d.html">
+     fetch3.scaling.integrate_trans2d
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="fetch3.scaling.trans2d_to_tree.html">
+     fetch3.scaling.trans2d_to_tree
     </a>
    </li>
   </ul>
@@ -630,19 +635,21 @@
                 
   <section id="module-fetch3.scaling">
 <span id="fetch3-scaling"></span><h1>fetch3.scaling<a class="headerlink" href="#module-fetch3.scaling" title="Permalink to this headline">#</a></h1>
-<p>Provides scaling functions to convert common parameters to model parameters</p>
+<p>Provides scaling functions to convert common parameters to model parameters,
+and convenience functions for unit conversions of transpiration.</p>
 <p>Config parameters that will be provided by the user:</p>
 <ul class="simple">
 <li><p><span class="math notranslate nohighlight">\(\mathrm{LAI_p^{(sp)} \ [m^2_{leaf (sp)} / m^2_{ground}]}\)</span>: species-specific plot-level LAI</p></li>
-<li><p><span class="math notranslate nohighlight">\(SD [trees \ hectare^{-1}]\)</span>: stand density [# trees per hectare]</p></li>
-<li><p>DBH (stem diameter at breast height #TODO units [m or cm])</p></li>
-<li><p>Active xylem fraction (or depth?) #TODO[m or cm]</p></li>
-<li><p>Crown Area (Ac_sp)</p></li>
+<li><p><span class="math notranslate nohighlight">\(\mathrm{SD [trees \ hectare^{-1}]}\)</span>: stand density [# trees per hectare]</p></li>
+<li><p>DBH (stem diameter at breast height [cm])</p></li>
+<li><p>Sapwood depth [cm]</p></li>
+<li><p><span class="math notranslate nohighlight">\(\mathrm{A_c^{(sp)} [m^2]}\)</span>: Mean crown area (species-specific)</p></li>
 </ul>
-<p>Need to calculate:</p>
+<p>Calculated parameters:</p>
 <ul class="simple">
 <li><p>species-specific crown-level LAI (LAIc_sp) [m2 leaf (sp) / m2 ground]</p></li>
-<li><p>Stem area / xylem area</p></li>
+<li><p>sapwood area [m2]</p></li>
+<li><p>xylem area index (Aind_x) : [m2 xylem m-2 ground]</p></li>
 </ul>
 <p class="rubric">Functions</p>
 <table class="autosummary longtable table autosummary">
@@ -651,11 +658,26 @@
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../scaling.html#fetch3.scaling.calc_LAIc_sp" title="fetch3.scaling.calc_LAIc_sp"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calc_LAIc_sp</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="../scaling.html#fetch3.scaling.calc_Aind_x" title="fetch3.scaling.calc_Aind_x"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calc_Aind_x</span></code></a></p></td>
+<td><p>Calculates the crown-level xylem area index [m2 xylem m-2 crown projection]</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../scaling.html#fetch3.scaling.calc_LAIc_sp" title="fetch3.scaling.calc_LAIc_sp"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calc_LAIc_sp</span></code></a></p></td>
 <td><p>Calculates the crown-level species-specific LAI (LAIc_sp [m2 leaf (sp) / m2 ground projection of crown]), using the plot-level species-specific LAI (LAIp_sp [m2 leaf (sp) / m2 ground in plot]), mean crown area of the species [m2], and the stand density of the species in the plot [# of trees of sp / hectare].</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../scaling.html#fetch3.scaling.calc_xylem_cross_sectional_area" title="fetch3.scaling.calc_xylem_cross_sectional_area"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calc_xylem_cross_sectional_area</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="../scaling.html#fetch3.scaling.calc_xylem_cross_sectional_area" title="fetch3.scaling.calc_xylem_cross_sectional_area"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calc_xylem_cross_sectional_area</span></code></a></p></td>
 <td><p>Calculate xylem cross-sectional area from DBH and active xylem depth</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="fetch3.scaling.convert_trans2d_to_cm3hr.html#fetch3.scaling.convert_trans2d_to_cm3hr" title="fetch3.scaling.convert_trans2d_to_cm3hr"><code class="xref py py-obj docutils literal notranslate"><span class="pre">convert_trans2d_to_cm3hr</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="fetch3.scaling.convert_trans_m3s_to_cm3hr.html#fetch3.scaling.convert_trans_m3s_to_cm3hr" title="fetch3.scaling.convert_trans_m3s_to_cm3hr"><code class="xref py py-obj docutils literal notranslate"><span class="pre">convert_trans_m3s_to_cm3hr</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="fetch3.scaling.integrate_trans2d.html#fetch3.scaling.integrate_trans2d" title="fetch3.scaling.integrate_trans2d"><code class="xref py py-obj docutils literal notranslate"><span class="pre">integrate_trans2d</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="fetch3.scaling.trans2d_to_tree.html#fetch3.scaling.trans2d_to_tree" title="fetch3.scaling.trans2d_to_tree"><code class="xref py py-obj docutils literal notranslate"><span class="pre">trans2d_to_tree</span></code></a></p></td>
+<td><p></p></td>
 </tr>
 </tbody>
 </table>
@@ -674,10 +696,10 @@
             <p class="prev-next-title">fetch3.sapflux.format_inputs</p>
         </div>
     </a>
-    <a class='right-next' id="next-link" href="fetch3.scaling.calc_LAIc_sp.html" title="next page">
+    <a class='right-next' id="next-link" href="fetch3.scaling.calc_Aind_x.html" title="next page">
     <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">fetch3.scaling.calc_LAIc_sp</p>
+        <p class="prev-next-title">fetch3.scaling.calc_Aind_x</p>
     </div>
     <i class="fas fa-angle-right"></i>
     </a>

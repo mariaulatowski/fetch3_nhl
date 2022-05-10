@@ -1,0 +1,6 @@
+fetch3.scaling.integrate\_trans2d
+=================================
+
+.. currentmodule:: fetch3.scaling
+
+.. autofunction:: integrate_trans2d

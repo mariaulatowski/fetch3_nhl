@@ -1,6 +1,0 @@
-fetch3.model\_functions.vanGenuchten
-====================================
-
-.. currentmodule:: fetch3.model_functions
-
-.. autofunction:: vanGenuchten

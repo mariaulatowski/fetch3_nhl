@@ -1,6 +1,0 @@
-fetch3.model\_functions.format\_model\_output
-=============================================
-
-.. currentmodule:: fetch3.model_functions
-
-.. autofunction:: format_model_output

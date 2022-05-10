@@ -15,8 +15,13 @@ fetch3.scaling
       :toctree:
       :nosignatures:
    
+      calc_Aind_x
       calc_LAIc_sp
       calc_xylem_cross_sectional_area
+      convert_trans2d_to_cm3hr
+      convert_trans_m3s_to_cm3hr
+      integrate_trans2d
+      trans2d_to_tree
    
    
 

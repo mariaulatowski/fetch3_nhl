@@ -1,0 +1,31 @@
+fetch3.optimize
+===============
+
+.. automodule:: fetch3.optimize
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+
+.. autosummary::
+   :toctree:
+   :template: custom-module-template.rst
+   :recursive:
+
+   fetch3.optimize.fetch_wrapper
+   fetch3.optimize.run_optimization
+

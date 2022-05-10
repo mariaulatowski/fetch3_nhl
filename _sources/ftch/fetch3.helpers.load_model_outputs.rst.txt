@@ -1,0 +1,6 @@
+fetch3.helpers.load\_model\_outputs
+===================================
+
+.. currentmodule:: fetch3.helpers
+
+.. autofunction:: load_model_outputs

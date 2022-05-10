@@ -1,0 +1,6 @@
+fetch3.scaling.calc\_Aind\_x
+============================
+
+.. currentmodule:: fetch3.scaling
+
+.. autofunction:: calc_Aind_x

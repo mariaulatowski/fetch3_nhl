@@ -185,20 +185,36 @@
                 
   <section id="module-fetch3.scaling">
 <span id="scaling"></span><h1>Scaling<a class="headerlink" href="#module-fetch3.scaling" title="Permalink to this headline">#</a></h1>
-<p>Provides scaling functions to convert common parameters to model parameters</p>
+<p>Provides scaling functions to convert common parameters to model parameters,
+and convenience functions for unit conversions of transpiration.</p>
 <p>Config parameters that will be provided by the user:</p>
 <ul class="simple">
 <li><p><span class="math notranslate nohighlight">\(\mathrm{LAI_p^{(sp)} \ [m^2_{leaf (sp)} / m^2_{ground}]}\)</span>: species-specific plot-level LAI</p></li>
-<li><p><span class="math notranslate nohighlight">\(SD [trees \ hectare^{-1}]\)</span>: stand density [# trees per hectare]</p></li>
-<li><p>DBH (stem diameter at breast height #TODO units [m or cm])</p></li>
-<li><p>Active xylem fraction (or depth?) #TODO[m or cm]</p></li>
-<li><p>Crown Area (Ac_sp)</p></li>
+<li><p><span class="math notranslate nohighlight">\(\mathrm{SD [trees \ hectare^{-1}]}\)</span>: stand density [# trees per hectare]</p></li>
+<li><p>DBH (stem diameter at breast height [cm])</p></li>
+<li><p>Sapwood depth [cm]</p></li>
+<li><p><span class="math notranslate nohighlight">\(\mathrm{A_c^{(sp)} [m^2]}\)</span>: Mean crown area (species-specific)</p></li>
 </ul>
-<p>Need to calculate:</p>
+<p>Calculated parameters:</p>
 <ul class="simple">
 <li><p>species-specific crown-level LAI (LAIc_sp) [m2 leaf (sp) / m2 ground]</p></li>
-<li><p>Stem area / xylem area</p></li>
+<li><p>sapwood area [m2]</p></li>
+<li><p>xylem area index (Aind_x) : [m2 xylem m-2 ground]</p></li>
 </ul>
+<dl class="py function">
+<dt class="sig sig-object py" id="fetch3.scaling.calc_Aind_x">
+<span class="sig-name descname"><span class="pre">calc_Aind_x</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xylem_cross_sectional_area</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mean_crown_area_sp</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#fetch3.scaling.calc_Aind_x" title="Permalink to this definition">#</a></dt>
+<dd><p>Calculates the crown-level xylem area index [m2 xylem m-2 crown projection]</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>xylem_cross_sectional_area</strong> (<em>float</em>) – sapwood area [m2]</p></li>
+<li><p><strong>mean_crown_area_sp</strong> (<em>float</em>) – Mean crown area of species (crown projection to ground) [m2]</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="fetch3.scaling.calc_LAIc_sp">
 <span class="sig-name descname"><span class="pre">calc_LAIc_sp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">LAIp_sp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mean_crown_area_sp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stand_density_sp</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#fetch3.scaling.calc_LAIc_sp" title="Permalink to this definition">#</a></dt>
@@ -226,20 +242,20 @@ and the stand density of the species in the plot [# of trees of sp / hectare].</
 
 <dl class="py function">
 <dt class="sig sig-object py" id="fetch3.scaling.calc_xylem_cross_sectional_area">
-<span class="sig-name descname"><span class="pre">calc_xylem_cross_sectional_area</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">DBH</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">active_xylem_depth</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#fetch3.scaling.calc_xylem_cross_sectional_area" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">calc_xylem_cross_sectional_area</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">DBH_cm</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">active_xylem_depth_cm</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#fetch3.scaling.calc_xylem_cross_sectional_area" title="Permalink to this definition">#</a></dt>
 <dd><p>Calculate xylem cross-sectional area from DBH and active xylem depth</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>DBH</strong> (<em>float</em>) – Diameter at breast height [cm]</p></li>
-<li><p><strong>active_xylem_depth</strong> (<em>float</em>) – Active xylem depth [cm]</p></li>
+<li><p><strong>DBH</strong> (<em>float</em><em> or </em><em>array</em>) – Diameter at breast height [cm]</p></li>
+<li><p><strong>active_xylem_depth</strong> (<em>float</em><em> or </em><em>array</em>) – Active xylem depth [cm]</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><strong>xylem_cross_sectional_area</strong> – Cross-sectional area of active xylem [cm2]</p>
+<dd class="field-even"><p><strong>xylem_cross_sectional_area</strong> – Cross-sectional area of active xylem [m2]</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>float</p>
+<dd class="field-odd"><p>float or array</p>
 </dd>
 </dl>
 </dd></dl>
