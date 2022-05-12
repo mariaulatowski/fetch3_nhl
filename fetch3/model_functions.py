@@ -14,6 +14,17 @@ from scipy import linalg
 from numpy.linalg import multi_dot
 import logging
 import torch
+eff=0.95 #salt filtration efficiency 
+c=200 #mm molar mass salt conc
+Tw=293 #water temperature in kelvins
+iv = 2. # van't hoff coefficient for NaCl
+def psi_s(E,c,Tw):
+    iv=2 #van't hoff coeff
+    R=8.314 #universal gas constant
+    pi_s=c*iv*R*Tw
+    return pi_s
+pi_s=psi_s(eff,c,Tw)
+os=1*10**6
 
 
 logger = logging.getLogger(__file__)
@@ -364,9 +375,9 @@ def Picard(cfg, H_initial, Head_bottom_H, zind, met, t_num, nt, output_dir, data
                     A[k,j]=+Kr[e] #soil
 
 
-                 #residual for vector Right hand side vector
-                TS[0:nz_s]=-Kr*(hnp1m[0:nz_s]-hnp1m[nz_s:nz_r]) #soil
-                TS[(nz_s):nz_r]=+Kr*(hnp1m[0:nz_s]-hnp1m[nz_s:nz_r]) #root
+                #residual for vector Right hand side vector
+                TS[0:nz_s]=-Kr*(((hnp1m[0:nz_s])-hnp1m[nz_s:nz_r])-pi_s*(1-eff)) #soil-includes osmotic potential in soil and root
+                TS[(nz_s):nz_r]=+Kr*((hnp1m[0:nz_s]-hnp1m[nz_s:nz_r])+pi_s*(1-eff)+os) #root-includes osmotic potential in soil and root and os the offset for osmoregulation
 
 
             else:
@@ -383,10 +394,12 @@ def Picard(cfg, H_initial, Head_bottom_H, zind, met, t_num, nt, output_dir, data
                 for k, j,e in zip(np.arange(nz_s,nz_r,1),np.arange(nz_s-(nz_r-nz_s),nz_s,1),np.arange(0,(nz_r-nz_s),1)):
                     A[k,j]=+Kr[e] #soil
 
-
-                #residual for vector Right hand side vector
-                TS[nz_s-(nz_r-nz_s):nz_s]=-Kr*(hnp1m[nz_s-(nz_r-nz_s):nz_s]-hnp1m[nz_s:nz_r]) #soil
-                TS[(nz_s):nz_r]=+Kr*(hnp1m[nz_s-(nz_r-nz_s):nz_s]-hnp1m[nz_s:nz_r]) #root
+                #psi_o=(E*c*iv*R*Tw)
+                #size2=len(nz_s)
+                #psi_o=full((size2), psi_o)
+                #psi_o[nz_s-(nz_r-nz_s):nz_s]
+                TS[nz_s-(nz_r-nz_s):nz_s]=-Kr*((hnp1m[nz_s-(nz_r-nz_s):nz_s]-hnp1m[nz_s:nz_r])-pi_s*(1-eff)) #soil-includes osmotic potential in soil and root
+                TS[(nz_s):nz_r]=+Kr*((hnp1m[nz_s-(nz_r-nz_s):nz_s]-hnp1m[nz_s:nz_r])+pi_s*(1-eff)+os) #root-includes osmotic potential in soil and root and os the offset for osmoregulation
 
 
 ########################################################################################################
