@@ -4,25 +4,11 @@ Initial conditions
 ##################
 """
 import numpy as np
-#import Osmoregulation
-#from Osmoregulation import psi_s
-E=0.95 # % salt filtration efficiency 
-c=200 #mm molar mass salt conc
-Tw=293 #water temperature in kelvins
-iv = 2. # van't hoff coefficient for NaCl
-#E = 0.95 #filtration efficiency
-def psi_s(E,c,Tw):
-    iv=2 #van't hoff coeff
-    R=8.314 #universal gas constant
-    pi_s=-c*iv*R*Tw
-    return pi_s
-pi_s=psi_s(E,c,Tw)
 
 #######################################################################
 #INITIAL CONDITIONS
 #######################################################################
 #soil initial conditions as described in the paper [VERMA et al., 2014]
- #osmotic potential in the soil due to salt conc
 
 def initial_conditions(cfg, q_rain, zind):
     dz = cfg.dz
@@ -53,22 +39,6 @@ def initial_conditions(cfg, q_rain, zind):
 
     #putting initial condition in Pascal
     H_initial=initial_H*cfg.g*cfg.Rho  #Pascals
-    for i in np.arange(zind.nz_s+1,zind.nz,1):
-      H_initial[i]=H_initial[i]+pi_s #[pascals]
-
-    #osmotic potential in the soil due to salt conc
-    #E=0.95 # % salt filtration efficiency 
-    #c=200 #mm molar mass salt conc
-    #iv=2 #van't hoff coeff for nacl
-    #R=8.314 #universal gas constant j/mol K
-    #Tw=293 #water temperature in kelvinss    psi_o=(E*c*iv*R*Tw)  #calculate osmotic potential at t=0 in the soil with c=200mm
-    #psi_o=(c*iv*R*Tw)
-    #osmo=np.zeros(shape=zind.nz) #create zero array of osmotic potential att=0
-    #osmo=np.full((osmo),psi_o) #fill array with the initial osmotic potential
-    #initial_H[zind.nz_s]=cfg.H_init_soilbottom
-    #for i in np.arange(zind.nz_s+1,zind.nz,1):
-      # H_initial[i]=H_initial[i-1]+psi_o #[pascals]
-
 
 
     ###########################################################################
