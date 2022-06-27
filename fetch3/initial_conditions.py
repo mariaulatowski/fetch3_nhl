@@ -6,17 +6,16 @@ Initial conditions
 import numpy as np
 #import Osmoregulation
 #from Osmoregulation import psi_s
-E=0.95 # % salt filtration efficiency 
-c=200 #mm molar mass salt conc
-Tw=293 #water temperature in kelvins
+eff=0.97 #salt filtration efficiency 
+c=479.1 #mol/m^3 of nacl salt conc (28ppt for mangroves port F, LA)
+Tw=296.5 #water temperature in kelvins
 iv = 2. # van't hoff coefficient for NaCl
-#E = 0.95 #filtration efficiency
 def psi_s(E,c,Tw):
     iv=2 #van't hoff coeff
     R=8.314 #universal gas constant
     pi_s=-c*iv*R*Tw
     return pi_s
-pi_s=psi_s(E,c,Tw)
+pi_s=psi_s(eff,c,Tw)
 
 #######################################################################
 #INITIAL CONDITIONS

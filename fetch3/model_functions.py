@@ -14,9 +14,9 @@ from scipy import linalg
 from numpy.linalg import multi_dot
 import logging
 import torch
-eff=0.95 #salt filtration efficiency 
-c=200 #mm molar mass salt conc
-Tw=293 #water temperature in kelvins
+eff=0.97 #salt filtration efficiency 
+c=479.1 #mol/m^3 of nacl salt conc (28ppt for mangroves port F, LA)
+Tw=296.5 #water temperature in kelvins
 iv = 2. # van't hoff coefficient for NaCl
 def psi_s(E,c,Tw):
     iv=2 #van't hoff coeff
@@ -25,7 +25,7 @@ def psi_s(E,c,Tw):
     return pi_s
 pi_s=psi_s(eff,c,Tw)
 os=1*10**6
-
+#os=0
 
 logger = logging.getLogger(__file__)
 

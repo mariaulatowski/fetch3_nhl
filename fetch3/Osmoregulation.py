@@ -1,5 +1,5 @@
 E=0.95 # % salt filtration efficiency 
-c=200 #mm molar mass salt conc
+c=0 #mm molar mass salt conc
 Tw=293 #water temperature in kelvins
 iv = 2. # van't hoff coefficient for NaCl
 #E = 0.95 #filtration efficiency
