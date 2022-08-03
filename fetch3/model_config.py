@@ -8,6 +8,8 @@ Reads in model configuration from .yml file
 Model setup options and model parameters are read from a .yml file, which can be
 modified by the user.
 
+See :ref:`scaling` for details about how parameters are converted.
+
 
 *************************
 Modifying the config file
@@ -17,9 +19,26 @@ Modifying the config file
 ==================
 See ``model_config.yml`` for an example.
 
+.. note::
+    FETCH3 can also use the config file format that is used for optimization runs, as long as ``value`` is specified for
+    every parameter.
+
 Model options
 -------------
 * **input_fname** (str): File for input met data
+* **met_column_labels** (dict): Dictionary specifying the mapping of the column headers in your input file to the
+  required input variables. This is needed if your column headers differ from the default variable names. See
+  :ref:`Prepare input files for the model` for a list of the default variable names. Each element in the dictionary
+  should be formatted as <your column header>: <standard variable name>, for example::
+
+    met_column_labels:
+      CO2_F_MDS: CO2_F
+
+  Alternately, the dictionary can also be formatted as::
+
+    met_column_labels: {'CO2_F_MDS': 'CO2_F'}
+
+
 * **start_time** (str): ["YYYY-MM-DD HH:MM:SS"] Begining of simulation
 * **end_time** (str): ["YYYY-MM-DD HH:MM:SS"] End of simulation
 
@@ -96,15 +115,10 @@ Depths of layer/clay interface
 
 Soil initial conditions
 ^^^^^^^^^^^^^^^^^^^^^^^
-Soil initial conditions as described in the paper [VERMA et al., 2014]
-The initial conditions were constant -6.09 m drom 0-3 metres (from soil bottom)
-from 3 meters, interpolation of -6.09 m to -0.402 m between 3-4.2 m
-from 4,2 m [sand layer] cte value of -0.402 m
-
-* **cte_clay** (float): depth from 0-3m initial condition of clay [and SWC] is constant
-* **H_init_soilbottom** (float):
-* **H_init_soilmid** (float):
-* **H_init_canopytop** (float):
+* **initial_swc_clay** (float): initial soil water content for the clay layer [m3 m-3]
+* **initial_swc_sand** (float): initial soil water content for the sand layer [m3 m-3]
+* **soil_moisture_bottom_boundary** (float): Soil moisture content [m3 m-3] for bottom boundary. Only used if the Dirichlet
+  bottom boundary condition is used
 
 Soil parameters - using Van Genuchten relationships
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -114,7 +128,6 @@ Clay:
 * **theta_S1** (float): saturated volumetric soil moisture content *[-]*
 * **theta_R1** (float): residual volumetric soil moisture content *[-]*
 * **n_1** (float): soil hydraulic parameter *[-]*
-* **m_1** (float): soil hydraulic parameter *[-]*. m_1 = 1-(1/n_1)
 * **Ksat_1** (float): saturated hydraulic conductivity *[m/s]*
 
 Sand: same definitions as above, but for sand
@@ -123,7 +136,6 @@ Sand: same definitions as above, but for sand
 * **theta_S2** (float):
 * **theta_R2** (float):
 * **n_2** (float):
-* **m_2** (float): m_2 = 1-(1/n_2)
 * **Ksat_2** (float):
 
 Soil stress parameters:
@@ -220,10 +232,11 @@ Jarvis parameters
 """
 
 import logging
+from dataclasses import dataclass
 
 import yaml
-from dataclasses import dataclass
-from fetch3.scaling import calc_LAIc_sp, calc_Aind_x, calc_xylem_cross_sectional_area
+
+from fetch3.scaling import calc_Aind_x, calc_LAIc_sp, calc_xylem_cross_sectional_area
 
 # # Default paths for config file, input data, and model output
 # parent_path = Path(__file__).resolve().parent.parent
@@ -264,128 +277,121 @@ from fetch3.scaling import calc_LAIc_sp, calc_Aind_x, calc_xylem_cross_sectional
 logger = logging.getLogger(__file__)
 
 
-
-
 # Dataclass to hold the config parameters
 @dataclass
 class ConfigParams:
-    """ Dataclass to hold parameters from .yml file
-    """
+    """Dataclass to hold parameters from .yml file"""
+
     ###############################################################################
-    #INPUT DATA FILE PARAMETERS
+    # INPUT DATA FILE PARAMETERS
     ###############################################################################
 
     # File for input met data
     input_fname: str
 
-    start_time: str #begining of simulation
-    end_time: str #end
+    start_time: str  # begining of simulation
+    end_time: str  # end
 
-    dt:  int  #seconds - input data resolution
-    tmin:  int  #tmin [s]
-
-    ###############################################################################
-    #SITE INFORMATION
-    ###############################################################################
-    latitude:  float
-    longitude:  float
-    time_offset:  float #Offset from UTC time, e.g EST = UTC -5 hrs
+    dt: int  # seconds - input data resolution
+    tmin: int  # tmin [s]
 
     ###############################################################################
-    #RUN OPTIONS - printing
+    # SITE INFORMATION
+    ###############################################################################
+    latitude: float
+    longitude: float
+    time_offset: float  # Offset from UTC time, e.g EST = UTC -5 hrs
+
+    ###############################################################################
+    # RUN OPTIONS - printing
     ###############################################################################
     # Printing slows down model run
     # Options to turn printing off or specify print frequency
-    print_run_progress:  bool  # Turn on/off printing for progress of time steps calculated
-    print_freq:  int  # Interval of timesteps to print if print_run_progress = True (e.g. 1 will print every time step)
+    print_run_progress: bool  # Turn on/off printing for progress of time steps calculated
+    print_freq: int  # Interval of timesteps to print if print_run_progress = True (e.g. 1 will print every time step)
 
     ###############################################################################
-    #TRANSPIRATION OPTIONS - NHL OR PM
+    # TRANSPIRATION OPTIONS - NHL OR PM
     ###############################################################################
-    transpiration_scheme:  int # 0: PM transpiration; 1: NHL transpiration
-    zenith_method:  str
-    ###############################################################################
-    #NUMERICAL SOLUTION TIME AND SPACE CONSTANTS (dz and dt0)
-    ###############################################################################
-    #The finite difference discretization constants
-    dt0:  int  #model temporal resolution [s]
-    dz:  float  #model spatial resolution [m]
+    transpiration_scheme: int  # 0: PM transpiration; 1: NHL transpiration
+    zenith_method: str
 
-    stop_tol:  float  #stop tolerance of equation converging
+    #######################################################################
+    # LEAF AREA DENSITY FORMULATION (LAD) [1/m]
+    #######################################################################
+    lad_scheme: int  # 0: default scheme, based on Lalic et al 2014; 1: scheme from NHL module
+
+    ###############################################################################
+    # NUMERICAL SOLUTION TIME AND SPACE CONSTANTS (dz and dt0)
+    ###############################################################################
+    # The finite difference discretization constants
+    dt0: int  # model temporal resolution [s]
+    dz: float  # model spatial resolution [m]
+
+    stop_tol: float  # stop tolerance of equation converging
 
     #############################################################################
-    #MODEL PARAMETERS
-    #Values according to Verma et al., 2014
+    # MODEL PARAMETERS
+    # Values according to Verma et al., 2014
     ############################################################################
 
-    #CONFIGURING SOIL BOUNDARY CONDITIONS
-    #Here the user can choose the desired contition by setting the numbers as
-    #described below
+    # CONFIGURING SOIL BOUNDARY CONDITIONS
+    # Here the user can choose the desired contition by setting the numbers as
+    # described below
 
-    #The configuration used follows Verma et al. 2014
+    # The configuration used follows Verma et al. 2014
 
     #############################################################################
 
-    #Upper Boundary condition
+    # Upper Boundary condition
 
-    #1 = no flux (Neuman)
-    #0 = infiltration
+    # 1 = no flux (Neuman)
+    # 0 = infiltration
 
+    # Bottom Boundary condition
 
-    #Bottom Boundary condition
-
-    #2 = free drainage
-    #1 = no flux (Neuman)
-    #0 = constant potential (Dirichlet)
+    # 2 = free drainage
+    # 1 = no flux (Neuman)
+    # 0 = constant potential (Dirichlet)
 
     UpperBC: int
     BottomBC: int
 
-    #SOIL SPATIAL DISCRETIZATION
+    # SOIL SPATIAL DISCRETIZATION
 
-    Root_depth: float #[m] depth of root column
-    Soil_depth: float   #[m]depth of soil column
+    Root_depth: float  # [m] depth of root column
+    Soil_depth: float  # [m]depth of soil column
 
     ####################################################################
-    #CONFIGURATION OF SOIL DUPLEX
-    #depths of layer/clay interface
+    # CONFIGURATION OF SOIL DUPLEX
+    # depths of layer/clay interface
     #####################################################################
 
-    sand_d: float #4.2----top soil #m
-    clay_d: float #0------4.2 #m
+    sand_d: float  # 4.2----top soil #m
+    clay_d: float  # 0------4.2 #m
 
-    #SOIL INITIAL CONDITIONS
-    #soil initial conditions as described in the paper [VERMA et al., 2014]
-    #the initial conditions were constant -6.09 m drom 0-3 metres (from soil bottom)
-    #from 3 meters, interpolation of -6.09 m to -0.402 m between 3-4.2 m
-    #from 4,2 m [sand layer] cte value of -0.402 m
+    # SOIL INITIAL CONDITIONS
+    initial_swc_clay: float  # [m3 m-3]
+    initial_swc_sand: float  # [m3 m-3]
 
-    cte_clay: float #depth from 0-3m initial condition of clay [and SWC] is constant
-    H_init_soilbottom:  float
-    H_init_soilmid:  float
-    H_init_canopytop:  float
+    soil_moisture_bottom_boundary: None  # Soil moisture for bottom boundary condition (if using Dirichlet boundary)
+    # SOIL PARAMETERS - USING VAN GENUCHTEN RELATIONSHIPS
 
-    #SOIL PARAMETERS - USING VAN GENUCHTEN RELATIONSHIPS
+    # CLAY
+    alpha_1: float  # soil hydraulic parameter [1/m]
+    theta_S1: float  # saturated volumetric soil moisture content [-]
+    theta_R1: float  # residual volumetric soil moisture content [-]
+    n_1: float  # soil hydraulic parameter  [-]
+    Ksat_1: float  # saturated hydraulic conductivity  [m/s]
 
-    #CLAY
-    alpha_1: float                        #soil hydraulic parameter [1/m]
-    theta_S1: float                      #saturated volumetric soil moisture content [-]
-    theta_R1: float                     #residual volumetric soil moisture content [-]
-    n_1: float                            #soil hydraulic parameter  [-]
-    #m_1 = 1-(1/n_1)
-    m_1: float           #soil hydraulic parameter  [-]
-    Ksat_1: float               #saturated hydraulic conductivity  [m/s]
-
-    #SAND
+    # SAND
     alpha_2: float
     theta_S2: float
     theta_R2: float
     n_2: float
-    ##m_2 = 1-(1/n_2)
-    m_2: float
     Ksat_2: float
 
-    #Soil stress parameters
+    # Soil stress parameters
     theta_1_clay: float
     theta_2_clay: float
 
@@ -393,132 +399,140 @@ class ConfigParams:
     theta_2_sand: float
 
     # TREE PARAMETERS
-    species:  str
+    species: str
 
-    #ROOT PARAMETERS
-    #diving by Rho*g since Richards equation is being solved in terms of \Phi (Pa)
-    #Kr divided by rho*g
-    Kr: float #soil-to-root radial conductance [m/sPa]
+    # ROOT PARAMETERS
+    Kr: float  # soil-to-root radial conductance [m/sPa]
     qz: float
-    #Ksax divided by rho*g                                       #unitless - parameter for the root mass distribution - Verma et al., 2014
-    Ksax: float   #specific axial conductivity of roots  [ m/s]
-    Aind_r: float                                       #m2 root xylem/m2 ground]
+    Ksax: float  # specific axial conductivity of roots  [ m/s]
+    Aind_r: float  # m2 root xylem/m2 ground]
 
-    #XYLEM PARAMETERS
-    #kmax divided by rho*g
-    kmax: float   #conductivity of xylem  [ m2/sPa]
-    ap: float                                  #xylem cavitation parameter [Pa-1]
-    bp: float                                #xylem cavitation parameter [Pa]
-    Phi_0: float                               #From bohrer et al 2005
-    p: float                                          #From bohrer et al 2005
-    sat_xylem: float                                #From bohrer et al 2005
+    # XYLEM PARAMETERS
+    kmax: float  # conductivity of xylem  [ m2/sPa]
+    ap: float  # xylem cavitation parameter [Pa-1]
+    bp: float  # xylem cavitation parameter [Pa]
+    Phi_0: float  # From bohrer et al 2005
+    p: float  # From bohrer et al 2005
+    sat_xylem: float  # From bohrer et al 2005
 
     taper_top: float
 
-    sapwood_depth: float  #Sapwood depth [cm]
-    dbh: float  #DBH [cm]
-    stand_density_sp: float  #Species-specific stand density [trees ha-1]
+    sapwood_depth: float  # Sapwood depth [cm]
+    dbh: float  # DBH [cm]
+    stand_density_sp: float  # Species-specific stand density [trees ha-1]
 
-    #TREE PARAMETERS
-    Hspec: float                      #Height average of trees [m]
-    LAI: float                       #[-] Leaf area index
+    # TREE PARAMETERS
+    Hspec: float  # Height average of trees [m]
+    LAI: float  # [-] Leaf area index
+    mean_crown_area_sp: float
+    sum_LAI_plot: float
 
-    #########################################################################3
-    #NHL PARAMETERS
-    ###########################################################################
-
-    scale_nhl:  float
-
-    mean_crown_area_sp:  float
-    sum_LAI_plot:  float
-
-    Cd:  float # Drag coefficient
-    alpha_ml:  float  # Mixing length constant
-    Cf:  float  #Clumping fraction [unitless], assumed to be 0.85 (Forseth & Norman 1993) unless otherwise specified
-    x:  float  #Ratio of horizontal to vertical projections of leaves (leaf angle distribution), assumed spherical (x=1)
-
-    Vcmax25:  float
-    alpha_gs:  float
-    alpha_p:  float
-
-    wp_s50:  float #value for oak from Mirfenderesgi
-    c3:  float #value for oak from Mirfenderesgi
-
-    LAD_norm:  str #LAD data
-
-
-    #######################################################################
-    #LEAF AREA DENSITY FORMULATION (LAD) [1/m]
-    #######################################################################
-    lad_scheme :  int  #0: default scheme, based on Lalic et al 2014; 1: scheme from NHL module
-
-    #parameters if using penman-monteith transpiration scheme, based on Lalic et al 2014
-    #if using NHL transpiration scheme, LAD is calculated in NHL module
-    L_m: float  #maximum value of LAD a canopy layer
-    z_m: float   #height in which L_m is found [m]
-
-    ###########################################################################
-    #PENMAN-MONTEITH EQUATION PARAMETERS
-    ###########################################################################
-    #W m^-2 is the same as J s^-1 m^-2
-    #1J= 1 kg m2/s2
-    #therefore 1W/m2 = kg/s3
-
-    gb: float          #m/s Leaf boundary layer conductance
-    Cp: float                # J/m3 K Heat capacity of air
-    ga: float          #m/s Aerodynamic conductance
-    lamb: float        #J/m3 latent heat of vaporization
-    gama: float             #Pa/K psychrometric constant
+    met_column_labels: dict = None
 
     #########################################################################3
-    #JARVIS PARAMETERS
+    # NHL PARAMETERS
     ###########################################################################
 
-    gsmax: float      #m/s Maximum leaf stomatal conductance
-    kr: float         #m2/W Jarvis radiation parameter
-    kt: float       #K-2  Jarvis temperature parameter
-    Topt: float           #K   Jarvis temperature parameter (optimum temperature)
-    kd: float       #Pa-1 Jarvis vapor pressure deficit temperature
-    hx50: float        #Pa  Jarvis leaf water potential parameter
-    nl: float                   #[-] Jarvis leaf water potential parameter
-    Emax: float        #m/s maximum nightime transpiration
+    scale_nhl: float = None
+
+    Cd: float = None  # Drag coefficient
+    alpha_ml: float = None  # Mixing length constant
+    Cf: float = None  # Clumping fraction [unitless], assumed to be 0.85 (Forseth & Norman 1993) unless otherwise specified
+    x: float = None  # Ratio of horizontal to vertical projections of leaves (leaf angle distribution), assumed spherical (x=1)
+
+    Vcmax25: float = None
+    alpha_gs: float = None
+    alpha_p: float = None
+
+    wp_s50: float = None  # value for oak from Mirfenderesgi
+    c3: float = None  # value for oak from Mirfenderesgi
+
+    LAD_norm: str = None  # LAD data
+
+    ###########################################################################
+    # PENMAN-MONTEITH EQUATION PARAMETERS
+    ###########################################################################
+
+    # parameters if using penman-monteith transpiration scheme, based on Lalic et al 2014
+    # if using NHL transpiration scheme, LAD is calculated in NHL module
+    L_m: float = None  # maximum value of LAD a canopy layer
+    z_m: float = None  # height in which L_m is found [m]
+    # W m^-2 is the same as J s^-1 m^-2
+    # 1J= 1 kg m2/s2
+    # therefore 1W/m2 = kg/s3
+
+    gb: float = None  # m/s Leaf boundary layer conductance
+    Cp: float = None  # J/m3 K Heat capacity of air
+    ga: float = None  # m/s Aerodynamic conductance
+    lamb: float = None  # J/m3 latent heat of vaporization
+    gama: float = None  # Pa/K psychrometric constant
+
+    #########################################################################3
+    # JARVIS PARAMETERS
+    ###########################################################################
+
+    gsmax: float = None  # m/s Maximum leaf stomatal conductance
+    kr: float = None  # m2/W Jarvis radiation parameter
+    kt: float = None  # K-2  Jarvis temperature parameter
+    Topt: float = None  # K   Jarvis temperature parameter (optimum temperature)
+    kd: float = None  # Pa-1 Jarvis vapor pressure deficit temperature
+    hx50: float = None  # Pa  Jarvis leaf water potential parameter
+    nl: float = None  # [-] Jarvis leaf water potential parameter
+    Emax: float = None  # m/s maximum nightime transpiration
 
     ###############################################################################
     # PHYSICAL CONSTANTS
     ###############################################################################
-    Rho:  float = 998  #[kg m-3] water density
-    g:  float = 9.81  # [m s-2]
-
+    Rho: float = 998  # [kg m-3] water density
+    g: float = 9.81  # [m s-2]
 
     def __post_init__(self):
-      # divide Kr, Ksax, and kmax by rho*g
-      #diving by Rho*g since Richards equation is being solved in terms of \Phi (Pa)
-      self.Kr = self.Kr / (self.Rho * self.g)
-      self.Ksax = self.Ksax / (self.Rho * self.g)
-      self.kmax = self.kmax / (self.Rho * self.g)
 
-      #Calculate sapwood area
-      self.sapwood_area = calc_xylem_cross_sectional_area(self.dbh, self.sapwood_depth)
+        # Calculate m_1 and m_2
+        self.m_1 = 1 - (1 / self.n_1)
+        self.m_2 = 1 - (1 / self.n_2)
 
-      #Calculate Aind_x
-      self.Aind_x = calc_Aind_x(self.sapwood_area, self.mean_crown_area_sp)
-      #Calculate LAIc_sp
-      self.LAIc_sp = calc_LAIc_sp(self.LAI, self.mean_crown_area_sp, self.stand_density_sp)
+        # divide Kr, Ksax, and kmax by rho*g
+        # diving by Rho*g since Richards equation is being solved in terms of \Phi (Pa)
+        self.Kr = self.Kr / (self.Rho * self.g)
+        self.Ksax = self.Ksax / (self.Rho * self.g)
+        self.kmax = self.kmax / (self.Rho * self.g)
+
+        # Calculate sapwood area
+        self.sapwood_area = calc_xylem_cross_sectional_area(self.dbh, self.sapwood_depth)
+
+        # Calculate Aind_x
+        self.Aind_x = calc_Aind_x(self.sapwood_area, self.mean_crown_area_sp)
+        # Calculate LAIc_sp
+        self.LAIc_sp = calc_LAIc_sp(self.LAI, self.mean_crown_area_sp, self.stand_density_sp)
+
 
 # Read configs from yaml file
 
 
 # Convert config dict to config dataclass
 
+
 def setup_config(config_file):
-    logger.info("Reading config file" )
+    logger.info("Reading config file")
+
     with open(config_file, "r") as yml_config:
-        config_dict = yaml.safe_load(yml_config)
-    cfg = ConfigParams(**config_dict['model_options'], **config_dict['parameters'])
+        loaded_configs = yaml.safe_load(yml_config)
+
+    # Check if the config file was the optimization config file format, and convert
+    if "optimization_options" in list(loaded_configs):
+        param_dict = {}
+        for param in loaded_configs["parameters"].keys():
+            param_dict[param] = loaded_configs["parameters"][param]["value"]
+    else:
+        param_dict = loaded_configs["parameters"]
+
+    cfg = ConfigParams(**loaded_configs["model_options"], **param_dict)
     return cfg
 
+
 def save_calculated_params(fileout, cfg):
-    with open(fileout, 'w') as f:
+    with open(fileout, "w") as f:
         # Write model options from loaded config
         # Parameters for the trial from Ax
         yaml.dump(cfg, f)

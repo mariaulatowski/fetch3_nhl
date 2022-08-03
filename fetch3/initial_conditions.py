@@ -2,7 +2,17 @@
 ##################
 Initial conditions
 ##################
+Calculates initial conditions based on specified soil moisture and assuming hydrostatic conditions in the plant
+
+Initial conditions in the soil layers
+- initial soil moisture conditions [m3 m-3] for each soil layer are specified in the configuration file
+- corresponding water potential [Pa] is calculated using the van genuchten equation
+
+Initial conditions in the plant:
+- potential at bottom of roots equals the soil potential at that depth
+- potential at height z = potential at bottom of roots + rho*g*z, where z=0 is the bottom of the roots
 """
+
 import numpy as np
 #import Osmoregulation
 #from Osmoregulation import psi_s
@@ -24,31 +34,67 @@ pi_s=psi_s(eff,c,Tw)
  #osmotic potential in the soil due to salt conc
 
 def initial_conditions(cfg, q_rain, zind):
-    dz = cfg.dz
+    """
+    Calculate initial water potential conditions
 
-    initial_H=np.zeros(shape=zind.nz)
+    Parameters
+    ----------
+    cfg : dataclass
+        model configuration
+    q_rain : np.ndarray
+        array of rain data
+    zind : dataclass
+        z index dataclass
 
-    factor_soil=(cfg.H_init_soilbottom-(cfg.H_init_soilmid))/(int((cfg.clay_d-cfg.cte_clay)/dz)) #factor for interpolation
+    Returns
+    -------
+    H_initial: np.ndarray
+        initial values for water potential [Pa] over the concatenated z domain (soil, roots, xylem)
+    Head_bottom_H: np.ndarray
+        water potential [Pa] for the bottom boundary. size is len(number of timesteps)
 
-    #soil
-    for i in np.arange(0,len(zind.z_soil),1):
-        if  0.0<=zind.z_soil[i]<=cfg.cte_clay :
-            initial_H[i]=cfg.H_init_soilbottom
-        if cfg.cte_clay<zind.z_soil[i]<=zind.z[zind.nz_clay]:
-            initial_H[i]=initial_H[i-1]-factor_soil #factor for interpolation
-        if cfg.clay_d<zind.z_soil[i]<= zind.z[zind.nz_r-1]:
-            initial_H[i]=cfg.H_init_soilmid
+    """
 
-    initial_H[zind.nz_s-1]=cfg.H_init_soilmid
+    # soil
+    H_initial_soil = np.piecewise(
+        zind.z_soil,
+        [zind.z_soil <= cfg.clay_d, zind.z_soil > cfg.clay_d],
+        [
+            calc_potential_vangenuchten(
+                cfg.initial_swc_clay,
+                cfg.theta_R1,
+                cfg.theta_S1,
+                cfg.alpha_1,
+                cfg.m_1,
+                cfg.n_1,
+                cfg.Rho,
+                cfg.g,
+            ),
+            calc_potential_vangenuchten(
+                cfg.initial_swc_sand,
+                cfg.theta_R2,
+                cfg.theta_S2,
+                cfg.alpha_2,
+                cfg.m_2,
+                cfg.n_2,
+                cfg.Rho,
+                cfg.g,
+            ),
+        ],
+    )
 
+    # roots
 
-    factor_xylem=(cfg.H_init_canopytop-(cfg.H_init_soilbottom))/((zind.z[-1]-zind.z[zind.nz_s])/dz)
+    # z index where roots begin (round to get rid of floating point precision error so it matches the z array)
+    z_root_start = np.round(cfg.Soil_depth - cfg.Root_depth, decimals=5)
+    H_initial_root_bottom = H_initial_soil[zind.z_soil == z_root_start]
+    H_initial_root = H_initial_root_bottom - (zind.z_root - z_root_start) * cfg.Rho * cfg.g
 
-    #roots and xylem
-    initial_H[zind.nz_s]=cfg.H_init_soilbottom
-    for i in np.arange(zind.nz_s+1,zind.nz,1):
-        initial_H[i]=initial_H[i-1]+factor_xylem #meters
+    # xylem
+    H_initial_xylem = H_initial_root_bottom - (zind.z_upper - z_root_start) * cfg.Rho * cfg.g
 
+    # concatenated array for z domain
+    H_initial = np.concatenate((H_initial_soil, H_initial_root, H_initial_xylem))
 
     #putting initial condition in Pascal
     H_initial=initial_H*cfg.g*cfg.Rho  #Pascals
@@ -69,6 +115,9 @@ def initial_conditions(cfg, q_rain, zind):
       # H_initial[i]=H_initial[i-1]+psi_o #[pascals]
 
 
+    # set bottom boundary for initial condition
+    if cfg.BottomBC == 0:
+        H_initial[0] = Head_bottom_H[0]
 
     ###########################################################################
     #BOTTOM BOUNDARY CONDITION FOR THE SOIL

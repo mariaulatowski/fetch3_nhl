@@ -64,16 +64,15 @@ Contents
 ********
 
 .. toctree::
-   :maxdepth: 2
+  :maxdepth: 2
 
-   getting_started
-   model_config
-   model_outputs
-   optimization
-   scaling
-   roadmap
-   git_stuff
-   FETCH3 code reference <ftch/fetch3>
+  getting_started
+  user_guide/index
+  developer_guide/index
+  quick_reference
+  troubleshooting
+  changelog
+  FETCH3 code reference <ftch/fetch3>
 
 
 
