@@ -5,7 +5,6 @@ channels:
   - defaults
 dependencies:
   - python=3.9
-  - mkl < 2022
   - torchvision
   - pytorch
   - matplotlib
@@ -13,13 +12,21 @@ dependencies:
   - pandas
   - scipy
   - xarray
+  - netCDF4
+  - dask
+  - bottleneck
   - ipympl
+  - invoke
+  - flake8
   - pip
   - pip:
     - ax-platform
-    - git+https://github.com/madeline-scyphers/optiwrap.git
     - click
     - PyYAML
     - conda-merge
     - pytest
     - snakeviz
+    - black
+    - isort
+    - flakeheaven
+    - git+https://github.com/madeline-scyphers/boa.git
