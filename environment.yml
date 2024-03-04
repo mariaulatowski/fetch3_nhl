@@ -1,0 +1,31 @@
+name: fetch3
+channels:
+  - pytorch
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.10
+  - attrs
+  - torchvision
+  - pytorch > 2
+  - matplotlib
+  - pyviz::hvplot
+  - pyviz::panel
+  - pyviz::datashader
+  - conda-forge::jupyterlab
+  - numpy
+  - pandas
+  - scipy
+  - xarray
+  - netCDF4
+  - dask
+  - bottleneck
+  - ipympl
+  - invoke
+  - flake8
+  - PyYAML
+  - click
+  - conda-forge::boa-framework==0.9.7
+  - pip
+  - pip:
+    - -e .
