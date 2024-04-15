@@ -57,6 +57,14 @@ jobs:
           mamba env update -n fetch3-dev -f environment_dev_update.yml
         if: steps.cache.outputs.cache-hit != 'true'
 
+      - name: export env to artifact
+        run: mamba env export -n fetch3-dev > environment_ci_${{ matrix.os }}.yml
+
+      - uses: actions/upload-artifact@v3
+        with:
+          name: environment_ci_${{ matrix.os }}.yml
+          path: environment_ci_${{ matrix.os }}.yml
+
       - name: Run tests
         shell: bash -l {0}
         run: pytest -s ./fetch3/tests
