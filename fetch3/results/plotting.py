@@ -3,7 +3,6 @@ import hvplot.xarray
 
 import holoviews as hv
 from holoviews import dim, opts
-# from fetch3.results.results import Results
 
 hv.plotting.bokeh.ElementPlot.width = 1200
 hv.plotting.bokeh.ElementPlot.aspect = 4
@@ -29,7 +28,9 @@ def plot_2d_slice(ds=None, z=None, var=None):
 
 def plot_precip_and_swc(model_ds, z=None, obs=None, obs_P='P_F', obs_swc='SWC_F_MDS_1', scale_obs_swc=True):
 
-    # set z=0 if z is none
+    # Use top soil layer if z is not specified
+    if z is None:
+        z = 0
 
     obs_swc = obs[obs_swc]
 
@@ -149,3 +150,4 @@ def plot_precip_swc_m(ax,
     ax2.set_ylim(p_lim)
     ax2.invert_yaxis()
     ax2.yaxis.label.set_color(p_color)
+
