@@ -116,3 +116,36 @@ def plot_stemwp(ds, ds_daily, tlim=(None,None), **kwargs):
     stem_wp_daily = hv.Curve(ds_daily, kdims='time', vdims='H_min', label="Daily min stem water pot.").opts(**kwargs)
 
     return (stem_wp * stem_wp_daily).opts(ylabel="Stem water potential", xlim=tlim, **plot_kw)
+
+
+def plot_precip_swc_m(ax,
+                    obs_df,
+                        swc_var='SWC',
+                        p_var='P_F',
+                        tlim=(None, None),
+                        swc_lim=(0, None),
+                        p_lim=(0, None),
+                        swc_label="SWC",
+                        p_label="P (mm)",
+                        scale_obs_swc=True,
+                        p_color = '#2991d1',
+                        swc_color = 'k',
+                        **kwargs):
+    df = obs_df.copy()
+
+    # If obs are in % instead of fraction
+    if scale_obs_swc:
+        df[swc_var] = df[swc_var] / 100
+
+    # swc
+    ax.plot(df[swc_var], color=swc_color)
+    ax.set_ylabel(swc_label)
+    ax.set_ylim(swc_lim)
+    ax.set_xlim(tlim)
+
+    ax2 = ax.twinx()
+    ax2.plot(df[p_var], color=p_color)
+    ax2.set_ylabel(p_label)
+    ax2.set_ylim(p_lim)
+    ax2.invert_yaxis()
+    ax2.yaxis.label.set_color(p_color)
