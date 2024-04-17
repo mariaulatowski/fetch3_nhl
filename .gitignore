@@ -4,6 +4,13 @@ __version__.py
 # egg
 *.egg*
 
+# Data folder, except a couple of example files
+data/
+!data/LAD_data.csv
+!data/FLX_US-UMB_FLUXNET2015_SUBSET_HH_2007-2017_beta-4.csv
+!data/USA_UMB_CON_sapf_data_tz.csv
+!data/USA_UMB_CON_sapf_data.csv
+
 # Model output
 output/
 

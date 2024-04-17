@@ -1,7 +1,7 @@
 name: fetch3
 channels:
-  - pytorch
   - conda-forge
+  - pytorch
   - defaults
 dependencies:
   - python=3.10
@@ -13,6 +13,8 @@ dependencies:
   - pyviz::panel
   - pyviz::datashader
   - conda-forge::jupyterlab
+  - conda-forge::jupyter_bokeh
+  - pyviz::pyviz_comms
   - numpy
   - pandas
   - scipy
@@ -25,7 +27,8 @@ dependencies:
   - flake8
   - PyYAML
   - click
-  - conda-forge::boa-framework==0.9.7
+  - conda-forge::botorch
+  - conda-forge::boa-framework==0.10.2
   - pip
   - pip:
     - -e .

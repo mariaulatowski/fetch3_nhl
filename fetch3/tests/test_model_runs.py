@@ -1,6 +1,7 @@
 import yaml
 from pathlib import Path
 
+
 import pytest
 import boa.__main__ as dunder_main
 from boa import split_shell_command
