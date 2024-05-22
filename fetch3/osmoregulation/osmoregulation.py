@@ -45,10 +45,10 @@ def calc_osmotic_stress_roots(salinity, iv, R, T, h1,h2):
 
 
 #needs to be added to the matric potential in the soil
-def calc_osmotic_potential(salinity,alpha_o,beta_o, R, iv, T):
+def calc_osmotic_potential(salinity,E, R, iv, T):
     """
     Calculates osmotic potential at the root zone based on solute concentration and the
-    filtration efficiency of NaCl from water at the roots.
+    filtration efficiency of NaCl from water at the roots from Perri et al 2018.
 
     Parameters
     ----------
@@ -71,13 +71,12 @@ def calc_osmotic_potential(salinity,alpha_o,beta_o, R, iv, T):
         Osmotic potential at the root zone  [Pa]
     """
     C = salinity * 1000 / 58.44  # Convert salinity from g/L to mol/m^3 nacl
-    E= alpha_o+beta_o*C #filtration efficiency of salt at the root zone
     osmotic_potential = -E*C * R *iv* T #calculate stem osmostic potential in pascals [Pa]
     return osmotic_potential
 
 
 #needs to be added to the water potential in the stem
-def calc_osmotic_potential_stem(salinity,alpha_o,beta_o, R, iv, T):
+def calc_osmotic_potential_stem(salinity,E, R, iv, T):
     """
     Calculates osmotic potential in the xylem based on solute concentration and the
     filtration efficiency of NaCl from water at the roots.
@@ -103,20 +102,19 @@ def calc_osmotic_potential_stem(salinity,alpha_o,beta_o, R, iv, T):
         Osmotic potential in the xylem  [Pa]
     """
     C = salinity * 1000 / 58.44  # Convert salinity from g/L to mol/m^3 nacl
-    E= alpha_o+beta_o*C #filtration efficiency of salt at the root zone
-    osmotic_potential_stem = -(1-E)*C * R *iv* T #calculate stem osmostic potential in pascals [Pa]
+    osmotic_potential_stem = -(1-E)*C * R *iv* T #calculate stem osmotic potential in pascals [Pa]
     return osmotic_potential_stem
 
 
-def calc_Vcmax25(Vc_m,Vc_b,salinity):
+def calc_Vcmax25(Vcmax25_m,Vcmax25_b,salinity):
     """
     Calculates Vcmax25 based off salinity in the soil. Equation fit from data from Suarez et al 2006
 
     Parameters
     ----------
-    Vc_m : float
+    Vcmax25_m : float
         slope of the Vcmax equation
-    Vc_b: float
+    Vcmax25_b: float
         intercept of the Vcmax equation
     Salinity : float
         salinity [ppt]
@@ -125,11 +123,11 @@ def calc_Vcmax25(Vc_m,Vc_b,salinity):
     Vcmax25 : float
         maximum carboxylation rate at 25 degrees at current salinity  [umol/umol]
     """
-    Vcmax25 = Vc_m * salinity + Vc_b
+    Vcmax25 = Vcmax25_m * salinity + Vcmax25_b
     return Vcmax25
 
 
-def calc_wp50_params(wp_s50m, wp_s50b, c3_m, c3_b, salinity):
+def calc_wp50_params(wp_s50m, wp_s50b, salinity):
     """
     Calculates wp_s50 and c3 shape parameter for the stomatal conductance vs stem water potential curve according to
     the salinity (ppt) in the soil
@@ -154,29 +152,8 @@ def calc_wp50_params(wp_s50m, wp_s50b, c3_m, c3_b, salinity):
         shape parameter for the stem water potential vs stomatal response curve function at current salinity
     """
     wp_s50 = wp_s50m * salinity + wp_s50b
-    c3= c3_m*salinity**c3_b
+    c3= -2.406*wp_s50*(-wp_s50)**(-1.25) #xu et al 2023, christofferson et al 2016
     return wp_s50, c3
 
 
-#add this to the water potential in the xylem when passed to the capacitance equation in porous_media_xylem in the model_functions script
-def calc_osmoregulation(arg,m_o,b_o):
-    """
-    Calculates osmotic potential in the storage based off the relationship between sap salinity and stem water potential from
-    LÓPEZ-PORTILLO et al 2005
 
-    Parameters
-    ----------
-    arg : float
-        stem water potential [Pa]
-    m_o: float
-        shape parameter for osmoregulation function.
-    b_o : float
-        shape parameter for osmoregulation function.
-
-    Returns
-    -------
-    os : float
-        omsoregulation in the xylem. Osmotic potential in xylem storage based off sap salinity concentration [Pa]
-    """
-    os = m_o*arg-b_o
-    return os
