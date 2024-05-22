@@ -25,7 +25,6 @@ def Porous_media_xylem(arg, ap, bp, kmax, Aind_x, p, sat_xylem, Phi_0, z, nz_r, 
 
     # arg= potential [Pa]
     cavitation_xylem = np.zeros(shape=(len(arg)))
-
     for i in np.arange(0, len(cavitation_xylem), 1):
         if arg[i] > 0:
             cavitation_xylem[i] = 1
@@ -38,7 +37,6 @@ def Porous_media_xylem(arg, ap, bp, kmax, Aind_x, p, sat_xylem, Phi_0, z, nz_r, 
 
     # CAPACITANCE FUNCTION AS IN BOHRER ET AL 2005
     C = np.zeros(shape=len(z[nz_r:nz]))
-
     C = ((Aind_x * p * sat_xylem) / (Phi_0)) * ((Phi_0 - arg) / Phi_0) ** (-(p + 1))
 
     return C, K, cavitation_xylem
@@ -238,6 +236,17 @@ def Picard(cfg: ConfigParams, H_initial, Head_bottom_H, zind, met, t_num, nt, ou
     dim = np.mod(t_num, 1800) == 0
     dim = sum(bool(x) for x in dim)
 
+    # Initialize osmotic_potential array
+    osmotic_potential = np.zeros((nz))
+    salinity=10
+    Co = salinity * 1000 / 58.44  # Convert salinity from g/L to mol/m^3
+    # Assign values based on zone
+    osmotic_potential[0:nz_s] = -Co* 2 * 8.314 * 293  # Osmotic potential in the soil
+    osmotic_potential[nz_s:nz_r] = -0.95 * Co * 2 * 8.314 * 293  # Osmotic potential at the root zone
+    osmotic_potential[nz_r:nz] = -(1 - 0.95) * Co * 2 * 8.314 * 293  # Osmotic potential in the xylem
+    
+
+
     H = np.zeros(shape=(nz, dim))  # Water potential [Pa]
     trans_2d = np.zeros(shape=(len(z_upper), dim))
     nhl_trans_2d = np.zeros(shape=(len(z_upper), dim))
@@ -384,6 +393,9 @@ def Picard(cfg: ConfigParams, H_initial, Head_bottom_H, zind, met, t_num, nt, ou
                 zind.theta_2[nz_s - len(zind.z_root) : nz_s],
             )
 
+            #osmotic_stress_roots=calc_osmotic_stress_roots(0, 2, 8.314, 293, -1250583.9564265397,-2084306.5940442327 )
+            #stress_roots=stress_roots*osmotic_stress_roots
+
             Kr = calc_root_K(r_dist, stress_roots, cfg)
 
             #######################################################################
@@ -421,10 +433,10 @@ def Picard(cfg: ConfigParams, H_initial, Head_bottom_H, zind, met, t_num, nt, ou
                     np.arange(nz_s, nz_r, 1), np.arange(0, nz_s, 1), np.arange(0, (nz_r - nz_s), 1)
                 ):
                     A[k, j] = +Kr[e]  # soil
-
+               
                 # residual for vector Right hand side vector
-                TS[0:nz_s] = -Kr * (hnp1m[0:nz_s] - hnp1m[nz_s:nz_r])  # soil
-                TS[(nz_s):nz_r] = +Kr * (hnp1m[0:nz_s] - hnp1m[nz_s:nz_r])  # root
+                TS[0:nz_s] = -Kr * (hnp1m[0:nz_s] - hnp1m[nz_s:nz_r])#+(-2*8.314*200*298*0.98)) # soil
+                TS[(nz_s):nz_r] = +Kr * (hnp1m[0:nz_s] - hnp1m[nz_s:nz_r])#+(-2*8.314*200*298*(1-0.98)))# root
 
             else:
                 # diagonals
@@ -449,14 +461,14 @@ def Picard(cfg: ConfigParams, H_initial, Head_bottom_H, zind, met, t_num, nt, ou
                     np.arange(0, (nz_r - nz_s), 1),
                 ):
                     A[k, j] = +Kr[e]  # soil
-
+                
+                
                 # residual for vector Right hand side vector
                 TS[nz_s - (nz_r - nz_s) : nz_s] = -Kr * (
                     hnp1m[nz_s - (nz_r - nz_s) : nz_s] - hnp1m[nz_s:nz_r]
-                )  # soil
-                TS[(nz_s):nz_r] = +Kr * (
-                    hnp1m[nz_s - (nz_r - nz_s) : nz_s] - hnp1m[nz_s:nz_r]
-                )  # root
+                )# +(-2*8.314*200*298*0.98))  # soil
+                TS[(nz_s):nz_r] = +Kr * (hnp1m[nz_s - (nz_r - nz_s) : nz_s] - hnp1m[nz_s:nz_r])
+                #)+(-2*8.314*200*298*(1-0.98)))# root
 
             ########################################################################################################
 
@@ -492,10 +504,11 @@ def Picard(cfg: ConfigParams, H_initial, Head_bottom_H, zind, met, t_num, nt, ou
             # SINK/SOURCE ARRAY : concatenating all sinks and sources in a vector
             S_S[:, i] = np.concatenate((TS, -Pt_2d[:, i]))  # vector with sink and sources
 
+            #hnp1m=hnp1m + osmotic_potential
             # dummy variable to help breaking the multiplication into parts
-            matrix2 = multi_dot([Kbarplus, DeltaPlus, hnp1m]) - multi_dot(
-                [Kbarminus, DeltaMinus, hnp1m]
-            )
+            matrix2 = multi_dot([Kbarplus, DeltaPlus, hnp1m]) - multi_dot([Kbarminus, DeltaMinus, hnp1m]) + multi_dot([Kbarplus, DeltaPlus, osmotic_potential]) - multi_dot([Kbarminus, DeltaMinus, osmotic_potential ])
+            #)  add osmotic potential to matrix 2, make os the same way hnp1m is made. in the soil, roots, and stem use the corresponding osmotic potential equations
+            # so  for example in the stem you would do os[nz_r:nz]=-(1-E)*C*R*T,(run the osmotic potential function in the xylem) you would make os like this, initlizling it at the start H = np.zeros(shape=(nz, dim))  # Water potential [Pa]
 
             # % Compute the residual of MPFD (right hand side)
 
@@ -568,6 +581,9 @@ def Picard(cfg: ConfigParams, H_initial, Head_bottom_H, zind, met, t_num, nt, ou
             else:
                 hnp1mp1 = hnp1m + deltam
                 hnp1m = hnp1mp1
+                #hnp1m[nz_s - (nz_r - nz_s) : nz_s]=hnp1mp1[nz_s - (nz_r - nz_s) : nz_s]+(-170*2*8.314*293) #soil
+                #hnp1m[(nz_s):(nz_r)]=hnp1mp1[(nz_s):(nz_r)]+(-0.95*170*2*8.314*293) #root
+                #hnp1m[(nz_r):(nz)]=hnp1mp1[(nz_r):(nz)]+(-(1-0.95)*170*2*8.314*293) #xylem
 
     return (
         H * (10 ** (-6)),
