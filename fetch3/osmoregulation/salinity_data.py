@@ -97,10 +97,7 @@ def prepare_osmo_data(cfg: ConfigParams, data_dir, z_upper):
 
     Salinity = interp_to_model_res(Salinity, tmax, t_data, cfg.model_options.dt0)
 
-    ####2d interpolation of met data
-    Salinity_2d = interpolate_2d(import_salinity_data, len(z_upper))
-
-    return Salinity_2d, tmax, start_time, end_time
+    return Salinity, tmax, start_time, end_time
 
 
 @dataclass
@@ -109,4 +106,4 @@ class Salinity:
     Dataclass to hold salinity data
     """
 
-    Salinity_2d: np.ndarray
+    Salinity: np.ndarray

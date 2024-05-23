@@ -238,12 +238,10 @@ def Picard(cfg: ConfigParams, H_initial, Head_bottom_H, zind, met, t_num, nt, ou
 
     # Initialize osmotic_potential array
     osmotic_potential = np.zeros((nz))
-    salinity=10
-    Co = salinity * 1000 / 58.44  # Convert salinity from g/L to mol/m^3
     # Assign values based on zone
-    osmotic_potential[0:nz_s] = -Co* 2 * 8.314 * 293  # Osmotic potential in the soil
-    osmotic_potential[nz_s:nz_r] = -0.95 * Co * 2 * 8.314 * 293  # Osmotic potential at the root zone
-    osmotic_potential[nz_r:nz] = -(1 - 0.95) * Co * 2 * 8.314 * 293  # Osmotic potential in the xylem
+    osmotic_potential[0:nz_s] = calc_osmotic_potential(salinity,E, R, iv, T) # Osmotic potential in the soil
+    osmotic_potential[nz_s:nz_r] = calc_osmotic_potential(salinity,E, R, iv, T)  # Osmotic potential at the root zone
+    osmotic_potential[nz_r:nz] = calc_osmotic_potential_stem(salinity,E, R, iv, T) # Osmotic potential in the xylem
     
 
 
@@ -504,9 +502,13 @@ def Picard(cfg: ConfigParams, H_initial, Head_bottom_H, zind, met, t_num, nt, ou
             # SINK/SOURCE ARRAY : concatenating all sinks and sources in a vector
             S_S[:, i] = np.concatenate((TS, -Pt_2d[:, i]))  # vector with sink and sources
 
-            #hnp1m=hnp1m + osmotic_potential
             # dummy variable to help breaking the multiplication into parts
-            matrix2 = multi_dot([Kbarplus, DeltaPlus, hnp1m]) - multi_dot([Kbarminus, DeltaMinus, hnp1m]) + multi_dot([Kbarplus, DeltaPlus, osmotic_potential]) - multi_dot([Kbarminus, DeltaMinus, osmotic_potential ])
+            if cfg.osmoregulation== True:
+                #hnp1m=hnp1m + osmotic_potential
+                matrix2 = multi_dot([Kbarplus, DeltaPlus, hnp1m]) - multi_dot([Kbarminus, DeltaMinus, hnp1m]) + multi_dot([Kbarplus, DeltaPlus, osmotic_potential]) - multi_dot([Kbarminus, DeltaMinus, osmotic_potential ])
+            elif cfg.osmoregulation== False:
+                matrix2 = multi_dot([Kbarplus, DeltaPlus, hnp1m]) - multi_dot([Kbarminus, DeltaMinus, hnp1m])
+
             #)  add osmotic potential to matrix 2, make os the same way hnp1m is made. in the soil, roots, and stem use the corresponding osmotic potential equations
             # so  for example in the stem you would do os[nz_r:nz]=-(1-E)*C*R*T,(run the osmotic potential function in the xylem) you would make os like this, initlizling it at the start H = np.zeros(shape=(nz, dim))  # Water potential [Pa]
 
