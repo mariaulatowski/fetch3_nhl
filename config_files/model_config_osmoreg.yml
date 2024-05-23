@@ -38,6 +38,8 @@ model_options:
   #TRANSPIRATION OPTIONS - NHL OR PM
   ###############################################################################
   transpiration_scheme:  1 # 0: PM transpiration; 1: NHL transpiration
+  enable_osmoregulation: True  # Turn on/off osmoregulation
+
 
   ###############################################################################
   #NUMERICAL SOLUTION TIME AND SPACE CONSTANTS (dz and dt0)
@@ -77,7 +79,6 @@ model_options:
   BottomBC: 0
 
   LAD_norm:  'LAD_data.csv' #LAD data
-
 
   #######################################################################
   #LEAF AREA DENSITY FORMULATION (LAD) [1/m]
@@ -166,11 +167,14 @@ species_parameters:
     wp_s50: -9.1e+5
     c3: 12.3
 
-    #########################################################################3
+    #########################################################################
     #Osmoregulation PARAMETERS
-    ###########################################################################
-    alpha_o: 15.8 #parameter for filtration efficiency at root zone function
-    beta_o: 0.04 #parameter for filtration efficiency at root zone function
+    #########################################################################
+    # Osmotic potential parameters
+    filt_eff: 0.95 #salt filtration efficiency at the root zone
     iv: 2 #van't hoff coefficient for NaCl
-    m_o: 0.112 #osmoregulation parameter for osmotic potential in the storage component based off sap salinity to swp relationship
-    b_o: 0.119 #osmoregulation parameter for osmotic potential in the storage component based off sap salinity to swp relationship
+
+    # wp_s50 parameters
+    wp_s50m: 2.82 #m parameter in the equation wp_s50=(wp_s50m*salinity+wp_s50b)*10e6 to get water potential at 50% stomatal closure based off salinity
+    Vcmax25_m: 25 #m parameter in the equation vcmax25=vcmax25_m*salinity+vcmax25_b to get vcmax25 value based off salinity
+    Vcmax25_b: 2 #b parameter in the equation vcmax25=vcmax25_m*salinity+vcmax25_b

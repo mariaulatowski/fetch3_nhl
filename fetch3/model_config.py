@@ -90,6 +90,7 @@ class ModelOptions:
     BottomBC: int
     LAD_norm: str = None  # LAD data
     LAD_column_labels: dict = None  # Mapping of column headers in LAD data to model tree names
+    enable_osmoregulation: bool = False
 
     make_experiment_dir: bool = False
     experiment_name: str = None
@@ -210,12 +211,9 @@ class BaseParameters:
 
 
 
-
 @define
 class PMParameters(BaseParameters):
-    ###########################################################################
-    # PENMAN-MONTEITH EQUATION PARAMETERS
-    ###########################################################################
+    """Penman-Monteith transpiration scheme parameters"""
 
     # parameters if using penman-monteith transpiration scheme, based on Lalic et al 2014
     # if using NHL transpiration scheme, LAD is calculated in NHL module
@@ -247,9 +245,7 @@ class PMParameters(BaseParameters):
 
 @define
 class NHLParameters(BaseParameters):
-    #########################################################################
-    # NHL PARAMETERS
-    #########################################################################
+    """NHL transpiration scheme Parameters"""
 
     scale_nhl: float = None
 
@@ -277,13 +273,12 @@ class NHLParameters(BaseParameters):
             self.alpha_gs = None
 
 @define
-class OsmoregulationParameters(BaseParameters):
-    alpha_o: float = None
-    beta_o: float = None
+class OsmoregulationParameters(NHLParameters):
+    filt_eff: float = None #salt filtration efficiency at the root zone
     iv: float = 2  # van't hoff coefficient, defaults to 2 for NaCl
-    m_o: float = None
-    b_o: float = None
-
+    wp_s50m: float = None #m parameter in the equation wp_s50=(wp_s50m*salinity+wp_s50b)*10e6 to get water potential at 50% stomatal closure based off salinity
+    Vcmax25_m: float = None #m parameter in the equation vcmax25=vcmax25_m*salinity+vcmax25_b to get vcmax25 value based off salinity
+    Vcmax25_b: float = None #b parameter in the equation vcmax25=vcmax25_m*salinity+vcmax25_b
 
 SCHEMES = {
     TranspirationScheme.PM: {"parameters": PMParameters, "model_options": ModelOptions},
@@ -309,7 +304,12 @@ class ConfigParams:
         if isinstance(model_options, dict):
             model_options = SCHEMES[transpiration_scheme]["model_options"](**model_options)
         if isinstance(parameters, dict):
-            parameters = SCHEMES[transpiration_scheme]["parameters"](**parameters)
+            if model_options.enable_osmoregulation:
+                if not transpiration_scheme == TranspirationScheme.NHL:
+                    raise ValueError("The NHL transpiration scheme must be used if osmoregulation is enabled.")
+                parameters = OsmoregulationParameters(**parameters)
+            else:
+                parameters = SCHEMES[transpiration_scheme]["parameters"](**parameters)
         self.__attrs_init__(transpiration_scheme=transpiration_scheme, model_options=model_options, parameters=parameters)
 
     @classmethod
