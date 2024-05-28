@@ -35,31 +35,32 @@ def prepare_salinity_data(filein, cfg: ConfigParams):
     df = import_salinity_data(filein)
     df = df.rename(columns={"TIMESTAMP_START": "Timestamp"})
 
-    # Rename
+    # Rename columns based on configuration
     if cfg.model_options.met_column_labels is not None:
         df = df.rename(columns=cfg.model_options.met_column_labels)
 
+    # Check if "Salinity" column exists, if not, create it with all values set to 0
+    if "Salinity" not in df.columns:
+        df["Salinity"] = 0
 
     varlist = [
         "Timestamp",
         "Salinity"
-        ]
- 
+    ]
 
-    # Keep only variables needed
+    # Keep only the required variables
     df = df[varlist]
 
-    # fill any gaps in the data
+    # Fill any gaps in the data
     df = df.set_index('Timestamp')
     df = df.interpolate(method='linear', limit_direction="both", limit_area=None)
     df = df.reset_index()
 
-    # Select data for length of run
-    df = df[(df.Timestamp >= cfg.model_options.start_time) & (df.Timestamp <= cfg.model_options.end_time)].reset_index(
-        drop=True
-    )
+    # Select data for the length of the run
+    df = df[(df.Timestamp >= cfg.model_options.start_time) & (df.Timestamp <= cfg.model_options.end_time)].reset_index(drop=True)
 
     return df
+
 
 # Helper functions
 def calc_model_time_grid(df, cfg: ConfigParams):

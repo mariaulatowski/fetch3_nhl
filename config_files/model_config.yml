@@ -38,6 +38,7 @@ model_options:
   #TRANSPIRATION OPTIONS - NHL OR PM
   ###############################################################################
   transpiration_scheme:  1 # 0: PM transpiration; 1: NHL transpiration
+  enable_osmoregulation: False  # Turn on/off osmoregulation
 
   ###############################################################################
   #NUMERICAL SOLUTION TIME AND SPACE CONSTANTS (dz and dt0)

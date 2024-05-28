@@ -1,53 +1,44 @@
-# -*- coding: utf-8 -*-
 """
-####
-Main
-####
+This file runs NHL as a standalone module (without running FETCH3).
 
-Main model runner
+It returns NHL transpiration, and also writes NHL
+transpiration to a netcdf file.
 
-Note: This is intended to be run from the command line
 """
+from __future__ import annotations
 import time
 import os
 
 start = time.time()  # start run clock
-
 import shutil
 import logging
-import yaml
-from pathlib import Path
 import concurrent.futures
+import xarray as xr
 
+import fetch3.osmoregulation.main_osmo as nhl
 import click
-
-from fetch3 import __version__ as VERSION
-from fetch3.utils import make_experiment_directory
-from fetch3.initial_conditions import initial_conditions
-from fetch3.met_data import prepare_met_data
-from fetch3.osmoregulation.salinity_data import prepare_osmo_data
+from pathlib import Path
 from fetch3.model_config import save_calculated_params, get_multi_config, ConfigParams
-from fetch3.model_functions import Picard, format_model_output, save_nc, combine_outputs
-from fetch3.model_setup import spatial_discretization, temporal_discretization
-from fetch3.sapflux import calc_sapflux, format_inputs
+from fetch3.utils import make_experiment_directory
+from fetch3 import __version__ as VERSION
 
 log_format = "%(levelname)s %(asctime)s %(processName)s - %(name)s - %(message)s"
 
-logging.basicConfig(
-    filemode="w",
-    format=log_format,
-    level=logging.DEBUG
-)
-logger = logging.getLogger("fetch3")
 
-logger.addHandler(logging.StreamHandler())
+DEFAULT_LEVEL = logging.DEBUG
 
-parent_path = Path(__file__).resolve().parent.parent
+logger = logging.getLogger("fetch3.nhl_transpiration.main_standalone_osmo")
+logger.setLevel(DEFAULT_LEVEL)
+sh = logging.StreamHandler()
+sh.setLevel(DEFAULT_LEVEL)
+sh.setFormatter(logging.Formatter(log_format))
+logger.addHandler(sh)
+
+parent_path = Path(__file__).resolve().parent.parent.parent
 default_config_path = parent_path / "config_files" / "model_config.yml"
 default_data_path = parent_path / "data"
 default_output_path = parent_path / "output"
 model_dir = Path(__file__).parent.resolve()  # File path of model source code
-
 
 @click.command()
 @click.option(
@@ -74,7 +65,7 @@ model_dir = Path(__file__).parent.resolve()  # File path of model source code
     default=None,
     help="species to run the model for"
 )
-def main(config_path, data_path, output_path, species):
+def run(config_path, data_path, output_path, species):
     cfgs = get_multi_config(config_path=config_path, species=species)
 
     model_options = cfgs[0].model_options
@@ -93,11 +84,11 @@ def main(config_path, data_path, output_path, species):
     else:
         exp_dir = output_path
 
-    log_path = exp_dir / "fetch3.log"
+    log_path = exp_dir / "nhl.log"
     if log_path.exists():
         os.remove(log_path)
     fh = logging.FileHandler(log_path)
-    fh.setLevel(logging.DEBUG)
+    fh.setLevel(DEFAULT_LEVEL)
     fh.setFormatter(logging.Formatter(log_format))
     logger.addHandler(fh)
 
@@ -106,11 +97,10 @@ def main(config_path, data_path, output_path, species):
     """
     LOG_INFO = (
         f"""
-    FETCH Run
+    NHL Standalone Run
     Output Experiment Dir: {exp_dir}
     Config file: {config_path}
     Start Time: {time.ctime(start)}
-    Using config file: {config_path}
     Version: {VERSION}"""
     )
 
@@ -124,8 +114,8 @@ def main(config_path, data_path, output_path, species):
     if not copied_config_path.exists():
         shutil.copy(config_path, copied_config_path)
 
-
     try:
+        logger.info("Running NHL transpiration...")
         results = []
         with concurrent.futures.ProcessPoolExecutor() as executor:
             species_runs = {executor.submit(run_single, cfg, data_path, exp_dir): cfg for cfg in cfgs}
@@ -137,8 +127,13 @@ def main(config_path, data_path, output_path, species):
                 except Exception as exc:
                     logger.exception('%r generated an exception: %s' % (original_task, exc))
             concurrent.futures.wait(species_runs)
-        nc_output = combine_outputs(results)
-        save_nc(exp_dir, nc_output)
+        if len(results) > 1:
+            nhl_trans_tot = xr.concat([da[0] for da in results], dim="species")
+            ds = xr.concat([ds[1] for ds in results], dim="species")
+        else:
+            nhl_trans_tot = results[0][0]
+            ds = results[0][1]
+        nhl.write_nhl_output(ds=ds, nhl_trans_tot=nhl_trans_tot, output_dir=exp_dir)
     except Exception as e:
         logger.exception("Error completing Run! Reason: %r", e)
         raise
@@ -147,89 +142,30 @@ def main(config_path, data_path, output_path, species):
         logger.info("run complete")
 
 
-def run_single(cfg: ConfigParams, data_dir, output_dir):
-    log_path = output_dir / f"fetch3_{cfg.species}.log"
+def run_single(cfg: ConfigParams, data_path, output_path):
+    log_path = output_path / f"{cfg.species}_nhl.log"
     if log_path.exists():
         os.remove(log_path)
     fh = logging.FileHandler(log_path)
-    fh.setLevel(logging.DEBUG)
+    fh.setLevel(DEFAULT_LEVEL)
     fh.setFormatter(logging.Formatter(log_format))
     logger.addHandler(fh)
 
-    # Log the directories being used
-    logger.info("Using output directory: " + str(output_dir))
+    save_calculated_params(str(output_path / "calculated_params.yml"), cfg)
+    try:
+        logger.info("Running NHL transpiration...")
 
-    # save the calculated params to a file
-    save_calculated_params(str(output_dir / "calculated_params.yml"), cfg)
+        # NHL in units of [kg H2O m-2crown_projection s-1 m-1stem]
+        nhl_trans_tot, LAD, ds = nhl.main_osmo(cfg, output_path, data_path, to_model_res=False)
+        return nhl_trans_tot, ds
+    except Exception as e:
+        logger.exception("Error completing Run! Reason: %r", e)
+        raise
+    finally:
+        logger.info(f"run time: {time.time() - start} s")  # end run clock
+        logger.info("run complete")
 
-    ##########Set up spatial discretization
-    zind = spatial_discretization(cfg)
-    ######prepare met data
-    met, tmax, start_time, end_time = prepare_met_data(cfg, data_dir, zind.z_upper)
-    Salinity, tmax, start_time, end_time = prepare_osmo_data(cfg, data_dir, zind.z_upper)
-
-    t_num, nt = temporal_discretization(cfg, tmax)
-    logger.info("Total timesteps to calculate: : %d" % nt)
-
-    ############## Calculate initial conditions #######################
-    logger.info("Calculating initial conditions ")
-    H_initial, Head_bottom_H = initial_conditions(cfg, met.q_rain, zind)
-
-    ############## Run the model #######################
-    logger.info("Running the model ")
-    (
-        H,
-        K,
-        S_stomata,
-        theta,
-        S_kx,
-        S_kr,
-        C,
-        Kr_sink,
-        Capac,
-        S_sink,
-        EVsink_ts,
-        THETA,
-        infiltration,
-        trans_2d,
-        nhl_trans_2d,
-    ) = Picard(cfg, H_initial, Head_bottom_H, zind, met, t_num, nt, Salinity, output_dir, data_dir)
-
-    ############## Calculate water balance and format model outputs #######################
-    df_waterbal, df_EP, nc_output = format_model_output(
-        cfg.species,
-        H,
-        K,
-        S_stomata,
-        theta,
-        S_kx,
-        S_kr,
-        C,
-        Kr_sink,
-        Capac,
-        S_sink,
-        EVsink_ts,
-        THETA,
-        infiltration,
-        trans_2d,
-        nhl_trans_2d,
-        cfg.model_options.dt,
-        start_time,
-        end_time,
-        cfg.model_options.dz,
-        cfg,
-        zind,
-    )
-
-    # Calculate sapflux and aboveground storage
-    ds_sapflux = calc_sapflux(nc_output["ds_canopy"], cfg)
-
-    nc_output["sapflux"] = ds_sapflux
-
-    logger.info("Finished running species: %s", cfg.species)
-
-    return nc_output
 
 
 if __name__ == "__main__":
-    main()
+    run()

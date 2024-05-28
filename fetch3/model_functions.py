@@ -15,8 +15,9 @@ import torch
 import xarray as xr
 from numpy.linalg import multi_dot
 
-from fetch3.model_config import ConfigParams, TranspirationScheme
+from fetch3.model_config import ConfigParams, TranspirationScheme, ModelOptions
 from fetch3.roots import calc_root_K, feddes_root_stress, verma_root_mass_dist
+from fetch3.osmoregulation.osmoregulation import calc_osmotic_potential, calc_osmotic_potential_stem, calc_wp50_params, R_GAS
 
 logger = logging.getLogger(__name__)
 
@@ -165,8 +166,7 @@ def vanGenuchten(
 
 ###############################################################################
 
-
-def Picard(cfg: ConfigParams, H_initial, Head_bottom_H, zind, met, t_num, nt, output_dir, data_dir):
+def Picard(cfg: ConfigParams, H_initial, Head_bottom_H, zind, met, t_num, nt, Salinity, output_dir, data_dir):
     # picard iteration solver, as described in the supplementary material
     # solution following Celia et al., 1990
     z_soil = zind.z_soil
@@ -185,6 +185,9 @@ def Picard(cfg: ConfigParams, H_initial, Head_bottom_H, zind, met, t_num, nt, ou
     delta_2d = met.delta_2d
     VPD_2d = met.VPD_2d
     Ta_2d = met.Ta_2d
+
+        # Initialize NHL_modelres with a default value
+    NHL_modelres = None
 
     # Imports for PM transpiration
     if cfg.transpiration_scheme == TranspirationScheme.PM:
@@ -205,7 +208,7 @@ def Picard(cfg: ConfigParams, H_initial, Head_bottom_H, zind, met, t_num, nt, ou
         f_s_2d = jarvis_fs(SW_in_2d, cfg.parameters.kr)
 
     # Imports for NHL transpiration
-    elif cfg.transpiration_scheme == TranspirationScheme.NHL:
+    elif cfg.transpiration_scheme == TranspirationScheme.NHL and cfg.model_options.enable_osmoregulation == False:
         import fetch3.nhl_transpiration.main as nhl
         from fetch3.nhl_transpiration.NHL_functions import (
             calc_stem_wp_response,
@@ -213,8 +216,16 @@ def Picard(cfg: ConfigParams, H_initial, Head_bottom_H, zind, met, t_num, nt, ou
         )
 
         NHL_modelres, LAD, _ = nhl.main(cfg, output_dir, data_dir)
+    
+       # Imports for NHL transpiration
+    elif cfg.transpiration_scheme == TranspirationScheme.NHL and cfg.model_options.enable_osmoregulation == True:
+        import fetch3.osmoregulation.main_osmo as nhlo
+        from fetch3.nhl_transpiration.NHL_functions import (
+            calc_stem_wp_response,
+            calc_transpiration_nhl,
+        )
 
-    # Stem water potential [Pa]
+        NHL_modelres, LAD, _ = nhlo.main_osmo(cfg, output_dir, data_dir)
 
     ######################################################################
 
@@ -234,16 +245,7 @@ def Picard(cfg: ConfigParams, H_initial, Head_bottom_H, zind, met, t_num, nt, ou
     ############################Initializing the pressure heads/variables ###################
     # only saving variables EVERY HALF HOUR
     dim = np.mod(t_num, 1800) == 0
-    dim = sum(bool(x) for x in dim)
-
-    # Initialize osmotic_potential array
-    osmotic_potential = np.zeros((nz))
-    # Assign values based on zone
-    osmotic_potential[0:nz_s] = calc_osmotic_potential(salinity,E, R, iv, T) # Osmotic potential in the soil
-    osmotic_potential[nz_s:nz_r] = calc_osmotic_potential(salinity,E, R, iv, T)  # Osmotic potential at the root zone
-    osmotic_potential[nz_r:nz] = calc_osmotic_potential_stem(salinity,E, R, iv, T) # Osmotic potential in the xylem
-    
-
+    dim = sum(bool(x) for x in dim) 
 
     H = np.zeros(shape=(nz, dim))  # Water potential [Pa]
     trans_2d = np.zeros(shape=(len(z_upper), dim))
@@ -382,7 +384,14 @@ def Picard(cfg: ConfigParams, H_initial, Head_bottom_H, zind, met, t_num, nt, ou
             kbarminus[nz_s] = 0  # boundary contition at the bottom of the roots : no-flux
 
             Kbarminus = np.diagflat(kbarminus)
-
+            ########## OSMOTIC STRESS ARRAYS###########################
+            if cfg.model_options.enable_osmoregulation == True:
+        # Assign values based on zone
+         # Initialize osmotic_potential array
+                osmotic_potential = np.zeros((nz))
+                osmotic_potential[0:nz_s] = calc_osmotic_potential(Salinity[i],cfg.parameters.filt_eff, R_GAS, cfg.parameters.iv, 293) # Osmotic potential in the soil
+                osmotic_potential[nz_s:nz_r] = calc_osmotic_potential(Salinity[i],cfg.parameters.filt_eff, R_GAS, cfg.parameters.iv, 293)  # Osmotic potential at the root zone
+                osmotic_potential[nz_r:nz] = calc_osmotic_potential_stem(Salinity[i],cfg.parameters.filt_eff, R_GAS, cfg.parameters.iv, 293) # Osmotic potential in the xylem
             ##########ROOT WATER UPTAKE TERM ###########################
 
             stress_roots = feddes_root_stress(
@@ -492,21 +501,31 @@ def Picard(cfg: ConfigParams, H_initial, Head_bottom_H, zind, met, t_num, nt, ou
                     jarvis_fleaf(hn[nz_r:nz], cfg.parameters.hx50, cfg.parameters.nl),
                     LAD,
                 )
+            elif cfg.transpiration_scheme == 1 and cfg.model_options.enable_osmoregulation == True:
+                osmotic_potential_=calc_osmotic_potential(Salinity[i],cfg.parameters.filt_eff, R_GAS, cfg.parameters.iv, 293)
+                wp_s50, c3 =  calc_wp50_params(cfg.parameters.E_m, osmotic_potential_)# 1: NHL transpiration scheme
+                Pt_2d[:, i] = calc_transpiration_nhl(
+                    NHL_modelres[:, i],
+                    calc_stem_wp_response(hn[nz_r:nz], wp_s50, c3).transpose(),
+                )
+
             # For NHL transpiration
-            elif cfg.transpiration_scheme == 1:  # 1: NHL transpiration scheme
+            elif cfg.transpiration_scheme == 1 and cfg.model_options.enable_osmoregulation == False:  # 1: NHL transpiration scheme
                 Pt_2d[:, i] = calc_transpiration_nhl(
                     NHL_modelres[:, i],
                     calc_stem_wp_response(hn[nz_r:nz], cfg.parameters.wp_s50, cfg.parameters.c3).transpose(),
                 )
+    
 
             # SINK/SOURCE ARRAY : concatenating all sinks and sources in a vector
             S_S[:, i] = np.concatenate((TS, -Pt_2d[:, i]))  # vector with sink and sources
 
             # dummy variable to help breaking the multiplication into parts
-            if cfg.osmoregulation== True:
+            
                 #hnp1m=hnp1m + osmotic_potential
+            if cfg.model_options.enable_osmoregulation == True:
                 matrix2 = multi_dot([Kbarplus, DeltaPlus, hnp1m]) - multi_dot([Kbarminus, DeltaMinus, hnp1m]) + multi_dot([Kbarplus, DeltaPlus, osmotic_potential]) - multi_dot([Kbarminus, DeltaMinus, osmotic_potential ])
-            elif cfg.osmoregulation== False:
+            else: 
                 matrix2 = multi_dot([Kbarplus, DeltaPlus, hnp1m]) - multi_dot([Kbarminus, DeltaMinus, hnp1m])
 
             #)  add osmotic potential to matrix 2, make os the same way hnp1m is made. in the soil, roots, and stem use the corresponding osmotic potential equations

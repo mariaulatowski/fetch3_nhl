@@ -18,13 +18,13 @@ import pandas as pd
 from fetch3.met_data import prepare_ameriflux_data
 from fetch3.nhl_transpiration.NHL_functions import *
 from fetch3.model_config import ConfigParams
-from fetch3.osmoregulation import calc_NHL_osmo
-from fetch3.salinity_data import prepare_salinity_data
+from fetch3.osmoregulation.osmoregulation import calc_NHL_timesteps_osmo
+from fetch3.osmoregulation.salinity_data import prepare_salinity_data
+
 
 from fetch3.scaling import trans2d_to_tree
 
-
-def main(cfg: ConfigParams, output_dir, data_dir, to_model_res=True, write_output=False):
+def main_osmo(cfg: ConfigParams, output_dir, data_dir, to_model_res=True, write_output=False):
     """
     Calculate NHL transpiration with the dynamic vcmax that changes with salinity.
 
@@ -56,11 +56,13 @@ def main(cfg: ConfigParams, output_dir, data_dir, to_model_res=True, write_outpu
     # Read in LAD and met data
     met_data = prepare_ameriflux_data(data_dir / cfg.model_options.input_fname, cfg)
     salinity_data=prepare_salinity_data(data_dir / cfg.model_options.input_fname, cfg)
+    import pandas as pd
+
     LADnorm_df = pd.read_csv(data_dir / cfg.model_options.LAD_norm)
 
     logger.info("Calculating NHL...")
 
-    ds, LAD, zen = calc_NHL_timesteps_osmo(cfg, met_data, LADnorm_df)
+    ds, LAD, zen = calc_NHL_timesteps_osmo(cfg, met_data, LADnorm_df, salinity_data)
 
     # Apply NHl scaling factor
     ds["NHL_trans_sp_stem"] = ds.NHL_trans_sp_stem * cfg.parameters.scale_nhl  # [kg H2O s-1 m-1stem m-2crown]

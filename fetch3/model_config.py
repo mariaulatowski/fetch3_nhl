@@ -276,7 +276,7 @@ class NHLParameters(BaseParameters):
 class OsmoregulationParameters(NHLParameters):
     filt_eff: float = None #salt filtration efficiency at the root zone
     iv: float = 2  # van't hoff coefficient, defaults to 2 for NaCl
-    wp_s50m: float = None #m parameter in the equation wp_s50=(wp_s50m*salinity+wp_s50b)*10e6 to get water potential at 50% stomatal closure based off salinity
+    E_m: float = None #bulk modulus of elasticity
     Vcmax25_m: float = None #m parameter in the equation vcmax25=vcmax25_m*salinity+vcmax25_b to get vcmax25 value based off salinity
     Vcmax25_b: float = None #b parameter in the equation vcmax25=vcmax25_m*salinity+vcmax25_b
 

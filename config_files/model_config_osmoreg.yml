@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-=======
 model_options:
 
   make_experiment_dir: True
@@ -10,7 +8,7 @@ model_options:
   ###############################################################################
 
   # File for input met data
-  input_fname: "FLX_US-UMB_FLUXNET2015_SUBSET_HH_2007-2017_beta-4.csv"
+  input_fname: "FLX_US-UMB_FLUXNET2015_SUBSET_HH_2007-2017_beta-4_salinity.csv"  #"FLX_US-UMB_FLUXNET2015_SUBSET_HH_2007-2017_beta-4_withSalinitySample.csv"
   met_column_labels:
     CO2_F_MDS: CO2_F
 
@@ -177,7 +175,6 @@ species_parameters:
     iv: 2 #van't hoff coefficient for NaCl
 
     # wp_s50 parameters
-    wp_s50m: 2.82 #m parameter in the equation wp_s50=(wp_s50m*salinity+wp_s50b)*10e6 to get water potential at 50% stomatal closure based off salinity
-    Vcmax25_m: 25 #m parameter in the equation vcmax25=vcmax25_m*salinity+vcmax25_b to get vcmax25 value based off salinity
-    Vcmax25_b: 2 #b parameter in the equation vcmax25=vcmax25_m*salinity+vcmax25_b
->>>>>>> refs/remotes/upstream/feature/osmoregulation
+    E_m: 26 #bulk modulus of elastcity
+    Vcmax25_m: -0.63515 #m parameter in the equation vcmax25=vcmax25_m*salinity+vcmax25_b to get vcmax25 value based off salinity
+    Vcmax25_b: 72.66939 #b parameter in the equation vcmax25=vcmax25_m*salinity+vcmax25_b
