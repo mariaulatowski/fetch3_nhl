@@ -226,6 +226,7 @@ def Picard(cfg: ConfigParams, H_initial, Head_bottom_H, zind, met, t_num, nt, Sa
         )
 
         NHL_modelres, LAD, _ = nhlo.main_osmo(cfg, output_dir, data_dir)
+        
 
     ######################################################################
 
@@ -246,7 +247,6 @@ def Picard(cfg: ConfigParams, H_initial, Head_bottom_H, zind, met, t_num, nt, Sa
     # only saving variables EVERY HALF HOUR
     dim = np.mod(t_num, 1800) == 0
     dim = sum(bool(x) for x in dim) 
-
     H = np.zeros(shape=(nz, dim))  # Water potential [Pa]
     trans_2d = np.zeros(shape=(len(z_upper), dim))
     nhl_trans_2d = np.zeros(shape=(len(z_upper), dim))
@@ -567,6 +567,13 @@ def Picard(cfg: ConfigParams, H_initial, Head_bottom_H, zind, met, t_num, nt, Sa
                 # setting for the next time step value for next cycle
                 if cfg.model_options.BottomBC == 0:
                     hnp1mp1[0] = Head_bottom_H[i]
+                
+                if cfg.model_options.enable_osmoregulation == True:
+                    A_r = _['A']
+                    gs_r = _['gs']
+                else:
+                    A_r=0
+                    gs_r=0
 
                 # saving output variables only every 30min
                 if np.mod(t_num[i], 1800) == 0:
@@ -581,7 +588,7 @@ def Picard(cfg: ConfigParams, H_initial, Head_bottom_H, zind, met, t_num, nt, Sa
                     hsoil = hnp1mp1[nz_s - (nz_r - nz_s) : nz_s]
                     hroot = hnp1mp1[(nz_s):(nz_r)]
                     EVsink_ts[:, sav] = -Kr[:] * (hsoil - hroot)  # sink term soil #saving
-
+                
                     # saving output variables
                     K[:, sav] = knp1m
                     THETA[:, sav] = theta
@@ -622,6 +629,8 @@ def Picard(cfg: ConfigParams, H_initial, Head_bottom_H, zind, met, t_num, nt, Sa
         infiltration,
         trans_2d,
         nhl_trans_2d,
+        A_r,
+        gs_r
     )
 
 
@@ -814,6 +823,7 @@ def format_model_output(
                 nhl_trans_2d.transpose(),
                 dict(description="nhl transpiration", units="m3H2O m-2crown_projection m-1stem s-1"),
             ),
+
         },
         coords={
             "time": df_EP.index,
@@ -881,6 +891,40 @@ def save_nc(dir, xr_datasets):
     # save dataset
     for ds in xr_datasets:
         xr_datasets[ds].to_netcdf(dir / (ds + ".nc"))
+
+
+
+#def save_A_csv(dir, A_r, gs_r):
+    #import pandas as pd
+    # Convert the DataArray to a DataFrame without stacking to avoid conflicts
+    #A_df = A_r.to_dataframe(name='A_r').reset_index()
+    
+    # Save the DataFrame to CSV
+    #A_df.to_csv(dir / "A.csv", index=False)
+
+
+def save_A_csv(dir, A_r, gs_r):
+    import pandas as pd
+    import numpy as np
+    
+    # Ensure the dimensions and coordinates match
+    if not np.array_equal(A_r.coords, gs_r.coords):
+        raise ValueError("Dimensions and coordinates of A_r and gs_r do not match.")
+    
+    # Convert the DataArrays to DataFrames
+    A_df = A_r.to_dataframe(name='A_r').reset_index()
+    gs_df = gs_r.to_dataframe(name='gs_r').reset_index()
+    
+    # Merge the DataFrames on the common columns (time and z)
+    merged_df = pd.merge(A_df, gs_df, on=['time', 'z'])
+    
+    # Save the merged DataFrame to a CSV file
+    merged_df.to_csv(dir / "A_and_gs.csv", index=False)
+
+# Example usage:
+# Assuming output_dir is the directory where you want to save the file
+# save_A_csv(output_dir, A_r, gs_r)
+
 
 
 def combine_outputs(results):

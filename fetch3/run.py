@@ -27,7 +27,7 @@ from fetch3.initial_conditions import initial_conditions
 from fetch3.met_data import prepare_met_data
 from fetch3.osmoregulation.salinity_data import prepare_osmo_data
 from fetch3.model_config import save_calculated_params, get_multi_config, ConfigParams
-from fetch3.model_functions import Picard, format_model_output, save_nc, combine_outputs
+from fetch3.model_functions import Picard, format_model_output, save_nc, combine_outputs, save_A_csv
 from fetch3.model_setup import spatial_discretization, temporal_discretization
 from fetch3.sapflux import calc_sapflux, format_inputs
 
@@ -193,6 +193,8 @@ def run_single(cfg: ConfigParams, data_dir, output_dir):
         infiltration,
         trans_2d,
         nhl_trans_2d,
+        A_r,
+        gs_r
     ) = Picard(cfg, H_initial, Head_bottom_H, zind, met, t_num, nt, Salinity, output_dir, data_dir)
 
     ############## Calculate water balance and format model outputs #######################
@@ -225,8 +227,12 @@ def run_single(cfg: ConfigParams, data_dir, output_dir):
     ds_sapflux = calc_sapflux(nc_output["ds_canopy"], cfg)
 
     nc_output["sapflux"] = ds_sapflux
+    if cfg.model_options.enable_osmoregulation == True:
+        A_p = save_A_csv(output_dir, A_r, gs_r)
+
 
     logger.info("Finished running species: %s", cfg.species)
+
 
     return nc_output
 
