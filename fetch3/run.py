@@ -229,13 +229,14 @@ def run_single(cfg: ConfigParams, data_dir, output_dir):
     nc_output["sapflux"] = ds_sapflux
     if cfg.model_options.enable_osmoregulation == True:
         A_p = save_A_csv(output_dir, A_r, gs_r)
-
+        import fetch3.osmoregulation.main_gs_wp_limit as gs_wp
+        H = nc_output["ds_canopy"]["H"].values
+        A_gs = gs_wp.main_gs_wp_limit(cfg, output_dir, data_dir, H, to_model_res=True, write_output=False)
 
     logger.info("Finished running species: %s", cfg.species)
 
 
     return nc_output
-
 
 if __name__ == "__main__":
     main()
