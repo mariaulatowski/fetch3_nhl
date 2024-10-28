@@ -1,0 +1,8 @@
+python -m fetch3 --config_path C:/Users/maria/Box/GradSchool/GitHub/fetch3_nhl/config_files/Panama_config_files/AG144_panama_config.yml --data_path C:/Users/maria/Box/GradSchool/GitHub/fetch3_nhl/data/Panama_data --output_path C:/Users/maria/Box/GradSchool/GitHub/fetch3_nhl/output
+
+
+test:
+python -m fetch3 --config_path C:/Users/maria/Box/GradSchool/GitHub/fetch3_nhl/config_files/model_config.yml --data_path C:/Users/maria/Box/GradSchool/GitHub/fetch3_nhl/data --output_path C:/Users/maria/Box/GradSchool/GitHub/fetch3_nhl/output
+
+test2:
+python -m fetch3 --config_path C:/Users/maria/Box/GradSchool/GitHub/fetch3_nhl/config_files/Panama_config_files/AG144_panama_config.yml --data_path C:/Users/maria/Box/GradSchool/GitHub/fetch3_nhl/data --output_path C:/Users/maria/Box/GradSchool/GitHub/fetch3_nhl/output

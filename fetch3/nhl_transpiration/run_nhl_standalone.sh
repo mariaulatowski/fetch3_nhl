@@ -1,0 +1,1 @@
+python main_standalone.py --config_path /Users/jmissik/Desktop/repos.nosync/fetch3_nhl/config_files/opt_model_config.yml --output_path /Users/jmissik/Desktop/repos.nosync/fetch3_nhl/output/nhl_test --species oak
