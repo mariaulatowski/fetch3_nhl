@@ -276,9 +276,13 @@ class NHLParameters(BaseParameters):
 class OsmoregulationParameters(NHLParameters):
     filt_eff: float = None #salt filtration efficiency at the root zone
     iv: float = 2  # van't hoff coefficient, defaults to 2 for NaCl
-    E_m: float = None #bulk modulus of elasticity
-    Vcmax25_m: float = None #m parameter in the equation vcmax25=vcmax25_m*salinity+vcmax25_b to get vcmax25 value based off salinity
-    Vcmax25_b: float = None #b parameter in the equation vcmax25=vcmax25_m*salinity+vcmax25_b
+    a_sal: float = None #a_sal parameter (1/psu) in the equation Vcmax25 * (1 - ((a_sal * Salinity) / (1 + a_sal * Salinity)) ** kvc) to reduce vcmax based of salinity
+    kvc: float = None #kvc parameter in eq Vcmax25 * (1 - ((a_sal * Salinity) / (1 + a_sal * Salinity)) ** kvc) to reduce vcmax based of salinity
+    L_op: float = None #empircal shape parameter for wp_s50 curve
+    k_op: float = None #empircal shape parameter for wp_s50 curve
+    x0_op: float = None #parameter for wp_s50 curve [Mpa]
+
+
 
 SCHEMES = {
     TranspirationScheme.PM: {"parameters": PMParameters, "model_options": ModelOptions},

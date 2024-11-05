@@ -540,9 +540,9 @@ def solve_leaf_physiology(Tair, Qp, Ca, Vcmax25, alpha_p, VPD, m, **kwargs):
         # Calculate photosynthesis
         Aj = calc_Aj(alpha_p, e_m, Qp, Ci, gamma_star, Rd)
         Ac = np.full(len(Aj), calc_Ac(Vcmax, Ci, gamma_star, Kc, o, Ko, Rd))
-
+        
         A = np.minimum(Ac, Aj)
-
+      
         # Calculate stomatal conductance
         gs = calc_gs_Leuning(g0, m, A, Cs, gamma_star, VPD)
 

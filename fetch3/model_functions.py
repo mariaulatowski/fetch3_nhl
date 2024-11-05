@@ -503,7 +503,7 @@ def Picard(cfg: ConfigParams, H_initial, Head_bottom_H, zind, met, t_num, nt, Sa
                 )
             elif cfg.transpiration_scheme == 1 and cfg.model_options.enable_osmoregulation == True:
                 osmotic_potential_=calc_osmotic_potential(Salinity[i],cfg.parameters.filt_eff, R_GAS, cfg.parameters.iv, 293)
-                wp_s50, c3 =  calc_wp50_params(cfg.parameters.E_m, osmotic_potential_)# 1: NHL transpiration scheme
+                wp_s50, c3 =  calc_wp50_params(osmotic_potential_, cfg.parameters.L_op, cfg.parameters.k_op, cfg.parameters.x0_op)# 1: NHL transpiration scheme
                 Pt_2d[:, i] = calc_transpiration_nhl(
                     NHL_modelres[:, i],
                     calc_stem_wp_response(hn[nz_r:nz], wp_s50, c3).transpose(),

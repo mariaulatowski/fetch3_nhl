@@ -109,40 +109,43 @@ def calc_osmotic_potential_stem(salinity,E, R, iv, T):
     return osmotic_potential_stem
 
 
-def calc_Vcmax25(Vcmax25_m,Vcmax25_b,salinity):
+def calc_Vcmax25(Vcmax25,a_sal,kvc,salinity):
     """
     Calculates Vcmax25 based off salinity in the soil. Equation fit from data from Suarez et al 2006
 
     Parameters
     ----------
-    Vcmax25_m : float
-        slope of the Vcmax equation
-    Vcmax25_b: float
-        intercept of the Vcmax equation
+    Vcmax25 : float
+        maximium carboxyliation rate- Vcmax at 25 C at 0 ppt salinity [umol/umol]
+    a_sal: float
+        shape parameter for vcmax25 reduction function based off salinity (1/ppt)
+    kvc: float
+        shape parameter for vcmax25 reduction function based off salinity
     Salinity : float
         salinity [ppt]
     Returns
     -------
-    Vcmax25 : float
+    Vcmax25_psu : float
         maximum carboxylation rate at 25 degrees at current salinity  [umol/umol]
     """
-    Vcmax25 = Vcmax25_m * salinity + Vcmax25_b
-    return Vcmax25
+    Vcmax25_psu = Vcmax25 * (1 - ((a_sal * salinity) / (1 + a_sal * salinity)) ** kvc)
+    return Vcmax25_psu
 
 
-def calc_wp50_params(E_m, osmotic_potential):
+def calc_wp50_params(osmotic_potential, L_op, k_op, x0_op):
     """
     Calculates wp_s50 and c3 shape parameter for the stomatal conductance vs stem water potential curve according to
-    the salinity (ppt) in the soil (using soil osmotic potential)
+    the salinity (ppt) in the soil (using soil osmotic potential). Calculates the turgor loss point based off salinity in the soil and
+    assumes wp_s50 is 85% of the tlp in accordance with christofferson et al 2016
 
     Parameters
     ----------
-    wp_s50m : float
-        slope of the wp_s50 equation
-    wp_s50b: float
-        intercept of the wp_s50 equation
-    c3_m: float
-        m paramater of the c3 power function
+    L_op : float
+        Empirical shape parameter of turgor loss point equation
+    k_op: float
+        Empirical shape parameter of turgor loss point equation
+    x0_op: float
+        Empirical shape parameter of turgor loss point equation [MPa]
     c3_b:
         b parameter of the c3 power function
     osmotic_potential : float
@@ -155,11 +158,10 @@ def calc_wp50_params(E_m, osmotic_potential):
         shape parameter for the stem water potential vs stomatal response curve function at current salinity
     """
 
-    op_full_turgor=2.82*osmotic_potential/10e6-3.04 #osmotic potential at full turgor--fit from data from Nguyen et al 2017
-    turgor_loss_point=(op_full_turgor*E_m)/(op_full_turgor + E_m) # turgor loss point--christofferson et al 2016, Bartlett et al 2012
+    turgor_loss_point= -L_op/ (1 + np.exp(k_op * (osmotic_potential*1e-6 - x0_op)))# turgor loss point--christofferson et al 2016, Bartlett et al 2012
     wp_s50 = 0.85 * turgor_loss_point #water potential at 50% stomatal closure -christofferson et al 2016
     c3= -2.406*wp_s50*(-wp_s50)**(-1.25) #xu et al 2023, christofferson et al 2016
-    wp_s50=wp_s50*10e6
+    wp_s50=wp_s50*1e6
     return wp_s50, c3
 
 def calc_NHL_osmo(cfg: ConfigParams, met_data, LADnorm_df, timestep, salinity_data):
@@ -171,7 +173,7 @@ def calc_NHL_osmo(cfg: ConfigParams, met_data, LADnorm_df, timestep, salinity_da
     dz = cfg.model_options.dz
     h = cfg.parameters.Hspec
     Cd = cfg.parameters.Cd
-    Vcmax25 = calc_Vcmax25(cfg.parameters.Vcmax25_m, cfg.parameters.Vcmax25_b, salinity_data.loc[timestep, 'Salinity'])
+    Vcmax25 = calc_Vcmax25(cfg.parameters.Vcmax25, cfg.parameters.a_sal, cfg.parameters.kvc, salinity_data.loc[timestep, 'Salinity'])
     m = cfg.parameters.m
     alpha_p = cfg.parameters.alpha_p
     LAIp_sp = cfg.parameters.LAI
@@ -348,7 +350,7 @@ def calc_A_gs_wplimit(cfg: ConfigParams, met_data, LADnorm_df, timestep, salinit
     dz = cfg.model_options.dz
     h = cfg.parameters.Hspec
     Cd = cfg.parameters.Cd
-    Vcmax25 = calc_Vcmax25(cfg.parameters.Vcmax25_m, cfg.parameters.Vcmax25_b, salinity_data.loc[timestep, 'Salinity'])
+    Vcmax25 = calc_Vcmax25(cfg.parameters.Vcmax25, cfg.parameters.a_sal, cfg.parameters.kvc, salinity_data.loc[timestep, 'Salinity'])
     m = cfg.parameters.m
     alpha_p = cfg.parameters.alpha_p
     LAIp_sp = cfg.parameters.LAI
@@ -361,7 +363,9 @@ def calc_A_gs_wplimit(cfg: ConfigParams, met_data, LADnorm_df, timestep, salinit
     time_offset = cfg.model_options.time_offset
 
     #unpack osmoregulation parameters
-    E_m = cfg.parameters.E_m
+    L_op = cfg.parameters.L_op 
+    k_op = cfg.parameters.k_op
+    x0_op =cfg.parameters.x0_op
     E_f = cfg.parameters.filt_eff
     R = R_GAS 
     iv = cfg.parameters.iv
@@ -419,7 +423,7 @@ def calc_A_gs_wplimit(cfg: ConfigParams, met_data, LADnorm_df, timestep, salinit
     )
 
     # Solve conductances
-    A, gs, Ci, Cs, gb, geff = solve_leaf_physiology_wplimit(Tair, Qp, Ca, Vcmax25, alpha_p, VPD, m, uz=U, H=H, E_m=E_m, E_f=E_f, Salinity=Salinity, iv=iv, R=R)
+    A, gs, Ci, Cs, gb, geff = solve_leaf_physiology_wplimit(Tair, Qp, Ca, Vcmax25, alpha_p, VPD, m, uz=U, H=H, L_op=L_op, k_op=k_op, x0_op=x0_op, E_f=E_f, Salinity=Salinity, iv=iv, R=R)
 
 
     # Add data to dataset
@@ -443,7 +447,7 @@ def calc_A_gs_wplimit(cfg: ConfigParams, met_data, LADnorm_df, timestep, salinit
     return ds, LAD, zenith_angle
 
 
-def solve_leaf_physiology_wplimit(Tair, Qp, Ca, Vcmax25, alpha_p, VPD, m, H, E_m, E_f, Salinity, iv, R, **kwargs):
+def solve_leaf_physiology_wplimit(Tair, Qp, Ca, Vcmax25, alpha_p, VPD, m, H, L_op, k_op, x0_op, E_f, Salinity, iv, R, **kwargs):
     """
     Calculates photosynthesis and stomatal conductance
     Uses Leuning model for stomatal conductance
@@ -478,15 +482,12 @@ def solve_leaf_physiology_wplimit(Tair, Qp, Ca, Vcmax25, alpha_p, VPD, m, H, E_m
         boundary layer conductance [mol m-2 s-1]
     geff : float
         effective leaf conductance [mol m-2 s-1]
-
     """
     # Parameters
-    # Farquhar model
     Kc25 = 300  # [µmol mol-1] Michaelis-Menten constant for CO2, at 25 deg C
     Ko25 = 300  # [mmol mol-1] Michaelis-Menten constant for O2, at 25 deg C
     e_m = 0.08  # [mol mol-1]
     o = 210  # [mmol mol-1]
-    # Leuning model
     g0 = 0.01  # [mol m-2 s-1]
 
     # Adjust the Farquhar model parameters for temperature
@@ -498,11 +499,9 @@ def solve_leaf_physiology_wplimit(Tair, Qp, Ca, Vcmax25, alpha_p, VPD, m, H, E_m
     Rd = 0.015 * Vcmax  # Dark respiration [µmol m-2 s-1]
     gamma_star = (3.69 + 0.188 * (Tair - 25) + 0.0036 * (Tair - 25) ** 2) * 10
 
-    # equation for RuBP saturated rate of CO2 assimilation
     def calc_Ac(Vcmax, Ci, gamma_star, Kc, o, Ko, Rd):
         return Vcmax * (Ci - gamma_star) / (Ci + Kc * (1 + o / Ko)) - Rd
 
-    # equation for RuBP limited rate of CO2 assimilation
     def calc_Aj(alpha_p, e_m, Qp, Ci, gamma_star, Rd):
         return alpha_p * e_m * Qp * (Ci - gamma_star) / (Ci + 2 * gamma_star) - Rd
 
@@ -512,20 +511,22 @@ def solve_leaf_physiology_wplimit(Tair, Qp, Ca, Vcmax25, alpha_p, VPD, m, H, E_m
     err = 10000
     count = 0
     while (err > 0.01) & (count < 200):
-
-        # Calculate photosynthesis
         Aj = calc_Aj(alpha_p, e_m, Qp, Ci, gamma_star, Rd)
         Ac = np.full(len(Aj), calc_Ac(Vcmax, Ci, gamma_star, Kc, o, Ko, Rd))
-        
+
         A = np.minimum(Ac, Aj)
-      
+
         # Calculate stomatal conductance
-        gs = calc_gs_wplimit(g0, m, A, Cs, gamma_star, VPD, H, E_m, E_f, iv, Salinity, R, D0=3)
+        gs = calc_gs_wplimit(g0, m, A, Cs, gamma_star, VPD, H, L_op, k_op, x0_op, E_f, iv, Salinity, R, D0=3)
 
         # Calculate leaf boundary layer resistance
         gb, rb = calc_gb(**kwargs)
         Cs = np.maximum(Ca - A * rb, np.full(len(A), 0.1 * Ca))
+
+        # Update Ci while enforcing the limits
         Ci2 = Cs - A / gs
+        Ci2 = np.clip(Ci2, 150, 600)  # Enforce Ci limits
+        
         err = max(np.abs(Ci - Ci2))
         Ci = Ci2
         count += 1
@@ -541,9 +542,10 @@ def solve_leaf_physiology_wplimit(Tair, Qp, Ca, Vcmax25, alpha_p, VPD, m, H, E_m
 
     return A, gs, Ci, Cs, gb, geff
 
-def calc_gs_wplimit(g0, m, A, c_s, gamma_star, VPD, H, E_m, E_f, iv, Salinity, R, D0=3):
+
+def calc_gs_wplimit(g0, m, A, c_s, gamma_star, VPD, H, L_op, k_op, x0_op, E_f, iv, Salinity, R, D0=3):
     """
-    Calculates gs according to Anderegg 2017, includes wp limit
+    Calculates gs according to Anderegg 2017, includes stem wp limit
 
     Parameters
     ----------
@@ -569,8 +571,8 @@ def calc_gs_wplimit(g0, m, A, c_s, gamma_star, VPD, H, E_m, E_f, iv, Salinity, R
         stomatal conductance [mol H2O m-2 s-1]
     """
     osmotic_potential = calc_osmotic_potential(Salinity, E_f, R, iv, 293)
-    wp_s50, c3 = calc_wp50_params(E_m, osmotic_potential)
-    wp_response = np.exp(-(((H*10e6) / wp_s50) ** c3))
+    wp_s50, c3 = calc_wp50_params(osmotic_potential, L_op, k_op, x0_op)
+    wp_response = np.exp(-(((H*1e6) / wp_s50) ** c3))
     gs = g0 + (m * abs(A)*wp_response) / ((c_s - gamma_star) * (1 + VPD / D0))
     return gs
 
@@ -642,12 +644,13 @@ def calc_A_gs_wplimit_timesteps_osmo(cfg: ConfigParams, met_data, LADnorm_df, sa
     # Extract A and gs data from the concatenated dataset
     A_data = d2['A'].to_dataframe().reset_index()
     gs_data = d2['gs'].to_dataframe().reset_index()
-
+    Ci_data =d2['Ci'].to_dataframe().reset_index()
     # Merge A and gs data with z coordinates
     A_data.rename(columns={'A': 'A'}, inplace=True)
     gs_data.rename(columns={'gs': 'gs'}, inplace=True)
-    
+    Ci_data.rename(columns={'Ci': 'Ci'}, inplace=True)
     # Combine A and gs data
     combined_data = A_data.merge(gs_data, on=['time', 'z'])
+    combined_data = combined_data.merge(Ci_data, on = ['time', 'z'])
 
     return combined_data, d2, LAD, zenith_angle_all
