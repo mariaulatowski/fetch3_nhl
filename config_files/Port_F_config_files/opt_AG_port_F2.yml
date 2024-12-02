@@ -1,0 +1,229 @@
+{% set fetch_run_time = '1:30:00' %}
+{% set model_dir = 'C:/Users/maria/Box/GradSchool/GitHub/fetch3_nhl' %}
+{% set data_path = 'C:/Users/maria/Box/GradSchool/GitHub/fetch3_nhl/data/Port_F_data' %}
+{% set model_trees = ({
+  'avg_SF': {
+    'Hspec': 2,
+    'dbh': 4,
+    'mean_crown_area_sp': 1,
+    'sapwood_depth': 1.4,
+    'scale_nhl': 1}
+}) %}
+{% set tree_names = model_trees.keys()|list %}
+{% set hpft = 'mangrove' %}
+
+objective:
+  metrics:
+    {% for tree in tree_names %}
+    - metric: "RootMeanSquaredError"
+      name: rmse_{{ tree }}_sapflux
+      properties:
+        obs_file: {{ data_path }}Port_F_SFdata_2010.csv
+        obs_var: {{ tree }}
+        output_fname: ds_sapflux.nc
+        output_var: {{ tree }}
+        fetch_data_func: get_model_sapflux
+        normalize: False
+        scaling_factor: 1
+        hour_range: [9, 21]
+        minimize: True
+    - #metric: "RootMeanSquaredError"
+      #name: rmse_{{ tree }}_wwc
+      #properties:
+        #obs_file: {{ data_path }}wwc_trees_2016.csv
+        #obs_var: m9b
+        #output_fname: ds_sapflux.nc
+        #output_var: theta
+        #species: {{ tree }}
+        #normalize: True
+        #fetch_data_func: get_model_obs
+        #scaling_factor: 1.1
+        #hour_range: [9, 21]
+        #minimize: True
+    {% endfor %}
+scheduler:
+  n_trials: 10
+  tolerated_trial_failure_rate: 0.5
+  ttl_seconds_for_trials: 6000
+  run_trials_in_batches: true
+  max_pending_trials: 10
+generation_strategy:
+  num_initialization_trials: 5v#20
+  max_parallelism_override: 5 #10
+
+script_options:
+  exp_name: fetch3_moo_2_obj_2010_mangrove
+  output_dir: C:/Users/maria/Box/GradSchool/GitHub/fetch3_nhl/output
+
+  run_cmd: python main.py --config_path {config_path} --data_path {data_path} --output_path {trial_dir}
+#  run_cmd: sbatch --output={trial_dir}/slurm_log_%j.log --time={{ fetch_run_time }} {{ model_dir }}/scripts/slurm_main.sh {config_path} {data_path} {trial_dir}
+
+  wrapper_path: {{ model_dir }}/fetch3/optimize/fetch_wrapper.py
+  wrapper_name: Fetch3Wrapper
+  rel_to_launch: true
+
+model_options:
+  data_path: {{ data_path }}
+
+  make_experiment_dir: False
+  # File for input met data
+  input_fname: "Port_F_2010_met_update.csv"
+  met_column_labels:
+    CO2_F_MDS: CO2_F
+
+  # Start and end for the model
+  start_time: "2010-05-03 00:00:00"
+  end_time: "2010-06-13 00:00:00"
+
+  dt:  1800  #seconds - input data resolution
+  tmin:  0  #tmin [s]
+
+  # Site information
+  latitude: 29.2625 #Port fourchan site louisiana
+  longitude: -90.3744 
+  time_offset: -5 #Offset from UTC time, e.g EST = UTC -5 hrs
+
+  # Run options
+
+  # Printing slows down model run
+  # Options to turn printing off or specify print frequency
+  print_run_progress: True  # Turn on/off printing for progress of time steps calculated
+  print_freq:  2000  # Interval of timesteps to print if print_run_progress = True (e.g. 1 will print every time step)
+
+  # Transpiration options: NHL or PM transpiration scheme
+  transpiration_scheme:  1 # 0: PM transpiration; 1: NHL transpiration
+  enable_osmoregulation: True # Turn on/off osmoregulation
+  # Numerical solution time and space constants
+  #The finite difference discretization constants
+  dt0: 20  #model temporal resolution [s]
+  dz: 0.2  #model spatial resolution [m]
+  stop_tol: .0001  #0.0001  #stop tolerance of equation converging
+
+  # Soil boundary conditions
+
+  # Upper Boundary condition
+  # 1 = no flux (Neuman)
+  # 0 = infiltration
+
+  # Bottom Boundary condition
+  # 2 = free drainage
+  # 1 = no flux (Neuman)
+  # 0 = constant potential (Dirichlet)
+
+  UpperBC: 0
+  BottomBC: 0
+
+  # Tree information
+  LAD_norm:  'LAD_data.csv' # File with LAD data
+  LAD_column_labels:
+    {% for tree in tree_names %}
+    {{ tree }}: {{ hpft }}
+    {% endfor %}
+
+  # Leaf area density formulation
+  lad_scheme:  1  #0: default scheme, based on Lalic et al 2014; 1: scheme from NHL module
+
+
+  site_parameters:
+    Soil_depth: 6.0  # [m] depth of soil column
+    sand_d: 6.0 #4.2----top soil #m
+    clay_d: 1.0 #0------4.2 #m
+
+    # Soil initial conditions
+    initial_swc_clay: 0.28 #from Verma et al
+
+    initial_swc_sand: 0.08  # [m3 m-3] from Verma et al
+
+    # soil bottom boundary condition
+    soil_moisture_bottom_boundary: 0.28  # [m3/m3]
+
+    #SOIL PARAMETERS - USING VAN GENUCHTEN RELATIONSHIPS
+
+    #CLAY
+    alpha_1: 0.8                       #soil hydraulic parameter [1/m]
+    theta_S1: 0.55                     #saturated volumetric soil moisture content [-]
+    theta_R1: 0.03                    #residual volumetric soil moisture content [-]
+    n_1: 1.5
+    Ksat_1: 1.94e-7               #saturated hydraulic conductivity  [m/s]
+
+    #SAND
+    alpha_2: 14.5
+    theta_S2: 0.47
+    theta_R2: 0.045
+    n_2: 2.4
+    Ksat_2: 3.45e-5
+
+    #For NHL
+    sum_LAI_plot: 3  # Value from 2015 optical LAI measurements
+
+    Cd: 0.1 # Drag coefficient
+    alpha_ml: 0.1  # Mixing length constant
+
+  {{ hpft }}:
+  # Roots parameters
+    Root_depth: 0.6  # [m] depth of root column
+    #Soil stress parameters
+    theta_1_clay: 0.08
+    theta_2_clay: 0.12
+
+    theta_1_sand: 0.05
+    theta_2_sand: 0.09
+
+    #ROOT PARAMETERS
+    Kr: 7.2e-10 #soil-to-root radial conductance [m/sPa]
+    qz: 9  #unitless - parameter for the root mass distribution - Verma et al., 2014
+    Ksax: 5.0e-08  #specific axial conductivity of roots  [ m/s]
+    Aind_r: 1.0          #m2 root xylem/m2 ground]
+
+    #XYLEM PARAMETERS
+    kmax: 5.0e-8 #conductivity of xylem  [ m2/sPa]
+    ap: 8.769734320082109e-07                                #xylem cavitation parameter [Pa-1]
+    bp: -8158890.749381061                                #xylem cavitation parameter [Pa] 
+    Phi_0: 
+      type: range
+      bounds: [5.74e+5, 5.74e+6]                              #From bohrer et al 2005
+    p:
+      type: range
+      bounds: [1,20]                                          #From bohrer et al 2005
+    sat_xylem: 0.573  # From bohrer et al 2005
+
+    #TREE PARAMETERS
+    taper_top: 1.0  # Taper of xylem from base to crown
+    stand_density_sp: 8000  # Species-specific stand density [trees ha-1]
+    LAI: 3  # From 2015 litter trap measurements (adjusted by optical measurements)
+
+    #########################################################################3
+    #NHL PARAMETERS
+    ###########################################################################
+
+    Cf: 0.85  #Clumping fraction [unitless], assumed to be 0.85 (Forseth & Norman 1993) unless otherwise specified
+    x: 1.0  #Ratio of horizontal to vertical projections of leaves (leaf angle distribution), assumed spherical (x=1)
+    Vcmax25: 69.639 # Default value from Mirfenderesgi et al 2016
+    m: 7.258 # Default value from Mirfenderesgi et al 2016
+    alpha_p: 0.934  # Default value from Mirfenderesgi et al 2016
+    wp_s50: -9.1e+5
+  # Range from Mirfenderesgi et al 2016, Table 2
+    c3: 12.3
+
+#########################################################################
+    #Osmoregulation PARAMETERS
+    #########################################################################
+    filt_eff: 0.95 #0.95 #salt filtration efficiency at the root zone
+    iv: 2  # van't hoff coefficient, defaults to 2 for NaCl
+    a_sal: 0.500 #a_sal parameter (1/psu) in the equation Vcmax25 salinity reduction eq. Fit from Surez et al 2006 data
+    kvc: 23.963 #kvc parameter in eq Vcmax25 salinity reduction eq. Fit from Surez et al 2006 data
+    L_op: 5.9241088890316 #empircal shape parameter for wp_s50 curve fit from Nguyen et al 2017 data
+    k_op: 0.2299963640964328 #empircal shape parameter for wp_s50 curve fit from Nguyen et al 2017 data
+    x0_op: -3.704173271499543e-16 #parameter for wp_s50 curve [Mpa] fit from Nguyen et al 2017 data
+
+
+model_trees:
+{% for tree, params in model_trees.items() %}
+  {{ tree }}:
+    parents: ['site_parameters', {{ hpft }}]
+    scale_nhl: {{ params['scale_nhl'] }}
+    Hspec: {{ params['Hspec'] }}
+    dbh: {{ params['dbh'] }}
+    mean_crown_area_sp: {{ params['mean_crown_area_sp'] }}
+    sapwood_depth: {{ params['sapwood_depth'] }}
+{% endfor %}
