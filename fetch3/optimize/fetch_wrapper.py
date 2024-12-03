@@ -304,6 +304,82 @@ def get_model_obs(modelfile, obs_file, obs_var, output_var, species, obs_tvar='T
     return modelds_not_nans, obsdf_not_nans
 
 
+def get_model_photo(modelfile, obs_file, obs_var, output_var, obs_tvar='TIMESTAMP_START', 
+                    obs_multiplier=True, obs_z=None, normalize=False, **kwargs):
+    """
+    Read in observation data and model output from CSV files of photosythesis/gsw/Ci data for a trial. This function is designed for 
+    cases where the model output is stored in a CSV with columns for 'z' (height), 'time', and 
+    the output variable of interest.
+
+    Parameters
+    ----------
+    modelfile : str
+        File path to the model output CSV file
+    obs_file : str
+        File path to the observation data file
+    obs_var : str
+        Column name of the observation variable
+    output_var : str
+        Column name of the model output variable
+    obs_tvar : str, optional
+        Name of the time column in the observation data, by default 'TIMESTAMP_START'
+    obs_multiplier : float, optional
+        Scalar multiplier to apply to the observation data to convert units to the model output. If `None`, no
+        multiplier is applied.
+    obs_z : float, optional
+        Depth/height [m] of the observation data. Aboveground is positive, belowground is negative.
+        If `None`, the depth is set to the max z in the model output.
+    normalize : bool, optional
+        If `True`, normalize the model output and observation data by subtracting the mean and dividing by the 
+        standard deviation. If `False`, no normalization is applied.
+
+    Returns
+    -------
+    model_data : array_like
+        Model data at the selected time and height
+    obs_data : array_like
+        Observation data at the selected time
+    """
+
+    # Read in observation data
+    obsdf = pd.read_csv(obs_file, index_col=[obs_tvar], parse_dates=[obs_tvar])
+    if obsdf.index.tz is not None:
+        obsdf.index = obsdf.index.tz_localize(None)  # Convert to timezone-naive
+
+    if obs_multiplier:
+        obsdf[obs_var] = obsdf[obs_var] * obs_multiplier
+
+    # Read in model data
+    modeldf = pd.read_csv(modelfile, parse_dates=['time'])
+
+    # Select depth slice
+    if 'z' in modeldf.columns:
+        if obs_z is None:
+            z_sel = modeldf['z'].max()  # Default to maximum height
+        else:
+            # Select the closest height to obs_z
+            modeldf['z_diff'] = abs(modeldf['z'] - obs_z)
+            z_sel = modeldf.loc[modeldf['z_diff'].idxmin(), 'z']
+        modeldf = modeldf[modeldf['z'] == z_sel]
+
+    # Filter time range
+    modeldf = modeldf[(modeldf['time'] >= obsdf.index.min()) & (modeldf['time'] <= obsdf.index.max())]
+
+    # Align time indices and remove NaNs
+    obsdf = obsdf.loc[modeldf['time'].values]
+    modeldf = modeldf.set_index('time')
+
+    not_nans = ~obsdf[obs_var].isna()
+    obsdf_not_nans = obsdf[obs_var].loc[not_nans]
+    modelds_not_nans = modeldf[output_var].loc[not_nans].values
+
+    if normalize:
+        modelds_not_nans = (modelds_not_nans - modelds_not_nans.mean()) / modelds_not_nans.std()
+        obsdf_not_nans = (obsdf_not_nans - obsdf_not_nans.mean()) / obsdf_not_nans.std()
+
+    return modelds_not_nans, obsdf_not_nans
+
+
 def scale_sapflux(sapflux, dz, mean_crown_area_sp, total_crown_area_sp, plot_area):
     """Scales sapflux from FETCH output (in kg s-1) to W m-2"""
     scaled_sapflux = sapflux * 2440000 / mean_crown_area_sp * total_crown_area_sp / plot_area
@@ -326,6 +402,7 @@ class Fetch3Wrapper(BaseWrapper):
                         get_model_swc.__name__: get_model_swc,
                         get_model_nhl_trans.__name__: get_model_nhl_trans,
                         get_model_obs.__name__: get_model_obs,
+                        get_model_photo.__name__: get_model_photo,
                         }
 
     def __init__(self, *args, **kwargs):
