@@ -1,0 +1,200 @@
+model_options:
+
+  make_experiment_dir: True
+  experiment_name: Port_A_SA_sep
+
+  ###############################################################################
+  #INPUT DATA FILE PARAMETERS
+  ###############################################################################
+
+  # File for input met data
+  input_fname: "merged_porta_coyote_island_met2024.csv"
+  #input_fname: "FLX_US-UMB_FLUXNET2015_SUBSET_HH_2007-2017_beta-4.csv"
+  met_column_labels:
+    CO2_F_MDS: CO2_F
+
+# Start and end in the fetch2 example
+  start_time: "2024-09-19 00:00:00" #begining of simulation #DOY 
+  end_time: "2024-09-23 00:00:00" #end #DOY190 - 7/10 is doy 
+
+  # Start and end in the fetch2 example
+  #start_time: "2011-07-07 11:00:00" #begining of simulation #DOY 160
+  #end_time: "2011-07-07 13:00:00" #end 
+  #DOY190 - 7/10 is doy 191
+
+  dt:  1800  #seconds - input data resolution
+  tmin:  0  #tmin [s]
+
+  ###############################################################################
+  #SITE INFORMATION
+  ###############################################################################
+  latitude: 27.862490 #Port aransas site, Texas
+  longitude: -97.057357 
+  time_offset: -5 #Offset from UTC time, e.g CST = UTC -5 hrs for port aransas gulf coast, TX
+
+  ###############################################################################
+  #RUN OPTIONS - printing
+  ###############################################################################
+  # Printing slows down model run
+  # Options to turn printing off or specify print frequency
+  print_run_progress:  True  # Turn on/off printing for progress of time steps calculated
+  print_freq:  500  # Interval of timesteps to print if print_run_progress = True (e.g. 1 will print every time step)
+
+  ###############################################################################
+  #TRANSPIRATION OPTIONS - NHL OR PM
+  ###############################################################################
+  transpiration_scheme:  1 # 0: PM transpiration; 1: NHL transpiration
+  enable_osmoregulation: True # Turn on/off osmoregulation
+
+  ###############################################################################
+  #NUMERICAL SOLUTION TIME AND SPACE CONSTANTS (dz and dt0)
+  ###############################################################################
+  #The finite difference discretization constants
+  dt0:  20  #model temporal resolution [s]
+  dz:  0.1  #model spatial resolution [m]
+
+  stop_tol:  .01  #0.0001  #stop tolerance of equation converging
+
+  #############################################################################
+  #MODEL PARAMETERS
+  #Values according to Verma et al., 2014
+  ############################################################################
+
+  #CONFIGURING SOIL BOUNDARY CONDITIONS
+  #Here the user can choose the desired contition by setting the numbers as
+  #described below
+
+  #The configuration used follows Verma et al. 2014
+
+  #############################################################################
+
+  #Upper Boundary condition
+
+  #1 = no flux (Neuman)
+  #0 = infiltration
+
+
+  #Bottom Boundary condition
+
+  #2 = free drainage
+  #1 = no flux (Neuman)
+  #0 = constant potential (Dirichlet)
+
+  UpperBC: 0
+  BottomBC: 0
+
+  LAD_norm: 'LAD_data_SA.csv' #LAD data
+  
+
+
+  #######################################################################
+  #LEAF AREA DENSITY FORMULATION (LAD) [1/m]
+  #######################################################################
+  lad_scheme :  1  #0: default scheme, based on Lalic et al 2014; 1: scheme from NHL module
+
+site_parameters:
+  Soil_depth: 6.0   #[m]depth of soil column
+  sand_d: 6.0 #4.2----top soil #m
+  clay_d: 1.0 #0------4.2 #m
+
+  initial_swc_clay: 0.28 #0.28 # initial swc for clay from Verma et al
+  initial_swc_sand: 0.08 #0.08  # initial swc for sand [m3 m-3] from Verma et al
+  soil_moisture_bottom_boundary: 0.28  # [m3 m-3] soil moisture for bottom boundary condition
+
+  #SOIL PARAMETERS - USING VAN GENUCHTEN RELATIONSHIPS
+  # Van Genuchten parameters for UMBS from fetch2_example_amf.m
+
+  #CLAY
+  alpha_1: 0.8                       #soil hydraulic parameter [1/m]
+  theta_S1: 0.55                     #saturated volumetric soil moisture content [-]
+  theta_R1: 0.068                    #residual volumetric soil moisture content [-]
+  n_1: 1.5                           #soil hydraulic parameter  [-]
+  Ksat_1: 1.94e-7               #saturated hydraulic conductivity  [m/s]
+
+  #SAND
+  alpha_2: 14.5
+  theta_S2: 0.47
+  theta_R2: 0.045
+  n_2: 2.4
+  Ksat_2: 3.45e-5
+
+  sum_LAI_plot: 1.5 #NEED TO GET FROM BERIT
+  Cd: 0.1 # Drag coefficient
+  alpha_ml: 0.1  # Mixing length constant
+
+
+species_parameters:
+  cordgrass:
+    Root_depth: 0.3 #[m] depth of root column
+    #Soil stress parameters
+    theta_1_clay: 0.08
+    theta_2_clay: 0.12
+
+    theta_1_sand: 0.05
+    theta_2_sand: 0.09
+
+    #ROOT PARAMETERS
+    Kr: 7.2e-10 #soil-to-root radial conductance [m/sPa]
+    qz: 9
+    #ap_r: 2.573296777901879e-06
+    #bp_r: -5328996.851269488
+    #Ksax divided by rho*g                                       #unitless - parameter for the root mass distribution - Verma et al., 2014
+    Ksax: 8.0e-9  #specific axial conductivity of roots  [ m/s]
+    Aind_r: 0.5                                       #m2 root xylem/m2 ground]
+
+    #XYLEM PARAMETERS
+    kmax: 8.0e-9 #conductivity of xylem  [ m2/sPa]
+    ap: 8.769734320082109e-07                                #xylem cavitation parameter [Pa-1]
+    bp: -8158890.749381061                                #xylem cavitation parameter [Pa]                         #m2 xylem/m2 ground]
+    Phi_0: 5.74e+8                         #From bohrer et al 2005
+    p: 20                                        #From bohrer et al 2005
+    sat_xylem: 0.89
+    taper_top: 1.0
+
+    sapwood_depth: 0.25 # Sapwood depth, measured at breast height [cm] #from krauss et al 2014
+    dbh: 1  # Diameter of plant at breast height [cm] #from krauss et al 2014
+    stand_density_sp: 280000 #161.8037135  # Species-specific stand density [trees ha-1]
+
+    #TREE PARAMETERS
+    Hspec: 1                   #Height average of trees [m]
+    LAI: 1.5 #from krauss et al 2014 GET FROM BERIT
+ 
+    #########################################################################3
+    #NHL PARAMETERS
+    ###########################################################################
+
+    scale_nhl: 1.0
+
+    mean_crown_area_sp: 0.125 #24.76221001 #m2
+
+    Cf: 0.85  #Clumping fraction [unitless], assumed to be 0.85 (Forseth & Norman 1993) unless otherwise specified
+    x: 1.0  # FETCH2: 2-6 #Ratio of horizontal to vertical projections of leaves (leaf angle distribution), assumed spherical (x=1)
+    #Vcmax25: 114.0789474 
+    #Vcmax25: 47.6088
+    Vcmax25: 69.9
+    #m: 6.7
+    #alpha_gs: 6.7 
+    m: 7.258 #optimized with gs data from mangrove greenhouse experiment
+    alpha_p: 0.934
+    #wp_s50: -4940930.4689
+    #c3: 2.9971
+    wp_s50: -3076166.4468314885
+    c3: 1.3646140969429479
+    #wp_s50: -2143278.0138347436 #10ppt
+    #c3: 1.9097650725278668 #10ppt
+    #wp_s50: -4809499.247168835 #20ppt
+    #c3: 4.7323260711061 #20ppt
+    #wp_s50: -5884910.333839778 #40ppt
+    #c3: 10.999999999999524 #40ppt
+
+    #########################################################################
+    #Osmoregulation PARAMETERS
+    #########################################################################
+    # Osmotic potential parameters
+    filt_eff: 0.95 #salt filtration efficiency at the root zone
+    iv: 2  # van't hoff coefficient, defaults to 2 for NaCl
+    a_sal: 0.500 #a_sal parameter (1/psu) in the equation Vcmax25 salinity reduction eq. Fit from Surez et al 2006 data
+    kvc: 23.963 #kvc parameter in eq Vcmax25 salinity reduction eq. Fit from Surez et al 2006 data
+    L_op: 5.9241088890316 #empircal shape parameter for wp_s50 curve fit from Nguyen et al 2017 data
+    k_op: 0.2299963640964328 #empircal shape parameter for wp_s50 curve fit from Nguyen et al 2017 data
+    x0_op: -3.704173271499543e-16 #parameter for wp_s50 curve [Mpa] fit from Nguyen et al 2017 data

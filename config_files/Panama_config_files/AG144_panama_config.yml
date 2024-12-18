@@ -1,21 +1,24 @@
 model_options:
 
   make_experiment_dir: True
-  experiment_name: JuanDiazPa_AG14_40ppt
+  experiment_name: JuanDiazPa_AG14_10ppt
 
   ###############################################################################
   #INPUT DATA FILE PARAMETERS
   ###############################################################################
 
   # File for input met data
-  input_fname: "2023_fetch3_metinputs_panama.csv"
+  input_fname: "porta_coyote_island_met.csv" # "2023_fetch3_metinputs_panama.csv"
   #input_fname: "FLX_US-UMB_FLUXNET2015_SUBSET_HH_2007-2017_beta-4.csv"
   met_column_labels:
     CO2_F_MDS: CO2_F
 
 # Start and end in the fetch2 example
-  start_time: "2023-03-10 00:00:00" #begining of simulation #DOY 
-  end_time: "2023-03-14 00:00:00" #end #DOY190 - 7/10 is doy 
+  #start_time: "2023-03-10 00:00:00" #begining of simulation #DOY 
+  #end_time: "2023-03-14 00:00:00" #end #DOY190 - 7/10 is doy 
+# Start and end in the fetch2 example
+  start_time: "2024-05-04 00:00:00" #begining of simulation #DOY 
+  end_time: "2024-05-07 00:00:00" #end #DOY190 - 7/10 is doy 
 
   # Start and end in the fetch2 example
   #start_time: "2011-07-07 11:00:00" #begining of simulation #DOY 160

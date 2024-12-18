@@ -14,7 +14,7 @@ model_options:
 
 # Start and end in the fetch2 example
   start_time: "2011-07-07 11:00:00" #begining of simulation #DOY 160
-  end_time: "2011-07-07 13:00:00" #end #DOY190 - 7/10 is doy 191
+  end_time: "2011-07-19 11:00:00" #end #DOY190 - 7/10 is doy 191
 
   dt:  1800  #seconds - input data resolution
   tmin:  0  #tmin [s]
