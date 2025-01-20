@@ -164,6 +164,34 @@ def calc_wp50_params(osmotic_potential, L_op, k_op, x0_op):
     wp_s50=wp_s50*1e6
     return wp_s50, c3
 
+
+def calc_transpiration_leaf_VPDl(VPD, Tair, geff, Press, VPDc, VPD_50):
+    """
+    Calculates the water vapor source from the leaf.
+
+    Parameters
+    ----------
+    VPD : float
+        vapor pressure deficit [kPa]
+    Tair : float
+        air temperature [deg C]
+    geff : float
+        effective leaf conductance [mol m-2_leaf s-1]
+    Press : float
+        air pressure [kPa]
+
+    Returns
+    -------
+    transpiration_leaf : float
+        water vapor source per unit leaf area [kg s-1 m-2_leaf]
+    """
+    Kg = calc_Kg(Tair)  # kPa m3 kg-1
+    rhov = 44.6 * Press / 101.3 * 273.15 / (Tair + 273.15)  # water vapor density, mol m-3
+    VPDlim = 1 / (1+np.exp(VPDc *(VPD-VPD_50)))
+    transpiration_leaf = 0.4 * (geff * VPD) / (Kg * rhov)*VPDlim  # kg s-1 m-2_leaf
+
+    return transpiration_leaf
+
 def calc_NHL_osmo(cfg: ConfigParams, met_data, LADnorm_df, timestep, salinity_data):
     """
     Calculate NHL transpiration
@@ -240,7 +268,8 @@ def calc_NHL_osmo(cfg: ConfigParams, met_data, LADnorm_df, timestep, salinity_da
     A, gs, Ci, Cs, gb, geff = solve_leaf_physiology(Tair, Qp, Ca, Vcmax25, alpha_p, VPD=VPD, m=m, uz=U)
 
     # Calculate the transpiration per m-1 [ kg H2O s-1 m-1_stem]
-    NHL_trans_leaf = calc_transpiration_leaf(VPD, Tair, geff, Press)  # [kg H2O m-2leaf s-1]
+    #NHL_trans_leaf = calc_transpiration_leaf(VPD, Tair, geff, Press)  # [kg H2O m-2leaf s-1]
+    NHL_trans_leaf = calc_transpiration_leaf_VPDl(VPD, Tair, geff, Press, cfg.parameters.VPDc, cfg.parameters.VPD_50)
     NHL_trans_sp_stem = NHL_trans_leaf * LAD
 
     # Add data to dataset
@@ -654,3 +683,5 @@ def calc_A_gs_wplimit_timesteps_osmo(cfg: ConfigParams, met_data, LADnorm_df, sa
     combined_data = combined_data.merge(Ci_data, on = ['time', 'z'])
 
     return combined_data, d2, LAD, zenith_angle_all
+
+

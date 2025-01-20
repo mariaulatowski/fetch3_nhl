@@ -391,7 +391,10 @@ def Picard(cfg: ConfigParams, H_initial, Head_bottom_H, zind, met, t_num, nt, Sa
                 osmotic_potential = np.zeros((nz))
                 osmotic_potential[0:nz_s] = calc_osmotic_potential(Salinity[i],cfg.parameters.filt_eff, R_GAS, cfg.parameters.iv, 293) # Osmotic potential in the soil
                 osmotic_potential[nz_s:nz_r] = calc_osmotic_potential(Salinity[i],cfg.parameters.filt_eff, R_GAS, cfg.parameters.iv, 293)  # Osmotic potential at the root zone
-                osmotic_potential[nz_r:nz] = calc_osmotic_potential_stem(Salinity[i],cfg.parameters.filt_eff, R_GAS, cfg.parameters.iv, 293) # Osmotic potential in the xylem
+                if Salinity[i] >= cfg.parameters.Cw:
+                    osmotic_potential[nz_r:nz] = (calc_osmotic_potential(cfg.parameters.Cw, 1, R_GAS, cfg.parameters.iv, 293) - calc_osmotic_potential_stem(Salinity[i],cfg.parameters.filt_eff, R_GAS, cfg.parameters.iv, 293))# Osmotic potential in the xylem)
+                else:
+                    osmotic_potential[nz_r:nz] = -(calc_osmotic_potential(cfg.parameters.Cw, 1, R_GAS, cfg.parameters.iv, 293) - calc_osmotic_potential_stem(Salinity[i],cfg.parameters.filt_eff, R_GAS, cfg.parameters.iv, 293)) # Osmotic potential in the xylem
             ##########ROOT WATER UPTAKE TERM ###########################
 
             stress_roots = feddes_root_stress(

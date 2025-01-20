@@ -281,7 +281,9 @@ class OsmoregulationParameters(NHLParameters):
     L_op: float = None #empircal shape parameter for wp_s50 curve
     k_op: float = None #empircal shape parameter for wp_s50 curve
     x0_op: float = None #parameter for wp_s50 curve [Mpa]
-
+    Cw: float = None #parameter for internal osmotic potential from storage (salinity NaCl in ppt)
+    VPDc: float = None #shape parameter (Slope param) for VPD limitation on transpiration term
+    VPD_50: float =None #VPD that limit transpiration by 50% due to leaf traits closing stomata (KPa) 
 
 
 SCHEMES = {
